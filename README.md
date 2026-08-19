@@ -54,18 +54,16 @@ wer diese Records anfasst, legt die Mail lahm.
 GitHub-404 — so gewollt, siehe `CLAUDE.md`. Die Seite liegt in der Repo-Wurzel,
 damit der Livegang ohne Actions-Workflow auskommt.
 
-⚠️ **Das Repo ist privat, und für private Repos bietet GitHub Pages nur in
-bezahlten Plänen an.** Der Livegang ist deshalb kein reiner Umschalter: entweder
-wird das Repo vorher auf öffentlich gestellt (Settings → General → Danger Zone →
-Change visibility) oder der Plan aufgewertet. Öffentlich heißt: der komplette
-Quelltext und die Commit-Historie sind für jeden lesbar — bei einer statischen
-Website ohne Geheimnisse unproblematisch, aber es ist eine bewusste Entscheidung.
+Das Repo ist seit dem 19.08.2026 **öffentlich** — Voraussetzung dafür, dass
+GitHub Pages ohne bezahlten Plan nutzbar ist. Quelltext und Commit-Historie sind
+damit für jeden lesbar; die Historie wurde vorher auf die GitHub-Noreply-Adresse
+umgeschrieben, damit keine private Mailadresse darin steht. Commits deshalb
+weiterhin mit der Noreply-Adresse anlegen (im Repo als `user.email` gesetzt).
 
-Wenn es so weit ist:
+Zum Livegang fehlt dann nur noch:
 
-1. Repo auf öffentlich stellen (oder Plan aufwerten)
+1. Impressum und Datenschutz ausfüllen — Pflicht, siehe `CLAUDE.md`
 2. Settings → Pages → Source: „Deploy from a branch", Branch `main`, Ordner `/`
 3. Custom domain: `purpur.berlin` — GitHub legt die `CNAME`-Datei selbst an
 4. „Enforce HTTPS" anhaken, sobald das Zertifikat ausgestellt ist (dauert ein
    paar Minuten)
-5. Vorher: Impressum und Datenschutz ausfüllen — siehe `CLAUDE.md`
