@@ -12,11 +12,15 @@ kein Code und kein Hosting.
 
 ## Nichts veröffentlichen ohne Ansage
 
+**Stand:** Die DNS-Einträge bei IONOS zeigen auf GitHub Pages, aber **GitHub Pages
+ist bewusst ausgeschaltet**. Die Domain führt deshalb ins Leere (GitHub-404) — genau
+so gewollt. Die Leitung liegt, der Hahn ist zu.
+
 Solange nicht ausdrücklich etwas anderes gesagt wird, gilt:
 
-- **Kein Hosting aktivieren** (kein GitHub Pages, kein Deploy).
-- **Keine DNS-Einträge** bei IONOS ändern oder vorschlagen zu ändern.
-- **Keine `CNAME`-Datei** anlegen — die würde die Domain mit GitHub Pages verknüpfen.
+- **Pages nicht aktivieren** (Settings → Pages bleibt auf "None").
+- **Keine `CNAME`-Datei** anlegen — die gehört erst dazu, wenn Pages an ist.
+- Pushen ist trotzdem jederzeit gefahrlos: ohne Pages wird nichts ausgeliefert.
 
 Die Seite geht online, wenn das gesagt wird, nicht als Nebeneffekt eines Pushs.
 
