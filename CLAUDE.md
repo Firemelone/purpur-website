@@ -2,7 +2,7 @@
 
 Repo für die Website **purpur.berlin**. Statisches HTML/CSS/JS ohne Framework
 und ohne Build-Schritt; die Dateien in der Repo-Wurzel sind 1:1 das, was GitHub
-Pages später ausliefert.
+Pages ausliefert.
 
 ## Sync — läuft automatisch, muss nicht angefordert werden
 
@@ -11,20 +11,27 @@ Pages später ausliefert.
   erst am Sitzungsende, damit von jedem Rechner aus weitergearbeitet werden kann.
 - Direkt auf `main`. Branches und PRs nur, wenn ausdrücklich gewünscht.
 
-## Nichts veröffentlichen ohne Ansage
+## Die Seite ist live
 
-**Stand:** Die DNS-Einträge bei IONOS zeigen auf GitHub Pages, aber **GitHub Pages
-ist bewusst ausgeschaltet**. Die Domain führt deshalb ins Leere (GitHub-404) — genau
-so gewollt. Die Leitung liegt, der Hahn ist zu.
+**Stand 19.08.2026: <https://purpur.berlin> ist öffentlich erreichbar.** GitHub
+Pages liefert den `main`-Branch aus (Source „Deploy from a branch", Ordner `/`),
+Custom Domain `purpur.berlin`, „Enforce HTTPS" aktiv, Zertifikat von Let's
+Encrypt. `www.purpur.berlin` leitet per 301 auf die Hauptdomain.
 
-Solange nicht ausdrücklich etwas anderes gesagt wird, gilt:
+Daraus folgt die wichtigste Regel für alle weiteren Sitzungen:
 
-- **Pages nicht aktivieren** (Settings → Pages bleibt auf "None").
-- **Keine `CNAME`-Datei** anlegen — die legt GitHub selbst an, sobald die Custom
-  Domain gesetzt wird, und das gehört zum Livegang.
-- Pushen ist trotzdem jederzeit gefahrlos: ohne Pages wird nichts ausgeliefert.
-
-Die Seite geht online, wenn das gesagt wird, nicht als Nebeneffekt eines Pushs.
+- **Jeder Push auf `main` geht binnen ein bis zwei Minuten live.** Es gibt keine
+  Staging-Umgebung und keinen Review-Schritt dazwischen. Wer committet,
+  veröffentlicht.
+- Vor dem Push lokal prüfen: `python3 -m http.server 8080` im Repo-Ordner.
+- Bei größeren Umbauten lieber auf einem Branch arbeiten und erst nach Sichtung
+  nach `main` mergen — Branches deployen nicht.
+- Die Datei `CNAME` im Repo-Wurzelverzeichnis enthält `purpur.berlin` und wurde
+  von GitHub selbst angelegt. **Nicht löschen und nicht ändern** — ohne sie
+  fällt die Custom Domain aus und die Seite ist nur noch unter
+  `firemelone.github.io` erreichbar.
+- Das Repo ist **öffentlich**. Niemals Zugangsdaten, Keys oder Tokens
+  committen; so etwas gehört in GitHub-Secrets.
 
 ## DNS nicht anfassen
 
@@ -52,10 +59,13 @@ Seite und Code-Kommentare auf Deutsch.
   bleiben, bis wir uns aktiv anders entscheiden.
 - Bilder als WebP/AVIF, mit `width`/`height` im Tag gegen Layout-Shift.
 
-## Vor dem öffentlichen Launch
+## Rechtstexte
 
-`impressum.html` und `datenschutz.html` sind derzeit Platzhalter mit TODO. Sie
-müssen mit echtem Namen und echter Anschrift ausgefüllt sein, bevor die Seite
-öffentlich geht — in Deutschland Impressumspflicht (§ 5 DDG), und ein fehlendes
-Impressum ist abmahnfähig. Beide Seiten stehen bis dahin auf
-`<meta name="robots" content="noindex">`.
+`impressum.html` und `datenschutz.html` sind ausgefüllt und öffentlich. Sie sind
+Pflichtangaben (§ 5 DDG, Art. 13 DSGVO) und müssen erreichbar bleiben — die
+Links im Footer jeder Seite also nicht entfernen.
+
+Wenn sich am Aufbau der Seite etwas ändert, muss die Datenschutzerklärung
+mitgepflegt werden: Sobald Cookies, externe Schriften, Karten, eingebettete
+Videos, ein Kontaktformular oder Analyse-Werkzeuge dazukommen, stimmt der
+aktuelle Text nicht mehr. Er beschreibt ausdrücklich eine Seite ohne all das.

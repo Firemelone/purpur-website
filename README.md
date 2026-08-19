@@ -9,9 +9,9 @@ Build-Schritt: was im Repo liegt, ist exakt das, was später ausgeliefert wird.
 - [x] Technik entschieden: statisches HTML/CSS/JS, Hosting über GitHub Pages
 - [x] DNS bei IONOS auf GitHub Pages gestellt (autoritativ geprüft, siehe unten)
 - [x] Grundgerüst der Seite: Startseite, Impressum, Datenschutz, Stylesheet
+- [x] Impressum und Datenschutz ausgefüllt
+- [x] Live: <https://purpur.berlin> seit dem 19.08.2026
 - [ ] Inhalt der Startseite — aktuell nur ein Platzhalter
-- [ ] Impressum und Datenschutz ausfüllen (Pflicht vor dem Livegang)
-- [ ] Hosting einschalten — Settings → Pages, bewusst noch **aus**
 
 ## Arbeiten
 
@@ -50,20 +50,24 @@ wer diese Records anfasst, legt die Mail lahm.
 
 ## Hosting
 
-**GitHub Pages ist ausgeschaltet**, die Domain führt deshalb vorerst auf einen
-GitHub-404 — so gewollt, siehe `CLAUDE.md`. Die Seite liegt in der Repo-Wurzel,
-damit der Livegang ohne Actions-Workflow auskommt.
+Die Seite ist live unter <https://purpur.berlin>. GitHub Pages liefert den
+`main`-Branch aus: Source „Deploy from a branch", Branch `main`, Ordner `/`,
+Custom Domain `purpur.berlin`, „Enforce HTTPS" aktiv. Das Zertifikat stellt
+Let's Encrypt aus und GitHub erneuert es selbst. `www.purpur.berlin` leitet per
+301 auf die Hauptdomain.
 
-Das Repo ist seit dem 19.08.2026 **öffentlich** — Voraussetzung dafür, dass
-GitHub Pages ohne bezahlten Plan nutzbar ist. Quelltext und Commit-Historie sind
-damit für jeden lesbar; die Historie wurde vorher auf die GitHub-Noreply-Adresse
-umgeschrieben, damit keine private Mailadresse darin steht. Commits deshalb
-weiterhin mit der Noreply-Adresse anlegen (im Repo als `user.email` gesetzt).
+**Jeder Push auf `main` geht damit binnen ein bis zwei Minuten live** — es gibt
+keine Staging-Stufe. Vor dem Push lokal prüfen:
 
-Zum Livegang fehlt dann nur noch:
+```bash
+python3 -m http.server 8080
+```
 
-1. Impressum und Datenschutz ausfüllen — Pflicht, siehe `CLAUDE.md`
-2. Settings → Pages → Source: „Deploy from a branch", Branch `main`, Ordner `/`
-3. Custom domain: `purpur.berlin` — GitHub legt die `CNAME`-Datei selbst an
-4. „Enforce HTTPS" anhaken, sobald das Zertifikat ausgestellt ist (dauert ein
-   paar Minuten)
+Das Repo ist öffentlich; das ist Voraussetzung für GitHub Pages ohne bezahlten
+Plan. Quelltext und Commit-Historie sind für jeden lesbar, deshalb gehören
+Zugangsdaten niemals in einen Commit. Die Historie wurde vor dem
+Öffentlichmachen auf die GitHub-Noreply-Adresse umgeschrieben; Commits laufen
+weiterhin darüber (im Repo als `user.email` gesetzt).
+
+Die Datei `CNAME` hat GitHub selbst angelegt — nicht löschen, sonst fällt die
+Custom Domain aus.
