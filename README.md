@@ -9,7 +9,9 @@ Build-Schritt: was im Repo liegt, ist exakt das, was später ausgeliefert wird.
 - [x] Technik entschieden: statisches HTML/CSS/JS, Hosting über GitHub Pages
 - [x] DNS bei IONOS auf GitHub Pages gestellt (autoritativ geprüft, siehe unten)
 - [x] Grundgerüst der Seite: Startseite, Impressum, Datenschutz, Stylesheet
-- [x] Impressum und Datenschutz ausgefüllt
+- [x] Imprint und Privacy Policy ausgefüllt
+- [x] Eigene Schriften eingebunden (Mosher, GC Furion)
+- [x] Seite auf Englisch umgestellt
 - [x] Live: <https://purpur.berlin> seit dem 19.08.2026
 - [ ] Inhalt der Startseite — aktuell nur ein Platzhalter
 
@@ -71,3 +73,24 @@ weiterhin darüber (im Repo als `user.email` gesetzt).
 
 Die Datei `CNAME` hat GitHub selbst angelegt — nicht löschen, sonst fällt die
 Custom Domain aus.
+
+## Schriften und deren Lizenz
+
+`assets/fonts/` enthält **Mosher** (© 2026 Pixelbuddha) und **GC Furion**
+(© 2025 Glyphonic) als `.woff2`. Beide sind kommerzielle Schriften und wurden
+ohne Lizenzdatei geliefert.
+
+Zwei Punkte sind vor weiterer kommerzieller Nutzung zu klären:
+
+1. Deckt die erworbene Lizenz **Webfont-Einbettung** ab? Reine Desktop-Lizenzen
+   erlauben nur die Nutzung in Grafikprogrammen, nicht das Ausliefern per
+   `@font-face`. Manche Webfont-Lizenzen sind zusätzlich auf eine Zahl von
+   Seitenaufrufen im Monat begrenzt.
+2. Dieses Repository ist **öffentlich**. Die Schriftdateien sind damit für jeden
+   herunterladbar — das geht über das bloße Ausliefern an Website-Besucher
+   hinaus und ist in manchen Lizenzen ausgeschlossen.
+
+Falls einer der Punkte nicht passt: Dateien aus `assets/fonts/` entfernen, die
+`@font-face`-Blöcke in `assets/css/style.css` löschen. Die Ersatzschriften in
+`--font-titel` und `--font-text` greifen dann automatisch, die Seite bleibt
+funktionsfähig.

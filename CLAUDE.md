@@ -42,26 +42,58 @@ ausdrücklichen Auftrag bleibt die Zone, wie sie ist.
 
 ## Sprache
 
-Seite und Code-Kommentare auf Deutsch.
+**Die Website ist durchgaengig englisch** — jede Seite, jeder Text, jedes neue
+Element. Kein deutscher Fliesstext, auch nicht in den Rechtstexten. `lang="en"`
+auf jeder Seite.
+
+Code-Kommentare, Commit-Nachrichten und die Doku in diesem Repo bleiben deutsch;
+das ist die Arbeitssprache, nicht die Sprache des Produkts.
 
 ## Konventionen
 
 - HTML in `lang="de"`, semantische Tags, jede Seite mit `<title>` und
   `<meta name="description">`.
-- Farben und Maße als CSS-Custom-Properties in `:root` (`assets/css/style.css`)
-  — nicht hart im Regelwerk verstreuen. Dark Mode läuft über
-  `prefers-color-scheme`; neue Farben dort mitpflegen.
+- Farben, Maße und Schriften als CSS-Custom-Properties in `:root`
+  (`assets/css/style.css`) — nicht hart im Regelwerk verstreuen. Dark Mode läuft
+  über `prefers-color-scheme`; neue Farben dort mitpflegen.
 - Interne Links absolut ab Root (`/impressum.html`), damit sie in jeder
   Verzeichnistiefe stimmen. Zum lokalen Ansehen deshalb einen Server starten,
   nicht die Datei direkt öffnen.
+- Schriften: Titel und Wortmarke in `var(--font-titel)` (Mosher), alles übrige
+  in `var(--font-text)` (GC Furion). Nie direkt den Schriftnamen schreiben.
 - Keine externen CDN-Skripte, keine Tracker ohne Consent-Banner — die Seite
   liefert aktuell keine personenbezogenen Daten an Dritte aus, und das soll so
   bleiben, bis wir uns aktiv anders entscheiden.
 - Bilder als WebP/AVIF, mit `width`/`height` im Tag gegen Layout-Shift.
 
+## Schriften
+
+Zwei lizenzierte Schriften, selbst gehostet in `assets/fonts/`:
+
+- **Mosher** (Pixelbuddha) — Display-Schrift, ausschließlich für Titel und die
+  Wortmarke. Nur ein Schnitt (400). Die Schrift kennt nur Großbuchstaben:
+  Kleinbuchstaben werden auf Versalien abgebildet. Ihr fehlen ß und §.
+- **GC Furion** (Glyphonic) — Grundschrift, Schnitte 400/600/700.
+
+Regeln dazu:
+
+- **Nur `.woff2` ins Repo.** `.ttf` und `.otf` sind Desktop-Formate; sie sind
+  zwei- bis dreimal so groß und gehören nicht auf einen Webserver.
+- Neue Schnitte nur aufnehmen, wenn sie wirklich gebraucht werden — jede Datei
+  kostet Ladezeit. Aktuell sind es 144 KB.
+- `font-display: swap` bei jedem `@font-face` beibehalten, sonst bleibt die
+  Seite beim Laden leer.
+- Die kritischen Schnitte werden im `<head>` per `rel="preload"` vorgeladen. Wer
+  eine neue Seite anlegt, übernimmt die Preload-Zeilen mit.
+
+**Lizenz:** Beide Schriften sind kommerziell und lagen ohne Lizenzdatei bei. Vor
+weiterer kommerzieller Nutzung ist zu prüfen, ob die erworbene Lizenz Webfont-
+Einbettung abdeckt und ob die Ablage in einem öffentlichen Repository zulässig
+ist. Siehe `README.md`.
+
 ## Rechtstexte
 
-`impressum.html` und `datenschutz.html` sind ausgefüllt und öffentlich. Sie sind
+`imprint.html` und `privacy.html` sind ausgefüllt und öffentlich. Sie sind
 Pflichtangaben (§ 5 DDG, Art. 13 DSGVO) und müssen erreichbar bleiben — die
 Links im Footer jeder Seite also nicht entfernen.
 

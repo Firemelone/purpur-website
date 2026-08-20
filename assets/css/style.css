@@ -1,3 +1,45 @@
+/* Eigene Schriften — nur woff2: das unterstuetzt jeder Browser seit 2016 und
+   ist rund 30 % kleiner als woff. ttf/otf gehoeren nicht ins Web, das sind
+   Desktop-Formate.
+   font-display: swap zeigt sofort die Ersatzschrift und tauscht nach dem Laden
+   — sonst steht die Seite bis zu drei Sekunden leer. */
+
+/* Mosher (Pixelbuddha) — Display-Schrift, nur fuer Titel.
+   Randnotiz: Mosher hat kein ß und kein §. Fuer die englische Seite unerheblich,
+   waere aber ein sichtbarer Bruch, falls doch mal deutscher Text in eine
+   Ueberschrift geraet — solche Zeichen fallen auf die Ersatzschrift zurueck. */
+@font-face {
+  font-family: "Mosher";
+  src: url("/assets/fonts/Mosher-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* GC Furion (Glyphonic) — Grundschrift fuer alles uebrige. Vollstaendiger
+   Zeichensatz, taugt daher auch fuer die Rechtstexte. */
+@font-face {
+  font-family: "GC Furion";
+  src: url("/assets/fonts/GCFurion-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "GC Furion";
+  src: url("/assets/fonts/GCFurion-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "GC Furion";
+  src: url("/assets/fonts/GCFurion-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --purpur: #6b2fa0;
   --purpur-hell: #a06bd6;
@@ -5,6 +47,11 @@
   --text: #1c1420;
   --muted: #5c5164;
   --maxw: 68rem;
+
+  /* Schriften: Titel in Mosher, alles uebrige in GC Furion. Die Ersatzkette
+     greift, solange die Webfonts laden — oder falls sie ausfallen. */
+  --font-titel: "Mosher", Georgia, "Times New Roman", serif;
+  --font-text: "GC Furion", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -14,7 +61,7 @@
 * { box-sizing: border-box; }
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-text);
   line-height: 1.6;
   color: var(--text);
   background: var(--bg);
@@ -27,8 +74,9 @@ body {
 main { flex: 1; display: flex; align-items: center; }
 
 .wordmark {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-family: var(--font-titel);
+  font-size: 1.5rem;
+  font-weight: 400;
   letter-spacing: .04em;
   color: var(--purpur);
   text-decoration: none;
@@ -36,6 +84,8 @@ main { flex: 1; display: flex; align-items: center; }
 
 .hero { padding-block: clamp(3rem, 12vw, 8rem); }
 .hero h1 {
+  font-family: var(--font-titel);
+  font-weight: 400;
   font-size: clamp(2.75rem, 10vw, 6rem);
   line-height: 1.05;
   margin: 0 0 1rem;
@@ -69,9 +119,12 @@ main { flex: 1; display: flex; align-items: center; }
 .site-footer a { color: inherit; }
 
 .prose { max-width: 42rem; }
-.prose h1 { color: var(--purpur); }
+.prose h1 { font-family: var(--font-titel); font-weight: 400; color: var(--purpur); }
 
-/* Rechtstexte: mehr Luft zwischen den Abschnitten, damit die Seite lesbar bleibt */
+/* Rechtstexte: mehr Luft zwischen den Abschnitten, damit die Seite lesbar bleibt.
+   Zwischenueberschriften bewusst in der Grundschrift — die Display-Schrift ist
+   fuer lange Fliesstexte zu unruhig. */
 .prose h2 { margin-top: 2.5rem; margin-bottom: .5rem; font-size: 1.15rem; }
 .prose p { margin-block: .75rem; }
 .prose a { color: var(--purpur); }
+.hinweis { color: var(--muted); font-size: .9rem; margin-top: -.25rem; }
