@@ -1,35 +1,220 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>purpur</title>
-  <meta name="description" content="purpur — placeholder. Content coming soon.">
-  <link rel="preload" href="/assets/fonts/Mosher-Regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/assets/fonts/GCFurion-Regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/assets/css/style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PURPUR — 03.10.2026 — Berlin</title>
+<meta name="description" content="PURPUR — transform into the purest version of yourself. 03.10.2026, 22:00–06:00, Berlin — venue TBA." />
+<link rel="icon" href="/Media/Logo_PNG/PURPUR-Symbol-Purple.png" />
+<link rel="stylesheet" href="styles.css?v=36" />
 </head>
 <body>
-  <header class="site-header">
-    <a class="wordmark" href="/">purpur</a>
-  </header>
 
-  <main>
-    <section class="hero">
-      <h1>purpur</h1>
-      <p class="lead">The new site is taking shape here.</p>
-      <a class="btn" href="mailto:info@purpur.berlin">Get in touch</a>
-    </section>
-  </main>
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader__mark">
+    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+      <polygon class="shard shard--blue" points="6,4 6,28 11,23 14.5,33.5 19.5,31.5 16,22 25,22" />
+      <polygon class="shard shard--magenta" points="6,4 6,28 11,23 14.5,33.5 19.5,31.5 16,22 25,22" />
+      <polygon class="shard shard--main" points="6,4 6,28 11,23 14.5,33.5 19.5,31.5 16,22 25,22" />
+    </svg>
+  </div>
+  <p class="loader__text mosher">Purpur</p>
+</div>
 
-  <footer class="site-footer">
-    <p>&copy; <span id="year">2026</span> purpur</p>
-    <nav>
-      <a href="/imprint.html">Imprint</a>
-      <a href="/privacy.html">Privacy</a>
-    </nav>
-  </footer>
+<div class="cursor" id="cursor" aria-hidden="true">
+  <svg class="cursor__svg" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+    <polygon class="shard shard--blue" points="6,4 6,28 11,23 14.5,33.5 19.5,31.5 16,22 25,22" />
+    <polygon class="shard shard--magenta" points="6,4 6,28 11,23 14.5,33.5 19.5,31.5 16,22 25,22" />
+    <polygon class="shard shard--main" points="6,4 6,28 11,23 14.5,33.5 19.5,31.5 16,22 25,22" />
+  </svg>
+</div>
 
-  <script src="/assets/js/main.js"></script>
+<nav class="nav">
+  <a class="nav__brand" href="#top">
+    <img src="/Media/Logo_Animated/PURPUR-Turntable_pitch-0.gif" width="800" height="800" alt="PURPUR spinning symbol" />
+  </a>
+  <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+  <ul class="nav__links" id="navLinks">
+    <li><a class="btn" href="#" target="_blank" rel="noopener"><span>Tickets</span></a></li>
+    <li><a class="btn btn--ghost" href="#" target="_blank" rel="noopener"><span>Supporter Bundle</span></a></li>
+  </ul>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero__media">
+    <div class="hero__slideshow" aria-hidden="true">
+      <img class="hero__slide" src="/Media/Diashow/01-choker-gloves.jpg" alt="" />
+      <img class="hero__slide" src="/Media/Diashow/BB-Inv-Banner.jpg" alt="" />
+      <img class="hero__slide" src="/Media/Diashow/06-fishnet-back.jpg" alt="" />
+      <img class="hero__slide" src="/Media/Diashow/12-balaclava-portrait.jpg" alt="" />
+      <img class="hero__slide" src="/Media/Diashow/09-latex-boots-cuffs_cropped.jpg" alt="" />
+      <img class="hero__slide" src="/Media/Diashow/11-silhouette-kiss.jpg" alt="" />
+      <img class="hero__slide" src="/Media/Diashow/02-thong-detail.jpg" alt="" />
+      <img class="hero__slide" src="/Media/Diashow/Pants-Banner.jpg" alt="" />
+      <img class="hero__slide" src="/Media/Diashow/08-fishnet-legs.jpg" alt="" />
+      <img class="hero__slide" src="/Media/Diashow/13-balaclava-point.jpg" alt="" />
+      <img class="hero__slide" src="/Media/Diashow/03-harness-set_cropped.jpg" alt="" />
+      <img class="hero__slide" src="/Media/Diashow/Rubber-Banner.jpg" alt="" />
+      <img class="hero__slide" src="/Media/Diashow/04-torso-silhouette.jpg" alt="" />
+      <img class="hero__slide" src="/Media/Diashow/Tactical-Banner.jpg" alt="" />
+      <img class="hero__slide" src="/Media/Diashow/05-sheer-torso_cropped.jpg" alt="" />
+      <img class="hero__slide" src="/Media/Diashow/IMG_9873-2.jpg" alt="" />
+    </div>
+    <div class="hero__grain"></div>
+    <div class="hero__tear" aria-hidden="true"></div>
+  </div>
+  <div class="hero__content">
+    <p class="hero__eyebrow">We are</p>
+    <h1 class="hero__title">
+      <img class="hero__logo glitch" id="titleMain" src="/Media/Logo_SVG/PURPUR-Logo-PurpleWhite.svg" alt="PURPUR" />
+    </h1>
+    <p class="hero__tagline">transform into the <em>purest</em> version of yourself.</p>
+    <div class="hero__actions">
+      <a class="btn" href="#" target="_blank" rel="noopener"><span>Get Tickets</span></a>
+      <a class="btn btn--ghost" href="#" target="_blank" rel="noopener"><span>Get Supporter Bundle</span></a>
+    </div>
+  </div>
+  <div class="hero__scroll">Scroll</div>
+</header>
+
+<section class="stub" id="details">
+  <div class="wrap">
+    <div class="stub__inner">
+      <div class="stub__item">
+        <span class="label">Date</span>
+        <span class="value mosher decode">03.10.2026</span>
+      </div>
+      <div class="stub__item">
+        <span class="label">Doors — Close</span>
+        <span class="value mosher decode">22:00 – 06:00</span>
+      </div>
+      <div class="stub__item">
+        <span class="label">Venue</span>
+        <span class="value mosher decode fx-acid">TBA</span>
+      </div>
+      <div class="stub__item">
+        <span class="label">City</span>
+        <span class="value mosher decode">Berlin</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about reveal" id="about">
+  <div class="wrap about__inner">
+    <p class="eyebrow decode">About</p>
+    <p class="about__lead">
+      <span class="decode fx-black">PURPUR is expression.</span>
+      <span class="decode fx-thin fx-italic">PURPUR is experience.</span>
+      <span class="decode fx-regular">PURPUR is subculture.</span>
+    </p>
+    <p class="about__body">The core is you, in the most pure form that exists. As a queer culture we unfold an immersive nightlife where music, expression, performance, and play converge. PURPUR exists to make the "sub" in "culture" — creative, present, local. A space where <span class="fx-mint">pleasure, identity, and experimentation</span> can thrive.</p>
+    <p class="about__signoff">
+      <span class="decode fx-black">We are</span> <span class="decode mosher fx-acid">Purpur</span><span class="decode fx-black">.</span>
+    </p>
+  </div>
+</section>
+
+<section class="visual reveal" id="visual">
+  <video class="visual__img" autoplay muted loop playsinline poster="Media/ColorPalette_Main.jpg">
+    <source src="/Media/purpleWave1.mp4" type="video/mp4" />
+  </video>
+  <div class="visual__tear" aria-hidden="true"></div>
+  <div class="visual__word">
+    <span class="fx-line">
+      <span class="decode fx-extrabold">From</span> <span class="decode mosher fx-acid">Pur</span>
+    </span>
+    <span class="fx-line">
+      <span class="decode fx-thin fx-italic">to</span> <span class="decode mosher fx-mint">Pur.</span>
+    </span>
+  </div>
+</section>
+
+<section class="insight reveal" id="insight">
+  <div class="wrap">
+    <p class="eyebrow decode insight__eyebrow">Insight</p>
+    <div class="insight__inner">
+      <div class="insight__photo">
+        <img src="/Media/Boothbunny-edited.jpg" alt="Boothbunny &amp; Kili, creators of PURPUR" />
+      </div>
+      <div class="insight__copy">
+        <p class="insight__quote">
+        <span class="decode fx-black">&ldquo;PURPUR is the new experience born from diverse fetish communities of Berlin —</span>
+        <span class="decode fx-thin fx-italic"> a raw focus on unique analogue experiences, fetish and subculture expression.</span>
+        <span class="decode fx-regular"> A new space for everyone who wants to transform into the most unhinged version of themself.&rdquo;</span>
+      </p>
+        <p>PURPUR resembles not only a safe space for queer subcultures, but a clear statement against the rising fascist, racist, misogynist &amp; kink-shaming society. Simply said: <span class="fx-acid">we are anti-fuckface*</span> — but big supporters of consensual face fuck.</p>
+        <p class="insight__credit">— Boothbunny &amp; Kili, creators of PURPUR</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span class="marquee__group">
+      <span>We are Purpur</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>03.10.2026</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Berlin — Venue TBA</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+    </span>
+    <span class="marquee__group">
+      <span>We are Purpur</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>03.10.2026</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Berlin — Venue TBA</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+    </span>
+  </div>
+</div>
+
+<footer class="site-footer" id="footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <img src="/Media/Logo_SVG/PURPUR-Logo-PurpleWhite.svg" alt="PURPUR" />
+        <p>transform into the purest version of yourself.</p>
+      </div>
+      <div class="footer__cols">
+        <div class="footer__col">
+          <h4>Event</h4>
+          <ul>
+            <li><a href="#details">Date &amp; Place</a></li>
+            <li><a href="#" target="_blank" rel="noopener">Tickets — RA</a></li>
+            <li><a href="#" target="_blank" rel="noopener">Supporter Bundle — Boothbunny</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Follow</h4>
+          <ul>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">TikTok</a></li>
+            <li><a href="#">SoundCloud</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:info@purpur.berlin">info@purpur.berlin</a></li>
+            <li><a href="mailto:booking@purpur.berlin">booking@purpur.berlin</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2026 PURPUR. All rights reserved.</span>
+      <span><a href="/imprint.html">Imprint</a> · <a href="/privacy.html">Privacy</a></span>
+    </div>
+  </div>
+  <p class="footer__wordmark">
+    <span class="decode mosher">From subcultures</span><br>
+    <span class="decode mosher fx-mint">to subcultures.</span>
+  </p>
+</footer>
+
+<script src="script.js?v=12"></script>
 </body>
 </html>
