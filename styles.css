@@ -1601,117 +1601,18 @@ body { font-weight: 300; font-size: 0.95rem; }
    Furion Light, aufgereiht an einer senkrechten Linie.
    ========================================================================== */
 
-.origin {
-  position: relative;
-  padding-block: clamp(5rem, 12vw, 9rem);
-  background:
-    radial-gradient(90% 60% at 15% 0%, rgba(157, 0, 255, .16), transparent 60%),
-    var(--black);
-}
 
-.origin__opener {
-  margin: 1.2rem 0 0;
-  font-size: clamp(2.2rem, 7.5vw, 5.4rem);
-  line-height: .92;
-  text-transform: uppercase;
-}
 
-.origin__intro {
-  margin: 1.6rem 0 0;
-  max-width: 46ch;
-  font-weight: 300;
-  font-size: clamp(.95rem, 1.7vw, 1.1rem);
-  color: rgba(243, 236, 228, .78);
-}
 
 /* Zeitachse */
-.origin__line {
-  list-style: none;
-  margin: clamp(2.5rem, 6vw, 4rem) 0 0;
-  padding: 0 0 0 clamp(1.4rem, 4vw, 2.6rem);
-  position: relative;
-  border-left: 2px solid rgba(157, 0, 255, .45);
-}
 
-.origin__step { position: relative; padding-block: 0 clamp(1.8rem, 4vw, 2.8rem); }
-.origin__step:last-child { padding-bottom: 0; }
 
-.origin__mark {
-  position: absolute;
-  left: calc(clamp(1.4rem, 4vw, 2.6rem) * -1 - 8px);
-  top: .5em;
-  width: 14px;
-  height: 14px;
-  background: var(--purpur);
-  border: 2px solid var(--black);
-  border-radius: 50%;
-  box-shadow: 0 0 0 3px rgba(157, 0, 255, .25);
-}
 
-.origin__when {
-  margin: 0 0 .4rem;
-  font-size: clamp(1.5rem, 3.6vw, 2.4rem);
-  color: var(--purpur);
-}
 
-.origin__step p {
-  margin: 0;
-  max-width: 58ch;
-  font-weight: 300;
-  font-size: clamp(.88rem, 1.5vw, 1rem);
-  line-height: 1.7;
-  color: rgba(243, 236, 228, .78);
-}
 
 /* Schluesselsatz, gross gesetzt */
-.origin__pull {
-  margin: clamp(3rem, 7vw, 5rem) 0 0;
-  max-width: 30ch;
-  font-size: clamp(1.6rem, 4.4vw, 3.1rem);
-  line-height: 1.06;
-}
-.origin__pull .fx-black { display: block; color: var(--acid); }
-.origin__pull-small {
-  display: block;
-  margin-top: 1rem;
-  max-width: 52ch;
-  font-size: clamp(.88rem, 1.5vw, 1rem);
-  font-weight: 300;
-  line-height: 1.7;
-  color: rgba(243, 236, 228, .72);
-}
 
-.origin__turn {
-  margin-top: clamp(3rem, 7vw, 5rem);
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: clamp(1rem, 3vw, 2.5rem);
-}
-.origin__turn-body {
-  margin: 0;
-  flex: 1 1 26ch;
-  max-width: 52ch;
-  font-weight: 300;
-  font-size: clamp(.88rem, 1.5vw, 1rem);
-  line-height: 1.7;
-  color: rgba(243, 236, 228, .78);
-}
-.origin__fuck {
-  margin: 0;
-  flex: 0 1 auto;
-  font-size: clamp(2.4rem, 8vw, 5.5rem);
-  line-height: .9;
-  text-transform: uppercase;
-}
 
-.origin__close {
-  margin: clamp(2.2rem, 5vw, 3.4rem) 0 0;
-  max-width: 54ch;
-  font-weight: 300;
-  font-size: clamp(.95rem, 1.7vw, 1.12rem);
-  line-height: 1.7;
-}
 
 .fx-magenta { color: var(--magenta); }
 .fx-purpur  { color: var(--purpur); font-weight: 700; }
@@ -1731,3 +1632,77 @@ body { font-weight: 300; font-size: 0.95rem; }
 /* Das Band ragt in den Hero hinein, deshalb brauchen die Schaltflaechen darunter
    mehr Abstand — sonst schiebt sich das Band darueber. */
 .hero__content { padding-bottom: clamp(150px, 19vh, 215px); }
+
+
+/* ==========================================================================
+   Origin — Bio und Vision
+   Bewusst kompakt: ein Schlagsatz, drei kurze Stationen nebeneinander statt
+   untereinander, ein Schlusssatz. Die drei Spalten sparen gegenueber der
+   frueheren Zeitachse rund die halbe Hoehe.
+   ========================================================================== */
+
+.origin {
+  position: relative;
+  padding-block: clamp(3.5rem, 8vw, 6rem);
+  background:
+    radial-gradient(80% 55% at 12% 0%, rgba(157, 0, 255, .14), transparent 62%),
+    var(--black);
+}
+
+.origin__opener {
+  margin: 1rem 0 0;
+  max-width: 22ch;
+  font-size: clamp(1.9rem, 5.2vw, 3.6rem);
+  line-height: .95;
+  text-transform: uppercase;
+}
+.origin__opener .fx-acid { display: block; }
+
+.origin__grid {
+  margin-top: clamp(2rem, 4.5vw, 3.2rem);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: clamp(1.4rem, 3vw, 2.6rem);
+}
+
+.origin__step {
+  padding-top: .9rem;
+  border-top: 2px solid rgba(157, 0, 255, .45);
+}
+
+.origin__when {
+  margin: 0 0 .45rem;
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: .78rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--purpur);
+}
+
+.origin__step p {
+  margin: 0;
+  font-weight: 300;
+  font-size: clamp(.84rem, 1.3vw, .95rem);
+  line-height: 1.65;
+  color: rgba(243, 236, 228, .76);
+}
+
+.origin__close {
+  margin: clamp(2rem, 4.5vw, 3rem) 0 0;
+  max-width: 62ch;
+  font-weight: 300;
+  font-size: clamp(.92rem, 1.6vw, 1.08rem);
+  line-height: 1.7;
+}
+
+/* "Fuck that." sitzt jetzt im Satz statt als Riesenblock daneben — der Bruch
+   wirkt so beilaeufiger und der Abschnitt bleibt ruhig. */
+.origin__no {
+  font-family: var(--font-body);
+  font-weight: 900;
+  color: var(--magenta);
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}

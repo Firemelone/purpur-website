@@ -48,17 +48,6 @@ if (nav && hero) {
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-// Hero title: periodic auto-glitch pulse, on top of the existing hover glitch
-const heroGlitchTargets = document.querySelectorAll(".hero__title .glitch");
-
-if (heroGlitchTargets.length && !prefersReducedMotion) {
-  setInterval(() => {
-    const el = heroGlitchTargets[Math.floor(Math.random() * heroGlitchTargets.length)];
-    el.classList.add("is-active");
-    setTimeout(() => el.classList.remove("is-active"), 500);
-  }, 2600);
-}
-
 // Text-decode — die Buchstaben stimmen fast sofort, aber sie zappeln noch durch
 // verschiedene GC-Furion-Schnitte, bevor sie sich setzen. Vorbild ist das
 // Announcement-Reel: ein Wort, mehrere Strichstaerken gleichzeitig.
