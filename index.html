@@ -3,35 +3,32 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>PURPUR — 03.10.2026 — Berlin</title>
-<meta name="description" content="PURPUR — transform into the purest version of yourself. 03.10.2026, 22:00–06:00, Berlin — venue TBA." />
+<title>PURPUR / 03.10.26 / Berlin</title>
+<meta name="description" content="PURPUR. A queer fetish subculture night in Berlin. 03.10.26, 22 to 06h, Nollendorfplatz. Transform into the purest version of yourself." />
 <link rel="icon" href="/Media/Logo_PNG/PURPUR-Symbol-Purple.png" />
-<link rel="stylesheet" href="styles.css?v=36" />
+<link rel="preload" href="/assets/fonts/Mosher-Regular.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/assets/fonts/GCFurion-Light.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="/styles.css?v=40" />
 </head>
 <body>
 
+<!-- Ladesequenz: erst dreht sich das Symbol einmal, dann glitcht es zum vollen Logo -->
 <div class="loader" id="loader" aria-hidden="true">
-  <div class="loader__mark">
-    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-      <polygon class="shard shard--blue" points="6,4 6,28 11,23 14.5,33.5 19.5,31.5 16,22 25,22" />
-      <polygon class="shard shard--magenta" points="6,4 6,28 11,23 14.5,33.5 19.5,31.5 16,22 25,22" />
-      <polygon class="shard shard--main" points="6,4 6,28 11,23 14.5,33.5 19.5,31.5 16,22 25,22" />
-    </svg>
+  <div class="loader__stage">
+    <img class="loader__symbol" id="loaderSymbol" src="/Media/Logo_Animated/PURPUR-Turntable_pitch-0.webp" alt="" />
+    <img class="loader__full glitch" id="loaderFull" src="/Media/Logo_SVG/PURPUR-Logo-PurpleWhite.svg" alt="" />
   </div>
-  <p class="loader__text mosher">Purpur</p>
 </div>
 
 <div class="cursor" id="cursor" aria-hidden="true">
   <svg class="cursor__svg" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-    <polygon class="shard shard--blue" points="6,4 6,28 11,23 14.5,33.5 19.5,31.5 16,22 25,22" />
-    <polygon class="shard shard--magenta" points="6,4 6,28 11,23 14.5,33.5 19.5,31.5 16,22 25,22" />
-    <polygon class="shard shard--main" points="6,4 6,28 11,23 14.5,33.5 19.5,31.5 16,22 25,22" />
+    <polygon class="cursor__sticker" points="20.00,1.00 22.16,4.95 25.35,1.77 26.31,6.17 30.27,4.02 29.95,8.51 34.36,7.56 32.79,11.78 37.28,12.11 34.58,15.72 38.81,17.30 35.20,20.00 38.81,22.70 34.58,24.28 37.28,27.89 32.79,28.22 34.36,32.44 29.95,31.49 30.27,35.98 26.31,33.83 25.35,38.23 22.16,35.05 20.00,39.00 17.84,35.05 14.65,38.23 13.69,33.83 9.73,35.98 10.05,31.49 5.64,32.44 7.21,28.22 2.72,27.89 5.42,24.28 1.19,22.70 4.80,20.00 1.19,17.30 5.42,15.72 2.72,12.11 7.21,11.78 5.64,7.56 10.05,8.51 9.73,4.02 13.69,6.17 14.65,1.77 17.84,4.95" />
   </svg>
 </div>
 
 <nav class="nav">
   <a class="nav__brand" href="#top">
-    <img src="/Media/Logo_Animated/PURPUR-Turntable_pitch-0.webp" width="800" height="800" alt="PURPUR spinning symbol" />
+    <img src="/Media/Logo_Animated/PURPUR-Turntable_pitch-minus30.webp" width="800" height="800" alt="PURPUR spinning symbol" />
   </a>
   <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
   <ul class="nav__links" id="navLinks">
@@ -64,40 +61,20 @@
     <div class="hero__tear" aria-hidden="true"></div>
   </div>
   <div class="hero__content">
-    <p class="hero__eyebrow">We are</p>
     <h1 class="hero__title">
       <img class="hero__logo glitch" id="titleMain" src="/Media/Logo_SVG/PURPUR-Logo-PurpleWhite.svg" alt="PURPUR" />
     </h1>
-    <p class="hero__tagline">transform into the <em>purest</em> version of yourself.</p>
+    <p class="hero__tagline">transform into the purest version of yourself.</p>
     <div class="hero__actions">
-      <a class="btn" href="https://ra.co/events/2518411" target="_blank" rel="noopener"><span>Get Tickets</span></a>
-      <a class="btn btn--ghost" href="https://boothbunny.net/shop/" target="_blank" rel="noopener"><span>Get Supporter Bundle</span></a>
+      <a class="btn" href="https://ra.co/events/2518411" target="_blank" rel="noopener"><span>Tickets</span></a>
+      <a class="btn btn--ghost" href="https://boothbunny.net/shop/" target="_blank" rel="noopener"><span>Supporter Bundle</span></a>
     </div>
   </div>
-  <div class="hero__scroll">Scroll</div>
 </header>
 
-<section class="stub" id="details">
-  <div class="wrap">
-    <div class="stub__inner">
-      <div class="stub__item">
-        <span class="label">Date</span>
-        <span class="value mosher decode">03.10.2026</span>
-      </div>
-      <div class="stub__item">
-        <span class="label">Doors — Close</span>
-        <span class="value mosher decode">22:00 – 06:00</span>
-      </div>
-      <div class="stub__item">
-        <span class="label">Venue</span>
-        <span class="value mosher decode fx-acid">TBA</span>
-      </div>
-      <div class="stub__item">
-        <span class="label">City</span>
-        <span class="value mosher decode">Berlin</span>
-      </div>
-    </div>
-  </div>
+<!-- Absperrband: schraeg ueber die Seite, laeuft von rechts nach links durch -->
+<section class="tape" id="details" aria-label="Event date and countdown">
+  <div class="tape__track" id="tapeTrack"></div>
 </section>
 
 <section class="about reveal" id="about">
@@ -108,7 +85,7 @@
       <span class="decode fx-thin fx-italic">PURPUR is experience.</span>
       <span class="decode fx-regular">PURPUR is subculture.</span>
     </p>
-    <p class="about__body">The core is you, in the most pure form that exists. As a queer culture we unfold an immersive nightlife where music, expression, performance, and play converge. PURPUR exists to make the "sub" in "culture" — creative, present, local. A space where <span class="fx-mint">pleasure, identity, and experimentation</span> can thrive.</p>
+    <p class="about__body">The core is you, in the most pure form that exists. As a queer culture we unfold an immersive nightlife where music, expression, performance, and play converge. PURPUR exists to make the <span class="fx-acid">&lsquo;sub&rsquo;</span> in <span class="fx-mint">&lsquo;culture&rsquo;</span>. Make it creative, present local artists, and emerge spaces where pleasure, identity, and experimentation can thrive.</p>
     <p class="about__signoff">
       <span class="decode fx-black">We are</span> <span class="decode mosher fx-acid">Purpur</span><span class="decode fx-black">.</span>
     </p>
@@ -122,10 +99,10 @@
   <div class="visual__tear" aria-hidden="true"></div>
   <div class="visual__word">
     <span class="fx-line">
-      <span class="decode fx-extrabold">From</span> <span class="decode mosher fx-acid">Pur</span>
+      <span class="decode fx-extrabold">from fetish</span> <span class="decode mosher fx-acid">to fuckers.</span>
     </span>
     <span class="fx-line">
-      <span class="decode fx-thin fx-italic">to</span> <span class="decode mosher fx-mint">Pur.</span>
+      <span class="decode fx-thin fx-italic">from hounds</span> <span class="decode mosher fx-mint">to hoes.</span>
     </span>
   </div>
 </section>
@@ -135,16 +112,16 @@
     <p class="eyebrow decode insight__eyebrow">Insight</p>
     <div class="insight__inner">
       <div class="insight__photo">
-        <img src="/Media/Boothbunny-edited.webp" alt="Boothbunny &amp; Kili, creators of PURPUR" width="733" height="873" loading="lazy" decoding="async" />
+        <img src="/Media/Boothbunny-edited.webp" alt="Boothbunny and Kili, creators of PURPUR" width="733" height="873" loading="lazy" decoding="async" />
       </div>
       <div class="insight__copy">
         <p class="insight__quote">
-        <span class="decode fx-black">&ldquo;PURPUR is the new experience born from diverse fetish communities of Berlin —</span>
-        <span class="decode fx-thin fx-italic"> a raw focus on unique analogue experiences, fetish and subculture expression.</span>
-        <span class="decode fx-regular"> A new space for everyone who wants to transform into the most unhinged version of themself.&rdquo;</span>
-      </p>
-        <p>PURPUR resembles not only a safe space for queer subcultures, but a clear statement against the rising fascist, racist, misogynist &amp; kink-shaming society. Simply said: <span class="fx-acid">we are anti-fuckface*</span> — but big supporters of consensual face fuck.</p>
-        <p class="insight__credit">— Boothbunny &amp; Kili, creators of PURPUR</p>
+          <span class="decode fx-black">&ldquo;PURPUR, the new experience born from diverse fetish communities of Berlin, brings their signature queer, safe-space-first events to the scenes.</span>
+          <span class="decode fx-thin fx-italic"> A raw focus on unique analogue experiences, fetish and subculture expression</span>
+          <span class="decode fx-regular"> creates a new space for everyone who wants to transform into the most unhinged version of themself.&rdquo;</span>
+        </p>
+        <p>PURPUR resembles not only a safe space for queer subcultures, but also a clear statement against the rising fascist, racist, misogynist &amp; kink-shaming society. Simply said: <span class="fx-acid">we are anti-fuckface*</span>, but big supporters on consensual face fuck!</p>
+        <p class="insight__credit">Boothbunny &amp; Kili, creators of PURPUR</p>
       </div>
     </div>
   </div>
@@ -155,17 +132,17 @@
     <span class="marquee__group">
       <span>We are Purpur</span>
       <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>03.10.2026</span>
+      <span>Queer fetish subculture</span>
       <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Berlin — Venue TBA</span>
+      <span>Nollendorfplatz, Berlin</span>
       <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
     </span>
     <span class="marquee__group">
       <span>We are Purpur</span>
       <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>03.10.2026</span>
+      <span>Queer fetish subculture</span>
       <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Berlin — Venue TBA</span>
+      <span>Nollendorfplatz, Berlin</span>
       <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
     </span>
   </div>
@@ -182,15 +159,17 @@
         <div class="footer__col">
           <h4>Event</h4>
           <ul>
-            <li><a href="#details">Date &amp; Place</a></li>
-            <li><a href="https://ra.co/events/2518411" target="_blank" rel="noopener">Tickets — RA</a></li>
-            <li><a href="https://boothbunny.net/shop/" target="_blank" rel="noopener">Supporter Bundle — Boothbunny</a></li>
+            <li><a href="#details">Date &amp; Time</a></li>
+            <li><a href="https://ra.co/events/2518411" target="_blank" rel="noopener">Tickets / RA</a></li>
+            <li><a href="https://boothbunny.net/shop/" target="_blank" rel="noopener">Supporter Bundle / Boothbunny</a></li>
           </ul>
         </div>
         <div class="footer__col">
-          <h4>Follow</h4>
+          <h4>Community</h4>
           <ul>
             <li><a href="https://instagram.com/purpur.berlin" target="_blank" rel="noopener">Instagram</a></li>
+            <li><a href="https://t.me/purpurberlin" target="_blank" rel="noopener">Telegram</a></li>
+            <li><a href="/community.html">Community tickets</a></li>
           </ul>
         </div>
         <div class="footer__col">
@@ -203,16 +182,16 @@
       </div>
     </div>
     <div class="footer__bottom">
-      <span>© 2026 PURPUR. All rights reserved.</span>
+      <span>&copy; 2026 PURPUR. All rights reserved.</span>
       <span><a href="/imprint.html">Imprint</a> · <a href="/privacy.html">Privacy</a></span>
     </div>
   </div>
   <p class="footer__wordmark">
     <span class="decode mosher">From subcultures</span><br>
-    <span class="decode mosher fx-mint">to subcultures.</span>
+    <span class="decode mosher fx-mint">to domcultures.</span>
   </p>
 </footer>
 
-<script src="script.js?v=12"></script>
+<script src="/script.js?v=20"></script>
 </body>
 </html>

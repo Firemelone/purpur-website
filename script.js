@@ -59,46 +59,84 @@ if (heroGlitchTargets.length && !prefersReducedMotion) {
   }, 2600);
 }
 
-// Text-decode scramble — headings glitch through random characters before
-// resolving to their real text, replaying every time they scroll into view
+// Text-decode — die Buchstaben stimmen fast sofort, aber sie zappeln noch durch
+// verschiedene GC-Furion-Schnitte, bevor sie sich setzen. Vorbild ist das
+// Announcement-Reel: ein Wort, mehrere Strichstaerken gleichzeitig.
 const DECODE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!<>-_/\\[]{}=+*^?#";
+const WOBBLE_CLASSES = [
+  "wb-thin", "wb-extralight", "wb-light", "wb-regular",
+  "wb-medium", "wb-semibold", "wb-bold", "wb-extrabold", "wb-black",
+  "wb-thin wb-oblique", "wb-light wb-oblique", "wb-black wb-oblique",
+];
+const TINT_CLASSES = ["", "", "", "wb-acid", "wb-mint", "wb-magenta"];
+
+const pick = (arr) => arr[(Math.random() * arr.length) | 0];
+
+// Baut den Text als einzelne <span> auf, damit jeder Buchstabe seinen eigenen
+// Schnitt bekommen kann. Leerzeichen bleiben echte Leerzeichen.
+function spanify(el, text) {
+  el.textContent = "";
+  const frag = document.createDocumentFragment();
+  const spans = [];
+  for (const ch of text) {
+    if (ch === " ") {
+      frag.appendChild(document.createTextNode(" "));
+      spans.push(null);
+      continue;
+    }
+    const s = document.createElement("span");
+    s.className = "wb";
+    s.textContent = ch;
+    frag.appendChild(s);
+    spans.push(s);
+  }
+  el.appendChild(frag);
+  return spans;
+}
 
 function runDecode(el) {
   if (el.dataset.decoding === "true") return;
   if (!el.dataset.decodeText) el.dataset.decodeText = el.textContent;
   const finalText = el.dataset.decodeText;
   const length = finalText.length;
-  // fixed short duration regardless of text length — characters resolve in a
-  // shuffled (not left-to-right) order so long headings still finish quickly
-  const totalFrames = 26;
   el.dataset.decoding = "true";
 
+  const spans = spanify(el, finalText);
+
+  // Reihenfolge, in der die Zeichen ihren echten Wert bekommen — gemischt,
+  // damit auch lange Zeilen schnell fertig sind statt von links nach rechts.
   const order = Array.from({ length }, (_, i) => i);
   for (let i = order.length - 1; i > 0; i--) {
     const j = (Math.random() * (i + 1)) | 0;
     [order[i], order[j]] = [order[j], order[i]];
   }
-  const revealedAtFrame = new Array(length);
-  order.forEach((charIndex, orderPos) => {
-    revealedAtFrame[charIndex] = Math.floor((orderPos / length) * totalFrames);
+  const SCRAMBLE_FRAMES = 12;   // falsche Zeichen
+  const WOBBLE_FRAMES = 10;     // richtige Zeichen, noch falscher Schnitt
+  const revealAt = new Array(length);
+  order.forEach((idx, pos) => {
+    revealAt[idx] = Math.floor((pos / length) * SCRAMBLE_FRAMES);
   });
 
   let frame = 0;
   clearInterval(el._decodeTimer);
   el._decodeTimer = setInterval(() => {
-    let out = "";
     for (let i = 0; i < length; i++) {
-      const ch = finalText[i];
-      out += ch === " " || frame >= revealedAtFrame[i] ? ch : DECODE_CHARS[(Math.random() * DECODE_CHARS.length) | 0];
+      const s = spans[i];
+      if (!s) continue;
+      const settled = frame >= revealAt[i];
+      s.textContent = settled ? finalText[i] : pick(DECODE_CHARS);
+      // Der Schnitt zappelt noch weiter, nachdem das Zeichen richtig ist,
+      // und beruhigt sich erst gegen Ende.
+      const stillWobbling = frame < revealAt[i] + WOBBLE_FRAMES;
+      s.className = stillWobbling ? "wb " + pick(WOBBLE_CLASSES) + " " + pick(TINT_CLASSES) : "wb";
     }
-    el.textContent = out;
     frame++;
-    if (frame > totalFrames) {
-      el.textContent = finalText;
+    if (frame > SCRAMBLE_FRAMES + WOBBLE_FRAMES) {
       clearInterval(el._decodeTimer);
+      el.textContent = finalText;
       el.dataset.decoding = "false";
     }
-  }, 28);
+  }, 45);
 }
 
 const decodeTargets = document.querySelectorAll(".decode");
@@ -135,16 +173,28 @@ if (cursor && supportsFineCursor) {
   let y = targetY;
   let hasMoved = false;
 
+  // Der Sticker sitzt direkt unter dem Zeiger. Vorher zog er mit Faktor 0.28
+  // hinterher, was sich traege anfuehlte; jetzt folgt er praktisch sofort und
+  // behaelt nur einen Hauch Nachlauf, damit die Bewegung nicht hart wirkt.
+  let pending = false;
+
   const positionCursor = () => {
-    x += (targetX - x) * 0.28;
-    y += (targetY - y) * 0.28;
-    // offset so the shard's drawn tip (not the box center) sits at the
-    // actual pointer position — matches the transform-origin set in CSS
-    cursor.style.transform = `translate(${x}px, ${y}px) translate(-15%, -10%)`;
+    pending = false;
+    x += (targetX - x) * 0.85;
+    y += (targetY - y) * 0.85;
+    // translate3d haelt die Ebene auf der GPU, statt bei jedem Frame neu
+    // zu rastern
+    cursor.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+    if (Math.abs(targetX - x) > 0.1 || Math.abs(targetY - y) > 0.1) request();
+  };
+
+  const request = () => {
+    if (pending) return;
+    pending = true;
     requestAnimationFrame(positionCursor);
   };
-  requestAnimationFrame(positionCursor);
 
+  // Nur bei tatsaechlicher Bewegung rechnen, nicht in einer Dauerschleife
   window.addEventListener("mousemove", (e) => {
     targetX = e.clientX;
     targetY = e.clientY;
@@ -153,7 +203,8 @@ if (cursor && supportsFineCursor) {
       y = targetY;
       hasMoved = true;
     }
-  });
+    request();
+  }, { passive: true });
 
   const interactiveSelector =
     'a, button, .btn, input, textarea, select, [role="button"], .nav__toggle, .card, .stampframe';
@@ -169,33 +220,151 @@ if (cursor && supportsFineCursor) {
   window.addEventListener("blur", () => cursor.classList.remove("is-active", "is-hover"));
 }
 
-// Page loader — real bunny while fonts/media load, minimum display time to avoid flicker
+// Ladesequenz: das Symbol dreht sich einmal, danach glitcht es zum vollen
+// Logo. Erst wenn beides durch ist (und die Seite geladen), faellt der
+// Vorhang. Dauer der Drehung steckt in --loader-spin, damit CSS und JS nicht
+// auseinanderlaufen.
 const loader = document.getElementById("loader");
 
 if (loader) {
   document.body.classList.add("is-loading");
-  const loadStart = performance.now();
-  const MIN_VISIBLE_MS = 600;
-  const FALLBACK_MS = 4000;
+  const SPIN_MS = 1100;   // Symbol dreht sich
+  const GLITCH_MS = 700;  // Uebergang zum vollen Logo
+  const FALLBACK_MS = 5000;
 
   const fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
   const windowLoaded = new Promise((resolve) => {
-    if (document.readyState === "complete") {
-      resolve();
-    } else {
-      window.addEventListener("load", resolve, { once: true });
-    }
+    if (document.readyState === "complete") resolve();
+    else window.addEventListener("load", resolve, { once: true });
   });
+
+  // Choreografie laeuft unabhaengig davon, wie schnell die Medien kommen
+  const choreography = new Promise((resolve) => {
+    setTimeout(() => {
+      loader.classList.add("is-glitching");
+      setTimeout(resolve, GLITCH_MS);
+    }, SPIN_MS);
+  });
+
   const fallback = new Promise((resolve) => setTimeout(resolve, FALLBACK_MS));
 
-  Promise.race([Promise.all([fontsReady, windowLoaded]), fallback]).then(() => {
-    const elapsed = performance.now() - loadStart;
-    const wait = Math.max(0, MIN_VISIBLE_MS - elapsed);
-    setTimeout(() => {
-      loader.classList.add("is-hidden");
-      document.body.classList.remove("is-loading");
-      if (cursor) cursor.classList.remove("is-loading");
-      loader.addEventListener("transitionend", () => loader.remove(), { once: true });
-    }, wait);
+  Promise.race([
+    Promise.all([fontsReady, windowLoaded, choreography]),
+    fallback,
+  ]).then(() => {
+    loader.classList.add("is-hidden");
+    document.body.classList.remove("is-loading");
+    if (typeof cursor !== "undefined" && cursor) cursor.classList.remove("is-loading");
+    loader.addEventListener("transitionend", () => loader.remove(), { once: true });
+    setTimeout(() => loader.remove(), 1200);
   });
+}
+
+// ---------------------------------------------------------------------------
+// Absperrband mit Countdown
+// ---------------------------------------------------------------------------
+// Das Band laeuft endlos von rechts nach links. Damit dabei keine Luecke
+// entsteht, wird derselbe Block zweimal nebeneinander gelegt und die Spur um
+// exakt die halbe Breite verschoben.
+
+const EVENT_START = new Date("2026-10-03T22:00:00+02:00");
+const tapeTrack = document.getElementById("tapeTrack");
+
+function tapeGroup() {
+  return `
+    <span class="tape__group">
+      <span class="tape__item mosher">03-10-26</span>
+      <img class="tape__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span class="tape__item mosher">22-06h</span>
+      <img class="tape__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span class="tape__item tape__count">
+        <span class="cd" data-unit="d"></span><span class="cd-sep">:</span><span class="cd" data-unit="h"></span><span class="cd-sep">:</span><span class="cd" data-unit="m"></span>
+      </span>
+      <img class="tape__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+    </span>`;
+}
+
+if (tapeTrack) {
+  tapeTrack.innerHTML = tapeGroup() + tapeGroup();
+
+  // Jede Ziffer bekommt ihr eigenes Feld, damit nur die gewechselte Stelle
+  // durchdreht und nicht die ganze Zahl.
+  function renderDigits(host, value, pad) {
+    const str = String(value).padStart(pad, "0");
+    if (host.childElementCount !== str.length) {
+      host.textContent = "";
+      for (const ch of str) {
+        const s = document.createElement("span");
+        s.className = "cd-d";
+        s.textContent = ch;
+        s.dataset.v = ch;
+        host.appendChild(s);
+      }
+      return;
+    }
+    [...host.children].forEach((el, i) => {
+      if (el.dataset.v !== str[i]) rollDigit(el, str[i]);
+    });
+  }
+
+  // Wechselt eine Ziffer: erst ein paar zufaellige Zahlen, dann die richtige,
+  // die aber noch dreimal den Schnitt wechselt, bevor sie stehen bleibt.
+  function rollDigit(el, target) {
+    el.dataset.v = target;
+    clearInterval(el._t);
+    let step = 0;
+    const SCRAMBLE = 5;
+    const WOBBLE = 3;
+    el._t = setInterval(() => {
+      if (step < SCRAMBLE) {
+        el.textContent = String((Math.random() * 10) | 0);
+        el.className = "cd-d " + pick(WOBBLE_CLASSES);
+      } else if (step < SCRAMBLE + WOBBLE) {
+        el.textContent = target;
+        el.className = "cd-d " + pick(WOBBLE_CLASSES);
+      } else {
+        el.textContent = target;
+        el.className = "cd-d";
+        clearInterval(el._t);
+      }
+      step++;
+    }, 55);
+  }
+
+  function tickCountdown() {
+    const diff = EVENT_START - Date.now();
+    const total = Math.max(0, Math.floor(diff / 1000));
+    const d = Math.floor(total / 86400);
+    const h = Math.floor((total % 86400) / 3600);
+    const m = Math.floor((total % 3600) / 60);
+    document.querySelectorAll('.cd[data-unit="d"]').forEach((el) => renderDigits(el, d, 3));
+    document.querySelectorAll('.cd[data-unit="h"]').forEach((el) => renderDigits(el, h, 2));
+    document.querySelectorAll('.cd[data-unit="m"]').forEach((el) => renderDigits(el, m, 2));
+  }
+
+  tickCountdown();
+  setInterval(tickCountdown, 1000);
+}
+
+
+// Das Hintergrundvideo laedt bewusst nur Metadaten, damit es beim ersten
+// Seitenaufbau keine 355 KB mitzieht. Autoplay springt dann aber nicht von
+// allein an — also starten wir es, sobald der Abschnitt in Sicht kommt, und
+// halten es an, wenn er wieder verschwindet.
+const bgVideo = document.querySelector(".visual__img");
+
+if (bgVideo) {
+  const videoObserver = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        if (bgVideo.preload !== "auto") bgVideo.preload = "auto";
+        const p = bgVideo.play();
+        if (p && p.catch) p.catch(() => {});
+      } else {
+        bgVideo.pause();
+      }
+    },
+    { threshold: 0.15 }
+  );
+  videoObserver.observe(bgVideo);
 }
