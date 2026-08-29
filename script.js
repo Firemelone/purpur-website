@@ -217,8 +217,8 @@ const loader = document.getElementById("loader");
 
 if (loader) {
   document.body.classList.add("is-loading");
-  const SPIN_MS = 1100;   // Symbol dreht sich
-  const GLITCH_MS = 700;  // Uebergang zum vollen Logo
+  const SPIN_MS = 700;    // Symbol dreht sich
+  const GLITCH_MS = 500;  // Uebergang zum vollen Logo
   const FALLBACK_MS = 5000;
 
   const fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
@@ -258,19 +258,16 @@ if (loader) {
 // schon wieder dastehen. Wie viele Wiederholungen das sind, haengt von der
 // Fensterbreite ab, also wird eine Gruppe gemessen und dann aufgefuellt.
 
-const EVENT_START = new Date("2026-10-03T22:00:00+02:00");
 const tapeTrack = document.getElementById("tapeTrack");
 
 function tapeGroup() {
   return `
     <span class="tape__group">
-      <span class="tape__date mosher">03-10-26</span>
+      <span class="tape__item">03-10-26</span>
       <img class="tape__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
       <span class="tape__item">22-06h</span>
       <img class="tape__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span class="tape__item tape__count">
-        <span class="cd" data-unit="d"></span><span class="cd-sep">:</span><span class="cd" data-unit="h"></span><span class="cd-sep">:</span><span class="cd" data-unit="m"></span>
-      </span>
+      <span class="tape__item">Nollendorfplatz</span>
       <img class="tape__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
     </span>`;
 }
@@ -287,71 +284,13 @@ if (tapeTrack) {
     tapeTrack.innerHTML = tapeGroup().repeat(perHalf * 2);
   }
 
-  // Jede Ziffer bekommt ihr eigenes Feld, damit nur die gewechselte Stelle
-  // durchdreht und nicht die ganze Zahl.
-  function renderDigits(host, value, pad) {
-    const str = String(value).padStart(pad, "0");
-    if (host.childElementCount !== str.length) {
-      host.textContent = "";
-      for (const ch of str) {
-        const s = document.createElement("span");
-        s.className = "cd-d";
-        s.textContent = ch;
-        s.dataset.v = ch;
-        host.appendChild(s);
-      }
-      return;
-    }
-    [...host.children].forEach((el, i) => {
-      if (el.dataset.v !== str[i]) rollDigit(el, str[i]);
-    });
-  }
-
-  // Wechselt eine Ziffer: erst ein paar zufaellige Zahlen, dann die richtige,
-  // die aber noch dreimal den Schnitt wechselt, bevor sie stehen bleibt.
-  function rollDigit(el, target) {
-    el.dataset.v = target;
-    clearInterval(el._t);
-    let step = 0;
-    const SCRAMBLE = 5;
-    const WOBBLE = 3;
-    el._t = setInterval(() => {
-      if (step < SCRAMBLE) {
-        el.textContent = String((Math.random() * 10) | 0);
-        el.className = "cd-d " + pick(WOBBLE_CLASSES);
-      } else if (step < SCRAMBLE + WOBBLE) {
-        el.textContent = target;
-        el.className = "cd-d " + pick(WOBBLE_CLASSES);
-      } else {
-        el.textContent = target;
-        el.className = "cd-d";
-        clearInterval(el._t);
-      }
-      step++;
-    }, 55);
-  }
-
-  function tickCountdown() {
-    const total = Math.max(0, Math.floor((EVENT_START - Date.now()) / 1000));
-    const d = Math.floor(total / 86400);
-    const h = Math.floor((total % 86400) / 3600);
-    const m = Math.floor((total % 3600) / 60);
-    // Tage zweistellig — dreistellig war eine Null zu viel
-    document.querySelectorAll('.cd[data-unit="d"]').forEach((el) => renderDigits(el, d, 2));
-    document.querySelectorAll('.cd[data-unit="h"]').forEach((el) => renderDigits(el, h, 2));
-    document.querySelectorAll('.cd[data-unit="m"]').forEach((el) => renderDigits(el, m, 2));
-  }
-
   fillTape();
-  tickCountdown();
-  setInterval(tickCountdown, 1000);
 
   let resizeTimer;
   window.addEventListener("resize", () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
       fillTape();
-      tickCountdown();
     }, 200);
   });
 }
