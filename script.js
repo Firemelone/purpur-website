@@ -264,8 +264,10 @@ if (loader) {
 // Absperrband mit Countdown
 // ---------------------------------------------------------------------------
 // Das Band laeuft endlos von rechts nach links. Damit dabei keine Luecke
-// entsteht, wird derselbe Block zweimal nebeneinander gelegt und die Spur um
-// exakt die halbe Breite verschoben.
+// entsteht, muss die Spur mindestens doppelt so breit sein wie der Bildschirm:
+// verschoben wird um genau die Haelfte, und was links herauslaeuft, muss rechts
+// schon wieder dastehen. Wie viele Wiederholungen das sind, haengt von der
+// Fensterbreite ab, also wird eine Gruppe gemessen und dann aufgefuellt.
 
 const EVENT_START = new Date("2026-10-03T22:00:00+02:00");
 const tapeTrack = document.getElementById("tapeTrack");
@@ -273,9 +275,9 @@ const tapeTrack = document.getElementById("tapeTrack");
 function tapeGroup() {
   return `
     <span class="tape__group">
-      <span class="tape__item mosher">03-10-26</span>
+      <span class="tape__date mosher">03-10-26</span>
       <img class="tape__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span class="tape__item mosher">22-06h</span>
+      <span class="tape__item">22-06h</span>
       <img class="tape__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
       <span class="tape__item tape__count">
         <span class="cd" data-unit="d"></span><span class="cd-sep">:</span><span class="cd" data-unit="h"></span><span class="cd-sep">:</span><span class="cd" data-unit="m"></span>
@@ -285,7 +287,16 @@ function tapeGroup() {
 }
 
 if (tapeTrack) {
-  tapeTrack.innerHTML = tapeGroup() + tapeGroup();
+  function fillTape() {
+    tapeTrack.innerHTML = tapeGroup();
+    const one = tapeTrack.firstElementChild.getBoundingClientRect().width;
+    if (!one) return;
+    // Eine Haelfte der Spur muss den Bildschirm ueberdecken, sonst klafft beim
+    // Umbruch eine Luecke. Das Band steht schraeg und ist dadurch breiter als
+    // das Fenster, deshalb grosszuegig aufrunden.
+    const perHalf = Math.max(2, Math.ceil((window.innerWidth * 1.35) / one));
+    tapeTrack.innerHTML = tapeGroup().repeat(perHalf * 2);
+  }
 
   // Jede Ziffer bekommt ihr eigenes Feld, damit nur die gewechselte Stelle
   // durchdreht und nicht die ganze Zahl.
@@ -332,20 +343,29 @@ if (tapeTrack) {
   }
 
   function tickCountdown() {
-    const diff = EVENT_START - Date.now();
-    const total = Math.max(0, Math.floor(diff / 1000));
+    const total = Math.max(0, Math.floor((EVENT_START - Date.now()) / 1000));
     const d = Math.floor(total / 86400);
     const h = Math.floor((total % 86400) / 3600);
     const m = Math.floor((total % 3600) / 60);
-    document.querySelectorAll('.cd[data-unit="d"]').forEach((el) => renderDigits(el, d, 3));
+    // Tage zweistellig — dreistellig war eine Null zu viel
+    document.querySelectorAll('.cd[data-unit="d"]').forEach((el) => renderDigits(el, d, 2));
     document.querySelectorAll('.cd[data-unit="h"]').forEach((el) => renderDigits(el, h, 2));
     document.querySelectorAll('.cd[data-unit="m"]').forEach((el) => renderDigits(el, m, 2));
   }
 
+  fillTape();
   tickCountdown();
   setInterval(tickCountdown, 1000);
-}
 
+  let resizeTimer;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      fillTape();
+      tickCountdown();
+    }, 200);
+  });
+}
 
 // Das Hintergrundvideo laedt bewusst nur Metadaten, damit es beim ersten
 // Seitenaufbau keine 355 KB mitzieht. Autoplay springt dann aber nicht von

@@ -293,14 +293,23 @@ img.glitch {
   display: inline-block;
 }
 @media (prefers-reduced-motion: no-preference) {
-  img.glitch:hover,
+  /* Beim Ueberfahren nur ein Farbversatz, ohne Zerschneiden und ohne
+     Dauerschleife — sonst zerfaellt das Logo, solange die Maus darauf steht. */
+  img.glitch:hover {
+    filter:
+      drop-shadow(4px 0 var(--magenta))
+      drop-shadow(-4px 0 var(--blue))
+      contrast(1.12);
+  }
+  /* Der automatische Puls darf kraeftiger sein, er dauert nur eine halbe
+     Sekunde und laeuft genau einmal. */
   img.glitch.is-active {
     filter:
       drop-shadow(7px 0 var(--magenta))
       drop-shadow(-7px 0 var(--blue))
       drop-shadow(0 -5px var(--acid))
       contrast(1.25);
-    animation: glitch-img-strong 0.5s steps(3, end) infinite;
+    animation: glitch-img-strong 0.5s steps(3, end) 1;
   }
 }
 @keyframes glitch-img-strong {
@@ -1353,71 +1362,20 @@ body.is-loading { overflow: hidden; }
    halbe Breite, dadurch entsteht keine Luecke beim Umbruch.
    ========================================================================== */
 
-.tape {
-  position: relative;
-  z-index: 3;
-  margin-block: clamp(3rem, 9vw, 6rem);
-  padding-block: .9rem;
-  background: var(--purpur);
-  color: var(--black);
-  border-block: 3px solid var(--black);
-  transform: rotate(-3.2deg) scale(1.06);
-  overflow: hidden;
-  white-space: nowrap;
-}
 
 /* Zweites Band als Gegenschraege dahinter, das erzeugt die Kreuzung, die man
    von echten Absperrbaendern kennt */
-.tape::before {
-  content: "";
-  position: absolute;
-  inset: -40% 0;
-  background: repeating-linear-gradient(
-    -45deg,
-    transparent 0 22px,
-    rgba(10, 10, 10, .14) 22px 44px
-  );
-  pointer-events: none;
-}
 
-.tape__track {
-  display: inline-flex;
-  animation: tape-run 26s linear infinite;
-  will-change: transform;
-}
 
-@keyframes tape-run {
-  from { transform: translate3d(0, 0, 0); }
-  to   { transform: translate3d(-50%, 0, 0); }
-}
 
-.tape__group {
-  display: inline-flex;
-  align-items: center;
-  gap: clamp(1.2rem, 3vw, 2.4rem);
-  padding-right: clamp(1.2rem, 3vw, 2.4rem);
-}
 
-.tape__item {
-  font-size: clamp(1.1rem, 2.6vw, 1.9rem);
-  letter-spacing: .06em;
-  line-height: 1;
-}
 
-.tape__icon { width: clamp(14px, 2vw, 22px); height: auto; filter: brightness(0); }
 
-.tape__count {
-  font-family: var(--font-body);
-  font-weight: 800;
-  font-variant-numeric: tabular-nums;
-}
 .cd, .cd-d { display: inline-block; font-variant-numeric: tabular-nums; }
 .cd-d { min-width: .62em; text-align: center; }
 .cd-sep { opacity: .55; padding-inline: .12em; }
 
 @media (prefers-reduced-motion: reduce) {
-  .tape__track { animation: none; }
-  .tape { transform: none; }
 }
 
 /* ==========================================================================
@@ -1427,7 +1385,11 @@ body.is-loading { overflow: hidden; }
    eines Wortes mehrere Strichstaerken nebeneinander stehen.
    ========================================================================== */
 
-.wb { display: inline-block; transition: none; }
+/* Bewusst inline und nicht inline-block: als inline-block duerfte der Browser
+   zwischen JEDEM Buchstaben umbrechen, dann landet etwa ein einzelnes Komma
+   allein auf der naechsten Zeile. Schnitt, Neigung und Farbe wirken auf inline
+   genauso. */
+.wb { display: inline; transition: none; }
 .wb-thin       { font-weight: 100; }
 .wb-extralight { font-weight: 200; }
 .wb-light      { font-weight: 300; }
@@ -1539,3 +1501,233 @@ body { font-weight: 300; font-size: 0.95rem; }
 
 .legal__cta { margin-top: 2rem; }
 .legal__cta .btn { color: var(--black); }
+
+/* ==========================================================================
+   Absperrband mit Countdown
+   Liegt bewusst UEBER der Kante zwischen Diashow und naechstem Abschnitt,
+   nicht als eigener schwarzer Streifen dazwischen. Deshalb negative
+   Aussenabstaende und ein eigener Stapelplatz.
+   ========================================================================== */
+
+.tape {
+  position: relative;
+  z-index: 5;
+  /* zieht das Band ueber die Kante der Diashow und in den Folgeabschnitt */
+  margin-block: clamp(-5rem, -7vw, -3.5rem);
+  padding-block: clamp(1.1rem, 2.6vw, 2rem);
+  background: var(--purpur);
+  color: var(--black);
+  border-block: 4px solid var(--black);
+  transform: rotate(-3.4deg) scale(1.08);
+  overflow: hidden;
+  white-space: nowrap;
+  box-shadow: 0 0 60px rgba(157, 0, 255, .45);
+}
+
+.tape::before {
+  content: "";
+  position: absolute;
+  inset: -40% 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent 0 26px,
+    rgba(10, 10, 10, .16) 26px 52px
+  );
+  pointer-events: none;
+}
+
+.tape__track {
+  display: inline-flex;
+  align-items: center;
+  animation: tape-run 34s linear infinite;
+  will-change: transform;
+}
+
+@keyframes tape-run {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+.tape__group {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(1.4rem, 3.2vw, 2.8rem);
+  padding-right: clamp(1.4rem, 3.2vw, 2.8rem);
+}
+
+/* Datum steht in Mosher und traegt den Abschnitt, alles andere in Furion */
+.tape__date {
+  font-size: clamp(1.9rem, 4.4vw, 3.4rem);
+  letter-spacing: .02em;
+  line-height: 1;
+}
+
+.tape__item {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: clamp(1.3rem, 3vw, 2.3rem);
+  letter-spacing: .05em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.tape__count {
+  color: var(--magenta);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.cd, .cd-d { display: inline-block; font-variant-numeric: tabular-nums; }
+.cd-d { min-width: .62em; text-align: center; }
+.cd-sep { opacity: .6; padding-inline: .1em; }
+
+/* Die Symbole brauchen festen Platz, sonst schieben sie sich in die Ziffern */
+.tape__icon {
+  flex: 0 0 auto;
+  width: clamp(20px, 2.6vw, 34px);
+  height: auto;
+  filter: brightness(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tape__track { animation: none; }
+  .tape { transform: none; margin-block: 0; }
+}
+
+/* ==========================================================================
+   Origin — Bio und Vision
+   Der laengste Text der Seite. Als Textwand waere er unlesbar, deshalb ein
+   Wechsel aus grossen Schlagsaetzen in Mosher und kleiner Erzaehlung in
+   Furion Light, aufgereiht an einer senkrechten Linie.
+   ========================================================================== */
+
+.origin {
+  position: relative;
+  padding-block: clamp(5rem, 12vw, 9rem);
+  background:
+    radial-gradient(90% 60% at 15% 0%, rgba(157, 0, 255, .16), transparent 60%),
+    var(--black);
+}
+
+.origin__opener {
+  margin: 1.2rem 0 0;
+  font-size: clamp(2.2rem, 7.5vw, 5.4rem);
+  line-height: .92;
+  text-transform: uppercase;
+}
+
+.origin__intro {
+  margin: 1.6rem 0 0;
+  max-width: 46ch;
+  font-weight: 300;
+  font-size: clamp(.95rem, 1.7vw, 1.1rem);
+  color: rgba(243, 236, 228, .78);
+}
+
+/* Zeitachse */
+.origin__line {
+  list-style: none;
+  margin: clamp(2.5rem, 6vw, 4rem) 0 0;
+  padding: 0 0 0 clamp(1.4rem, 4vw, 2.6rem);
+  position: relative;
+  border-left: 2px solid rgba(157, 0, 255, .45);
+}
+
+.origin__step { position: relative; padding-block: 0 clamp(1.8rem, 4vw, 2.8rem); }
+.origin__step:last-child { padding-bottom: 0; }
+
+.origin__mark {
+  position: absolute;
+  left: calc(clamp(1.4rem, 4vw, 2.6rem) * -1 - 8px);
+  top: .5em;
+  width: 14px;
+  height: 14px;
+  background: var(--purpur);
+  border: 2px solid var(--black);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(157, 0, 255, .25);
+}
+
+.origin__when {
+  margin: 0 0 .4rem;
+  font-size: clamp(1.5rem, 3.6vw, 2.4rem);
+  color: var(--purpur);
+}
+
+.origin__step p {
+  margin: 0;
+  max-width: 58ch;
+  font-weight: 300;
+  font-size: clamp(.88rem, 1.5vw, 1rem);
+  line-height: 1.7;
+  color: rgba(243, 236, 228, .78);
+}
+
+/* Schluesselsatz, gross gesetzt */
+.origin__pull {
+  margin: clamp(3rem, 7vw, 5rem) 0 0;
+  max-width: 30ch;
+  font-size: clamp(1.6rem, 4.4vw, 3.1rem);
+  line-height: 1.06;
+}
+.origin__pull .fx-black { display: block; color: var(--acid); }
+.origin__pull-small {
+  display: block;
+  margin-top: 1rem;
+  max-width: 52ch;
+  font-size: clamp(.88rem, 1.5vw, 1rem);
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(243, 236, 228, .72);
+}
+
+.origin__turn {
+  margin-top: clamp(3rem, 7vw, 5rem);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: clamp(1rem, 3vw, 2.5rem);
+}
+.origin__turn-body {
+  margin: 0;
+  flex: 1 1 26ch;
+  max-width: 52ch;
+  font-weight: 300;
+  font-size: clamp(.88rem, 1.5vw, 1rem);
+  line-height: 1.7;
+  color: rgba(243, 236, 228, .78);
+}
+.origin__fuck {
+  margin: 0;
+  flex: 0 1 auto;
+  font-size: clamp(2.4rem, 8vw, 5.5rem);
+  line-height: .9;
+  text-transform: uppercase;
+}
+
+.origin__close {
+  margin: clamp(2.2rem, 5vw, 3.4rem) 0 0;
+  max-width: 54ch;
+  font-weight: 300;
+  font-size: clamp(.95rem, 1.7vw, 1.12rem);
+  line-height: 1.7;
+}
+
+.fx-magenta { color: var(--magenta); }
+.fx-purpur  { color: var(--purpur); font-weight: 700; }
+.fx-light   { font-weight: 300; }
+
+/* Insight: ruhiger setzen. Nur der Einstieg fett, der Rest liest sich normal. */
+.insight__rest {
+  font-weight: 300;
+}
+
+/* Footer: Wortmarke steht ganz unten, die Rechtslinks darueber und ohne
+   Unterstreichung. */
+.footer__legal a { text-decoration: none; }
+.footer__legal a:hover { text-decoration: none; color: var(--acid); }
+.footer__wordmark { margin-top: clamp(2rem, 5vw, 3.5rem); }
+
+/* Das Band ragt in den Hero hinein, deshalb brauchen die Schaltflaechen darunter
+   mehr Abstand — sonst schiebt sich das Band darueber. */
+.hero__content { padding-bottom: clamp(150px, 19vh, 215px); }
