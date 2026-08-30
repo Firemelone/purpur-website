@@ -1777,10 +1777,17 @@ body { font-weight: 300; font-size: 0.95rem; }
   .next__item--wide { grid-column: 1 / -1; }
 }
 @media (max-width: 620px) {
-  /* Auf dem Handy eine Spalte: bei zwei Spalten blieben neben Date und
-     Location leere Zellen stehen, weil nur das Line-up beide ueberspannt. */
+  /* Datum und Location teilen sich die obere Zeile, das Line-up laeuft
+     darunter ueber die volle Breite. Die Zuordnung passiert ueber
+     grid-column/row, weil das Line-up im Markup zwischen den beiden steht. */
   .next__inner { flex-direction: column; align-items: stretch; gap: 1rem; }
-  .next__grid { grid-template-columns: 1fr; gap: 1.1rem; }
+  .next__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem 1rem;
+  }
+  .next__item:nth-child(1) { grid-column: 1; grid-row: 1; }
+  .next__item:nth-child(3) { grid-column: 2; grid-row: 1; text-align: right; }
+  .next__item--wide { grid-column: 1 / -1; grid-row: 2; }
   .next__no { align-self: flex-start; font-size: 3.2rem; }
   .next__arrow { align-self: flex-end; width: 56px; }
 }
@@ -1909,4 +1916,22 @@ body {
 
   /* Fusszeile untereinander statt gequetscht nebeneinander */
   .footer__cols { gap: 1.6rem 2rem; }
+}
+
+@media (max-width: 720px) {
+  /* Auf dem Handy stehen die drei Origin-Bloecke ohnehin untereinander. Die
+     Linien haben dort nichts mehr zu trennen, sondern zerhacken nur den
+     Lesefluss. Am Rechner bleiben sie, dort ordnen sie die drei Spalten. */
+  .origin__step {
+    border-top: none;
+    border-bottom: none;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .origin__grid { gap: 1.6rem; }
+
+  /* Datum, Line-up und Location im Ticketabriss waren mit 17,6 px zu klein
+     gegenueber dem uebrigen Auftritt. */
+  .next__value { font-size: 1.5rem; }
+  .next__item--wide .next__value { font-size: 1.28rem; }
 }
