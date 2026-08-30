@@ -1988,9 +1988,27 @@ body {
    Aussenabstand durch denselben Innenabstand ausgeglichen wird. Der Wert
    waechst mit der Fensterbreite, weil auch der Hoehenversatz der Drehung
    mit der Breite zunimmt. */
+/* Das Absperrband ist gedreht, eine waagerechte Kante der Folgeflaeche liess
+   deshalb entweder einen schwarzen Keil daneben stehen oder einen schwarzen
+   Balken darueber. Die Flaeche wird jetzt parallel zum Band angeschnitten und
+   beginnt ein Stueck unterhalb dessen Oberkante, sodass das Band die Naht immer
+   verdeckt. Der Hoehenversatz der Drehung waechst mit der Fensterbreite,
+   deshalb in vw. */
 .about {
+  --band-neigung: 6.15vw;   /* Hoehenversatz des Bandes ueber die Fensterbreite */
+  --band-tiefe: 51px;       /* wie weit die Flaeche unter die Bandkante rutscht */
+
   margin-top: calc(-6vw - 95px);
-  padding-top: calc(6vw + 95px);
+  /* Der eigene Abstand des Abschnitts muss erhalten bleiben, sonst rueckt der
+     Inhalt um genau diesen Betrag nach oben an den Vorgaenger heran. */
+  padding-top: calc(6vw + 95px + clamp(70px, 12vw, 140px));
+
+  clip-path: polygon(
+    0 calc(var(--band-tiefe) + var(--band-neigung)),
+    100% var(--band-tiefe),
+    100% 100%,
+    0 100%
+  );
 }
 
 @media (max-width: 620px) {
