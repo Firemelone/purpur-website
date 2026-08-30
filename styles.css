@@ -1752,10 +1752,21 @@ body { font-weight: 300; font-size: 0.95rem; }
   line-height: 1.05;
 }
 
-/* Das Line-up ist die laengste Angabe und darf umbrechen, die kurzen Werte
-   daneben nicht. */
+/* Das Line-up steht in derselben Groesse wie die uebrigen Werte — kleiner
+   gesetzt wirkte es wie ein Fehler. Dafuer darf es umbrechen. */
 .next__item--wide .next__value {
-  font-size: clamp(.95rem, 1.9vw, 1.45rem);
+  overflow-wrap: anywhere;
+}
+
+/* Laufende Nummer der Ausgabe, gross und fett links neben den Angaben */
+.next__no {
+  flex: 0 0 auto;
+  font-family: var(--font-body);
+  font-weight: 900;
+  font-size: clamp(2.6rem, 7vw, 5.5rem);
+  line-height: .85;
+  letter-spacing: -.02em;
+  align-self: center;
 }
 
 .next__arrow {
@@ -1809,3 +1820,14 @@ body { font-weight: 300; font-size: 0.95rem; }
 /* Insight schmaler setzen */
 .insight .wrap { max-width: 62rem; }
 .insight__copy p { max-width: 46ch; }
+
+/* Insight: der Flyer steht fuer sich, leicht angeschraegt wie ein abgelegter
+   Druck. */
+.insight__photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform: rotate(-1.5deg);
+  transition: transform .3s ease;
+}
+.insight__photo img:hover { transform: rotate(0deg) scale(1.02); }
