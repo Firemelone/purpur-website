@@ -1915,12 +1915,15 @@ body {
    hoch. Auf dem Handy trifft man das kaum; Apple und Google empfehlen rund
    44 px. Die Schrift bleibt gleich, nur die anklickbare Flaeche waechst. */
 @media (max-width: 720px) {
-  .footer__col li { margin-block: 2px; }
+  /* Tippflaeche bleibt bei rund 40 px hoch, aber ohne zusaetzlichen
+     Aussenabstand — sonst reisst die Spalte optisch auseinander. */
+  .footer__col li { margin-block: 0; }
   .footer__col a,
   .footer__legal a,
   .legal__footer a {
     display: inline-block;
-    padding-block: 12px;
+    padding-block: 11px;
+    line-height: 1.3;
   }
   .footer__legal { display: inline-flex; flex-wrap: wrap; gap: 4px 10px; }
 
@@ -1971,4 +1974,29 @@ body {
 .next__item--wide .next__value {
   font-weight: 300;
   font-style: italic;
+}
+
+@media (max-width: 720px) {
+  /* Die Fusszeile lief auf dem Handy als Flex-Zeile mit Umbruch: die drei
+     Spalten wurden dadurch unterschiedlich breit (221, 84 und 158 px) und
+     brachen 2-dann-1 um, was ausgefranst wirkte. Jetzt ein festes Raster aus
+     zwei gleichen Spalten mit gemeinsamen linken Kanten. */
+  .footer__top {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .footer__cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.8rem 1.2rem;
+  }
+
+  .footer__col h4 { margin-bottom: .2rem; }
+
+  .footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .4rem;
+  }
 }
