@@ -1727,7 +1727,7 @@ body { font-weight: 300; font-size: 0.95rem; }
 .next__grid {
   flex: 1 1 auto;
   display: grid;
-  grid-template-columns: auto auto 1fr auto;
+  grid-template-columns: auto 1fr auto;
   gap: clamp(1rem, 2.6vw, 2.4rem);
   align-items: start;
   border-top: 3px dashed rgba(10, 10, 10, .4);
