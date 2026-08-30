@@ -912,7 +912,10 @@ section {
 
 @media (prefers-reduced-motion: no-preference) {
   .marquee__track {
-    animation: marquee-scroll 20s linear infinite;
+    /* 20 s stammten aus der Zeit mit drei kurzen Phrasen. Mit 30 Woertern ist
+       die Spur rund 10 000 px breit, das waeren 260 px pro Sekunde gewesen —
+       zum Mitlesen viel zu schnell. 80 s ergeben rund 65 px/s. */
+    animation: marquee-scroll 80s linear infinite;
   }
 }
 @media (prefers-reduced-motion: reduce) {
