@@ -1649,10 +1649,19 @@ body { font-weight: 300; font-size: 0.95rem; }
   gap: clamp(1.4rem, 3vw, 2.6rem);
 }
 
+/* Die drei Spalten sind unterschiedlich lang; als Raster-Elemente sind sie aber
+   gleich hoch. Eine Abschlusslinie unten schliesst deshalb alle drei auf
+   derselben Hoehe ab, und der unterschiedlich weit reichende Text faellt kaum
+   noch auf. */
 .origin__step {
+  display: flex;
+  flex-direction: column;
   padding-top: .9rem;
+  padding-bottom: .9rem;
   border-top: 2px solid rgba(157, 0, 255, .45);
+  border-bottom: 2px solid rgba(157, 0, 255, .18);
 }
+.origin__step p { flex: 1 1 auto; }
 
 .origin__step p {
   margin: 0;
