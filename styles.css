@@ -396,34 +396,30 @@ img.glitch {
 }
 
 @media (max-width: 720px) {
+  /* Kein Vollbild-Menue mehr. Es enthielt nur Tickets und Supporter Bundle,
+     die ohnehin im Hero, im Ticketabriss und in der Fusszeile stehen — ein
+     Overlay fuer zwei Knoepfe ist auf dem Handy Ballast.
+     Dazu kam ein handfester Fehler: .nav traegt transform und backdrop-filter,
+     beides macht die Kopfzeile zum Bezugsrahmen fuer position: fixed. Das
+     Menue haftete dadurch an der Kopfzeile statt am Fenster und oeffnete sich
+     76 px zu hoch, also mit abgeschnittenen Eintraegen. */
+  .nav__toggle { display: none; }
+
   .nav__links {
-    position: fixed;
-    inset: 0 0 auto 0;
-    top: 0;
-    flex-direction: column;
-    justify-content: center;
-    height: 100vh;
-    background: var(--black);
-    transform: translateY(-100%);
-    transition: transform 0.35s ease;
-  }
-  .nav__links.is-open {
-    transform: translateY(0);
-  }
-  .nav__links a {
-    font-size: 1.4rem;
-  }
-  .nav__toggle {
-    display: block;
+    position: static;
+    flex-direction: row;
+    height: auto;
     background: none;
-    border: 2px solid var(--bone);
-    color: var(--bone);
-    width: 44px;
-    height: 44px;
-    border-radius: 8px;
-    font-size: 1rem;
-    z-index: 200;
-    position: relative;
+    transform: none;
+    gap: 10px;
+  }
+
+  /* Neben dem Logo ist nur fuer einen Knopf Platz */
+  .nav__links li:nth-child(n + 2) { display: none; }
+
+  .nav__links .btn {
+    font-size: .8rem;
+    padding: .95em 1.2em;
   }
 }
 
@@ -1148,15 +1144,11 @@ html.has-custom-cursor .cursor {
    Reveal-on-scroll utility (generic sections)
    ========================================================================== */
 
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.reveal.in-view {
-  opacity: 1;
-  transform: translateY(0);
-}
+/* Kein Einblenden beim Scrollen mehr: die Abschnitte stehen von Anfang an da
+   und schieben sich beim Scrollen einfach ueber die feste Bildebene.
+   Wichtig auch technisch — ein transform auf dem Abschnitt haette ihn zum
+   Bezugsrahmen fuer die feste Ebene gemacht und den Effekt zerstoert. */
+.reveal { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal {
@@ -1784,9 +1776,13 @@ body { font-weight: 300; font-size: 0.95rem; }
   .next__grid { grid-template-columns: 1fr 1fr; }
   .next__item--wide { grid-column: 1 / -1; }
 }
-@media (max-width: 520px) {
-  .next__inner { flex-direction: column; align-items: stretch; }
-  .next__arrow { align-self: flex-end; }
+@media (max-width: 620px) {
+  /* Auf dem Handy eine Spalte: bei zwei Spalten blieben neben Date und
+     Location leere Zellen stehen, weil nur das Line-up beide ueberspannt. */
+  .next__inner { flex-direction: column; align-items: stretch; gap: 1rem; }
+  .next__grid { grid-template-columns: 1fr; gap: 1.1rem; }
+  .next__no { align-self: flex-start; font-size: 3.2rem; }
+  .next__arrow { align-self: flex-end; width: 56px; }
 }
 
 .visually-hidden {
@@ -1833,3 +1829,84 @@ body { font-weight: 300; font-size: 0.95rem; }
   transition: transform .3s ease;
 }
 .insight__photo img:hover { transform: rotate(0deg) scale(1.02); }
+
+/* ==========================================================================
+   Feste Bildebene
+   Die Diashow bleibt beim Scrollen stehen, alles andere zieht darueber hinweg.
+   Umgesetzt ueber position: fixed statt background-attachment: fixed — letzteres
+   ignoriert iOS Safari seit jeher, das Bild wuerde dort einfach mitscrollen.
+   Die Ebene liegt auf z-index 0, die Abschnitte darueber auf 1; wer einen
+   eigenen Hintergrund hat, deckt sie zu, der Hero laesst sie durchscheinen.
+   ========================================================================== */
+
+.hero__media {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Der Hero selbst braucht keine eigene Flaeche mehr, er zeigt die feste Ebene */
+.hero { background: transparent; }
+.hero__content { position: relative; z-index: 1; }
+
+/* Alles nach dem Hero schiebt sich darueber und muss deshalb decken */
+.about,
+.visual,
+.origin,
+.next,
+.insight,
+.marquee,
+.site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* Das Absperrband liegt bewusst hoeher: es ragt mit negativen Aussenabstaenden
+   in die Nachbarabschnitte hinein und wurde sonst von der schwarzen Flaeche
+   des About-Abschnitts verdeckt. */
+.tape {
+  position: relative;
+  z-index: 6;
+}
+
+/* Bei "Bewegung reduzieren" bleibt die Ebene im Fluss, damit nichts unter
+   feststehenden Bildern durchwandert. */
+@media (prefers-reduced-motion: reduce) {
+  .hero__media { position: absolute; }
+}
+
+/* ==========================================================================
+   Mobil
+   ========================================================================== */
+
+/* Das gedrehte Absperrband, der Korn-Overlay und die Laufschriften ragen
+   konstruktionsbedingt ueber den Rand. Auf dem Handy liess sich die Seite
+   dadurch seitlich verschieben (407 statt 390 px). overflow-x: clip statt
+   hidden, weil clip keinen eigenen Scrollbereich aufmacht und damit weder
+   die feste Bildebene noch sticky-Elemente stoert. */
+html,
+body {
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+/* Tippziele: die Links in Fusszeile und Rechtszeile waren nur 13 bis 16 px
+   hoch. Auf dem Handy trifft man das kaum; Apple und Google empfehlen rund
+   44 px. Die Schrift bleibt gleich, nur die anklickbare Flaeche waechst. */
+@media (max-width: 720px) {
+  .footer__col li { margin-block: 2px; }
+  .footer__col a,
+  .footer__legal a,
+  .legal__footer a {
+    display: inline-block;
+    padding-block: 12px;
+  }
+  .footer__legal { display: inline-flex; flex-wrap: wrap; gap: 4px 10px; }
+
+  /* Die Beschriftungen im Ticketabriss lagen bei 11,5 px */
+  .next__label { font-size: .8rem; }
+
+  /* Fusszeile untereinander statt gequetscht nebeneinander */
+  .footer__cols { gap: 1.6rem 2rem; }
+}

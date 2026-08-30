@@ -16,21 +16,9 @@ if (navToggle && navLinks) {
   });
 }
 
-// Scroll-triggered reveals + the concept "stamp" frame
-const revealTargets = document.querySelectorAll(".reveal, .stampframe");
-
-const revealObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("in-view");
-      }
-    });
-  },
-  { threshold: 0.3 }
-);
-
-revealTargets.forEach((el) => revealObserver.observe(el));
+// Die Abschnitte blenden nicht mehr ein — sie stehen von Anfang an und
+// schieben sich beim Scrollen ueber die feste Bildebene. Der Beobachter dafuer
+// ist deshalb entfallen.
 
 // Nav only appears once the hero section has been scrolled past
 const nav = document.querySelector(".nav");
