@@ -1956,11 +1956,19 @@ body {
    weitere Buchstabenabstand haelt sie dabei lesbar. */
 .next__value:not(.mosher) {
   font-family: var(--font-body);
-  font-weight: 300;
-  /* GC Furion bringt keine echte Kursive mit, der Browser neigt selbst.
-     Genau so steht "MIKROPOL" auch auf den Plakaten. */
-  font-style: italic;
   text-transform: uppercase;
   letter-spacing: .1em;
   line-height: 1.25;
+}
+
+/* Location aufrecht in Medium — sie ist eine harte Angabe und soll stehen */
+.next__item:not(.next__item--wide) .next__value:not(.mosher) {
+  font-weight: 500;
+}
+
+/* Das Line-up geneigt und leicht, wie die Namenslisten auf den Plakaten.
+   GC Furion bringt keine echte Kursive mit, der Browser neigt selbst. */
+.next__item--wide .next__value {
+  font-weight: 300;
+  font-style: italic;
 }
