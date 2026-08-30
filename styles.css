@@ -1948,3 +1948,16 @@ body {
   .next__value { font-size: 1.5rem; }
   .next__item--wide .next__value { font-size: 1.28rem; }
 }
+
+/* Im Ticketabriss traegt nur das Datum die Display-Schrift. Location und
+   Line-up stehen in GC Furion Light — der Kontrast zwischen dem massiven Datum
+   und den leichten Versalien darunter entspricht der Setzung auf den Plakaten,
+   wo Nollendorfplatz und Mikropol ebenfalls im leichten Schnitt stehen. Der
+   weitere Buchstabenabstand haelt sie dabei lesbar. */
+.next__value:not(.mosher) {
+  font-family: var(--font-body);
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  line-height: 1.25;
+}
