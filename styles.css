@@ -1785,15 +1785,22 @@ body { font-weight: 300; font-size: 0.95rem; }
      grid-column/row, weil das Line-up im Markup zwischen den beiden steht. */
   .next__inner { flex-direction: column; align-items: stretch; gap: 1rem; }
   .next__grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 1.2rem 1rem;
+    grid-template-columns: 1fr;
+    gap: 1.3rem;
   }
-  /* Das Line-up steht oben ueber die volle Breite, Datum und Location
-     schliessen darunter als Zeile ab. Umgekehrt fing das lange Line-up nach der
-     zweispaltigen Zeile wieder allein links an und wirkte angehaengt. */
-  .next__item--wide { grid-column: 1 / -1; grid-row: 1; }
-  .next__item:nth-child(1) { grid-column: 1; grid-row: 2; }
-  .next__item:nth-child(3) { grid-column: 2; grid-row: 2; text-align: right; }
+  /* Reihenfolge: Datum, Location, Line-up — alles untereinander ueber die
+     volle Breite. Das Datum traegt den Abschnitt und steht deshalb deutlich
+     groesser als der Rest. Die Zuordnung laeuft ueber grid-row, weil das
+     Line-up im Markup zwischen Datum und Location steht. */
+  .next__item:nth-child(1) { grid-row: 1; }
+  .next__item:nth-child(3) { grid-row: 2; }
+  .next__item--wide { grid-row: 3; }
+  .next__item { grid-column: 1 / -1; }
+
+  .next__item:nth-child(1) .next__value {
+    font-size: 3.1rem;
+    line-height: .95;
+  }
   .next__no { align-self: flex-start; font-size: 3.2rem; }
   .next__arrow { align-self: flex-end; width: 56px; }
 }
