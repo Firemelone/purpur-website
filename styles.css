@@ -1747,6 +1747,7 @@ body { font-weight: 300; font-size: 0.95rem; }
   line-height: 1.05;
 }
 
+
 /* Das Line-up steht in derselben Groesse wie die uebrigen Werte — kleiner
    gesetzt wirkte es wie ein Fehler. Wenn es doch umbrechen muss, verteilt
    text-wrap: balance die Namen gleichmaessig auf beide Zeilen, statt einen
@@ -1952,29 +1953,7 @@ body {
   .next__item--wide .next__value { font-size: 1.28rem; }
 }
 
-/* Im Ticketabriss traegt nur das Datum die Display-Schrift. Location und
-   Line-up stehen in GC Furion Light — der Kontrast zwischen dem massiven Datum
-   und den leichten Versalien darunter entspricht der Setzung auf den Plakaten,
-   wo Nollendorfplatz und Mikropol ebenfalls im leichten Schnitt stehen. Der
-   weitere Buchstabenabstand haelt sie dabei lesbar. */
-.next__value:not(.mosher) {
-  font-family: var(--font-body);
-  text-transform: uppercase;
-  letter-spacing: .1em;
-  line-height: 1.25;
-}
 
-/* Location aufrecht in Medium — sie ist eine harte Angabe und soll stehen */
-.next__item:not(.next__item--wide) .next__value:not(.mosher) {
-  font-weight: 500;
-}
-
-/* Das Line-up geneigt und leicht, wie die Namenslisten auf den Plakaten.
-   GC Furion bringt keine echte Kursive mit, der Browser neigt selbst. */
-.next__item--wide .next__value {
-  font-weight: 300;
-  font-style: italic;
-}
 
 @media (max-width: 720px) {
   /* Die Fusszeile lief auf dem Handy als Flex-Zeile mit Umbruch: die drei
@@ -1999,4 +1978,32 @@ body {
     align-items: flex-start;
     gap: .4rem;
   }
+}
+
+/* Das Absperrband ist gedreht, die Flaeche des Folgeabschnitts beginnt aber an
+   einer waagerechten Kante. Dadurch schaute links ein schwarzer Keil neben dem
+   Band hervor, waehrend rechts daneben noch das Foto stand.
+   Die Flaeche startet jetzt oberhalb des Bandes, sodass das Band vollstaendig
+   davor liegt. Der Inhalt bleibt an Ort und Stelle, weil der negative
+   Aussenabstand durch denselben Innenabstand ausgeglichen wird. Der Wert
+   waechst mit der Fensterbreite, weil auch der Hoehenversatz der Drehung
+   mit der Breite zunimmt. */
+.about {
+  margin-top: calc(-6vw - 95px);
+  padding-top: calc(6vw + 95px);
+}
+
+@media (max-width: 620px) {
+  /* Nur auf dem Handy weicht der Ticketabriss von Mosher ab: dort steht das
+     Datum allein gross in der Display-Schrift, Location und Line-up treten in
+     GC Furion zurueck. Am Rechner bleibt der Abriss durchgehend in Mosher. */
+  .next__item:nth-child(3) .next__value,
+  .next__item--wide .next__value {
+    font-family: var(--font-body);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    line-height: 1.25;
+  }
+  .next__item:nth-child(3) .next__value { font-weight: 500; }
+  .next__item--wide .next__value { font-weight: 300; font-style: italic; }
 }
