@@ -1719,6 +1719,7 @@ body { font-weight: 300; font-size: 0.95rem; }
 .next__link:hover { background: var(--acid); }
 
 .next__inner {
+  max-width: 1340px;
   display: flex;
   align-items: center;
   gap: clamp(1.4rem, 4vw, 3rem);
@@ -1748,14 +1749,20 @@ body { font-weight: 300; font-size: 0.95rem; }
 
 .next__value {
   display: block;
-  font-size: clamp(1.1rem, 2.4vw, 1.9rem);
+  /* Deckel bewusst niedriger als bei den uebrigen Ueberschriften: der
+     Inhaltskasten hoert bei 1180 px auf zu wachsen, die Schrift wuchs mit 2.4vw
+     aber weiter. Genau an dieser Kante ist beim Line-up der letzte Name
+     umgebrochen. */
+  font-size: clamp(1.05rem, 2vw, 1.62rem);
   line-height: 1.05;
 }
 
 /* Das Line-up steht in derselben Groesse wie die uebrigen Werte — kleiner
-   gesetzt wirkte es wie ein Fehler. Dafuer darf es umbrechen. */
+   gesetzt wirkte es wie ein Fehler. Wenn es doch umbrechen muss, verteilt
+   text-wrap: balance die Namen gleichmaessig auf beide Zeilen, statt einen
+   einzelnen unten allein stehen zu lassen. */
 .next__item--wide .next__value {
-  overflow-wrap: anywhere;
+  text-wrap: balance;
 }
 
 /* Laufende Nummer der Ausgabe, gross und fett links neben den Angaben */
