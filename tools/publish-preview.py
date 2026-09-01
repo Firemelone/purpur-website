@@ -46,6 +46,11 @@ def relativ(ordner: pathlib.Path) -> int:
         neu = alt.replace('href="/"', 'href="index.html"')
         neu = re.sub(r'(src|href)="/(?!/)', r'\1="', neu)
         neu = neu.replace('url("/', 'url("')
+        # Die Linkvorschau braucht volle Adressen, relative Pfade werten
+        # viele Scraper nicht aus. Die zeigen bisher auf die Wurzel und
+        # muessen auf den Unterordner umgebogen werden.
+        neu = neu.replace('content="https://purpur.berlin/',
+                          f'content="https://purpur.berlin/{ORDNER}/')
         if neu != alt:
             p.write_text(neu)
             geaendert += 1
