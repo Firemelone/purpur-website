@@ -736,21 +736,37 @@ section {
   background: linear-gradient(180deg, rgba(10, 10, 10, 0) 0%, rgba(10, 10, 10, 0.45) 100%);
 }
 
-.visual__word {
-  /* Fluchtpunkt fuer die Neigung der Zeilen. Ohne perspective bliebe die
-     Drehung flach und wuerde nur gestaucht wirken. */
-  perspective: 900px;
-}
 .visual__word .fx-line {
   display: block;
-  transform-style: preserve-3d;
-  /* Das Nachziehen macht die Bewegung weich; das Skript setzt nur den
-     Zielwinkel, den Weg dorthin uebernimmt der Browser. */
+}
+
+/* Ebenen, die sich zur Maus neigen. Die Perspektive bringt das Skript im
+   transform selbst mit — als perspective-Eigenschaft im Elternelement wuerde
+   sie dort einen Stapelkontext aufmachen und im Hero das Durchscheinen der
+   Wortmarke zerstoeren.
+   Das Nachziehen macht die Bewegung weich: Das Skript setzt nur den
+   Zielwinkel, den Weg dorthin uebernimmt der Browser. */
+.visual__word .fx-line,
+.hero__logo,
+.hero__actions,
+.insight__photo,
+.insight__copy {
   transition: transform .4s cubic-bezier(.22, .61, .36, 1);
   will-change: transform;
 }
+/* Die Wortmarke hatte schon einen Uebergang fuer den Filter — beide behalten */
+.hero__logo {
+  transition: transform .4s cubic-bezier(.22, .61, .36, 1), filter .15s ease;
+}
 @media (prefers-reduced-motion: reduce) {
-  .visual__word .fx-line { transition: none; transform: none !important; }
+  .visual__word .fx-line,
+  .hero__logo,
+  .hero__actions,
+  .insight__photo,
+  .insight__copy {
+    transition: none;
+    transform: none !important;
+  }
 }
 
 .visual__word span {
