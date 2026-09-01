@@ -74,6 +74,26 @@ CSS_A = "/* DIASHOW-ANFANG (erzeugt von tools/build-diashow.py) */"
 CSS_E = "/* DIASHOW-ENDE */"
 
 
+def saubername(stamm: str) -> str:
+    """Dateinamen fuer die Adresszeile entschaerfen.
+
+    Leerzeichen sind hier nicht bloss haesslich, sie zerstoeren das srcset:
+    Dort trennt genau das Leerzeichen die Adresse von der Breitenangabe. Eine
+    Datei "Bild UPSCALED.webp" wuerde also als Adresse "Bild" mit dem
+    Groessenmass "UPSCALED.webp" gelesen — und nichts mehr laden.
+    """
+    erlaubt = []
+    for z in stamm:
+        if z.isalnum() or z in "-_":
+            erlaubt.append(z)
+        elif z in " .":
+            erlaubt.append("-")
+    name = "".join(erlaubt)
+    while "--" in name:
+        name = name.replace("--", "-")
+    return name.strip("-")
+
+
 def konvertiere(quelle: pathlib.Path, ziel: pathlib.Path, maxdim: int,
                 bpp: float, minq: int, deckel) -> tuple[int, int, int]:
     """Nach WebP wandeln. Gibt Qualitaet, Breite und Hoehe zurueck.
@@ -239,7 +259,7 @@ def main() -> None:
         fassungen, zeile = [], f"  {p.name:<26}"
         for stufe, (maxdim, bpp, minq, deckel) in enumerate(GROESSEN):
             anhang = "" if stufe == 0 else f"@{maxdim}"
-            ziel = ZIEL / f"{p.stem}{anhang}.webp"
+            ziel = ZIEL / f"{saubername(p.stem)}{anhang}.webp"
             q, b, h = konvertiere(p, ziel, maxdim, bpp, minq, deckel)
             groesse = ziel.stat().st_size
             je_fassung[stufe] += groesse
