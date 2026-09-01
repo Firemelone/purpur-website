@@ -50,6 +50,7 @@ SEKUNDEN_PRO_BILD = 4
 ZIEL_HELLIGKEIT = 95    # mittlere Leuchtdichte (0-255) in der Logo-Zone
 HELLIGKEIT_MIN = 0.55   # Grenzen, damit ein Extrembild nicht flach wird
 HELLIGKEIT_MAX = 1.9
+LICHTER_GRENZE = 235   # so hell duerfen die hellsten 5 % hoechstens werden
 
 MARKE_A = "  <!-- DIASHOW-ANFANG (erzeugt von tools/build-diashow.py) -->"
 MARKE_E = "  <!-- DIASHOW-ENDE -->"
@@ -89,15 +90,29 @@ def konvertiere(quelle: pathlib.Path, ziel: pathlib.Path,
 
 
 def helligkeit(ziel: pathlib.Path) -> float:
-    """Faktor, der die Logo-Zone des Bildes auf ZIEL_HELLIGKEIT bringt."""
+    """Faktor, der die Logo-Zone des Bildes auf ZIEL_HELLIGKEIT bringt.
+
+    Der Mittelwert allein reicht nicht: Bei einem Motiv, das absichtlich auf
+    schwarzem Grund steht, zieht die schwarze Flaeche ihn nach unten, obwohl
+    das Motiv selbst schon hell ist. Aufhellen wuerde dann nur die Lichter
+    ausbrennen, ohne im Schwarz etwas sichtbar zu machen. Darum begrenzt ein
+    zweiter Wert den Faktor: die hellsten fuenf Prozent duerfen nicht ueber
+    LICHTER_GRENZE steigen.
+    """
     im = Image.open(ziel).convert("L")
     w, h = im.size
     zone = im.crop((int(w * 0.2), int(h * 0.2), int(w * 0.8), int(h * 0.7)))
-    px = list(zone.getdata())
+    px = sorted(zone.getdata())
     mittel = sum(px) / len(px)
+    p95 = px[int(len(px) * 0.95)]
     if mittel <= 0:
         return HELLIGKEIT_MAX
-    return round(min(HELLIGKEIT_MAX, max(HELLIGKEIT_MIN, ZIEL_HELLIGKEIT / mittel)), 2)
+    nach_mittel = ZIEL_HELLIGKEIT / mittel
+    nach_lichtern = LICHTER_GRENZE / p95 if p95 > 0 else HELLIGKEIT_MAX
+    # Abdunkeln darf der Lichterschutz nie verhindern, nur das Aufhellen
+    # bremsen — deshalb greift er erst oberhalb von 1.
+    obergrenze = min(HELLIGKEIT_MAX, max(1.0, nach_lichtern))
+    return round(min(obergrenze, max(HELLIGKEIT_MIN, nach_mittel)), 2)
 
 
 def bild_block(eintraege: list[dict]) -> str:
