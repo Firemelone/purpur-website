@@ -41,7 +41,11 @@ GROESSEN = (
 )                    # Artefakte auf mehr Pixeln weniger auffallen
 MINQ = 72          # darunter wird die Kompression sichtbar
 SEKUNDEN_PRO_BILD = 4
-BLITZ_MS = 110     # wie lange das Bild beim Wechsel ins Negativ kippt
+# Ablauf des Zaps in Millisekunden: Aufblitzen ueber die volle Hoehe,
+# Zusammenfallen zur Linie, Erloeschen.
+ZAP_AUF_MS = 45
+ZAP_LINIE_MS = 55
+ZAP_GESAMT_MS = 170
 
 # Helligkeitsausgleich. Die Bilder kommen aus ganz unterschiedlichen Quellen —
 # Infrarot-Aufnahmen sind fast weiss, Latex-Motive fast schwarz. Der feste
@@ -139,21 +143,25 @@ def bild_block(eintraege: list[dict]) -> str:
 
 
 def css_block(anzahl: int) -> str:
-    """Harter Schnitt statt Ueberblendung, dazu ein kurzer Negativ-Blitz.
+    """Harter Schnitt statt Ueberblendung, dazu ein Zap wie am Roehrenfernseher.
 
     Die Bilder loesen sich ohne Blende ab: jedes ist genau seinen Abschnitt
-    lang zu sehen, dann sofort das naechste. Weil ein harter Schnitt fuer sich
-    genommen nur wie ein Ruckler wirkt, kippt im Moment des Wechsels das ganze
-    Bild fuer rund eine Zehntelsekunde ins Negativ.
+    lang zu sehen, dann sofort das naechste. Damit der Schnitt nicht bloss wie
+    ein Ruckler wirkt, blitzt im selben Moment ein lilafarbener Streifen auf,
+    faellt in eine waagerechte Linie zusammen und erlischt.
 
-    Der Blitz laeuft in einer eigenen Animation ueber der Bildebene. Ihre
+    Der Zap laeuft in einer eigenen Animation auf einer eigenen Ebene. Ihre
     Dauer ist die eines einzelnen Bildes, nicht die des ganzen Durchlaufs —
     dadurch trifft sie jeden Wechsel, ohne dass die Keyframes von der Anzahl
     der Bilder abhaengen.
     """
     dauer = anzahl * SEKUNDEN_PRO_BILD
     anteil = 100 / anzahl               # Anteil eines Bildes am Durchlauf
-    blitz = BLITZ_MS / (SEKUNDEN_PRO_BILD * 1000) * 100   # in Prozent
+    ms = SEKUNDEN_PRO_BILD * 1000       # ein Bildabschnitt in Millisekunden
+
+    def pz(millis):
+        return f"{millis / ms * 100:.4f}%"
+
     zeilen = [
         CSS_A,
         "@media (prefers-reduced-motion: no-preference) {",
@@ -164,19 +172,19 @@ def css_block(anzahl: int) -> str:
             f"  .hero__slide:nth-child({i + 1}) {{ animation-delay: {i * SEKUNDEN_PRO_BILD}s; }}"
         )
     zeilen += [
-        f"  .hero__media {{ animation: hero-negativ {SEKUNDEN_PRO_BILD}s step-end infinite; }}",
+        f"  .hero__zap {{ animation: hero-zap {SEKUNDEN_PRO_BILD}s linear infinite; }}",
         "}",
         "@keyframes hero-slideshow {",
         "  0%              { opacity: 1; }",
         f"  {anteil:.4f}%   {{ opacity: 0; }}",
         "  100%            { opacity: 0; }",
         "}",
-        "/* Der Blitz braucht dieselbe Filterkette in beiden Zustaenden, sonst",
-        "   rechnet der Browser zwischen den Schritten herum statt zu springen. */",
-        "@keyframes hero-negativ {",
-        "  0%              { filter: invert(1) hue-rotate(90deg) saturate(1.6); }",
-        f"  {blitz:.4f}%    {{ filter: invert(0) hue-rotate(0deg) saturate(1); }}",
-        "  100%            { filter: invert(0) hue-rotate(0deg) saturate(1); }",
+        "@keyframes hero-zap {",
+        "  0%       { opacity: 1; transform: scaleY(1); }",
+        f"  {pz(ZAP_AUF_MS)}  {{ opacity: 1; transform: scaleY(.06); }}",
+        f"  {pz(ZAP_AUF_MS + ZAP_LINIE_MS)}  {{ opacity: .9; transform: scaleY(.014); }}",
+        f"  {pz(ZAP_GESAMT_MS)}  {{ opacity: 0; transform: scaleY(.005); }}",
+        "  100%     { opacity: 0; transform: scaleY(.005); }",
         "}",
         CSS_E,
     ]
