@@ -205,6 +205,27 @@ const loader = document.getElementById("loader");
 
 if (loader) {
   document.body.classList.add("is-loading");
+
+  // Das Ladelogo steht sonst genau in der Bildschirmmitte, die Wortmarke im
+  // Hero aber hoeher — beim Verschwinden des Vorhangs sprang das Logo also
+  // ein Stueck nach oben. Statt den Versatz fest einzutragen, wird er hier
+  // gemessen: Beide Elemente sind gleich gross, es fehlt nur die Verschiebung.
+  // Gemessen statt gerechnet, damit es bei jeder Fenstergroesse stimmt und
+  // auch dann, wenn sich am Aufbau des Hero spaeter etwas aendert.
+  const buehne = loader.querySelector(".loader__stage");
+  const vollesLogo = loader.querySelector(".loader__full");
+  const heldenLogo = document.querySelector(".hero__logo");
+
+  const ausrichten = () => {
+    if (!buehne || !vollesLogo || !heldenLogo) return;
+    buehne.style.transform = "";
+    const versatz =
+      heldenLogo.getBoundingClientRect().top - vollesLogo.getBoundingClientRect().top;
+    if (Number.isFinite(versatz)) buehne.style.transform = `translateY(${versatz}px)`;
+  };
+
+  ausrichten();
+  window.addEventListener("resize", ausrichten, { passive: true });
   const SPIN_MS = 700;    // Symbol dreht sich
   const GLITCH_MS = 500;  // Uebergang zum vollen Logo
   const FALLBACK_MS = 5000;
@@ -235,6 +256,76 @@ if (loader) {
     loader.addEventListener("transitionend", () => loader.remove(), { once: true });
     setTimeout(() => loader.remove(), 1200);
   });
+}
+
+// ---------------------------------------------------------------------------
+// Zeilen im Videoabschnitt neigen sich zur Maus
+// ---------------------------------------------------------------------------
+// Die drei Zeilen sollen der Maus zugewandt stehen, als wuerden sie sie
+// ansehen. Der Ausschlag richtet sich danach, wie weit der Zeiger von der
+// Mitte des Blocks entfernt ist — auf eine halbe Blockbreite gerechnet und
+// gedeckelt, damit er nicht weiter kippt, je weiter man wegzieht.
+// Die unteren Zeilen schwenken etwas weniger als die obere. Dieser Versatz
+// laesst die drei wie hintereinanderliegende Ebenen wirken statt wie eine
+// starre Platte.
+const wortBlock = document.querySelector(".visual__word");
+const magNeigen =
+  window.matchMedia("(hover: hover)").matches &&
+  !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+if (wortBlock && magNeigen) {
+  const zeilen = [...wortBlock.querySelectorAll(".fx-line")];
+  const MAX_GRAD = 11;
+  let angefordert = false;
+
+  const klemmen = (v) => Math.max(-1, Math.min(1, v));
+
+  const neigen = (e) => {
+    angefordert = false;
+    const r = wortBlock.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    const x = klemmen((e.clientX - (r.left + r.width / 2)) / (r.width / 2));
+    const y = klemmen((e.clientY - (r.top + r.height / 2)) / (r.height / 2));
+    zeilen.forEach((zeile, i) => {
+      const tiefe = 1 - i * 0.18;
+      const drehY = x * MAX_GRAD * tiefe;
+      const drehX = -y * MAX_GRAD * tiefe;
+      zeile.style.transform = `rotateX(${drehX.toFixed(2)}deg) rotateY(${drehY.toFixed(2)}deg)`;
+    });
+  };
+
+  window.addEventListener(
+    "mousemove",
+    (e) => {
+      if (angefordert) return;
+      angefordert = true;
+      requestAnimationFrame(() => neigen(e));
+    },
+    { passive: true }
+  );
+
+  // Zeiger verlaesst das Fenster: zurueck in die Ruhelage
+  document.addEventListener("mouseleave", () => {
+    zeilen.forEach((zeile) => (zeile.style.transform = "rotateX(0deg) rotateY(0deg)"));
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Kanalwechsel-Streifen: Neigung wuerfeln
+// ---------------------------------------------------------------------------
+// CSS kann nicht zufaellig. Damit der Streifen nicht bei jedem Bildwechsel
+// identisch liegt, bekommt er hier vor jedem Durchlauf eine neue leichte
+// Neigung. animationiteration feuert genau am Rundenwechsel, also unmittelbar
+// bevor der naechste Zap aufblitzt.
+const zap = document.querySelector(".hero__zap");
+
+if (zap) {
+  const neigen = () => {
+    const grad = (Math.random() * 5 - 2.5).toFixed(2);
+    zap.style.setProperty("--zap-dreh", `${grad}deg`);
+  };
+  neigen();
+  zap.addEventListener("animationiteration", neigen);
 }
 
 // ---------------------------------------------------------------------------
