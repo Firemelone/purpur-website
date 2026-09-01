@@ -1443,13 +1443,10 @@ body { font-weight: 300; font-size: 0.95rem; }
     linear-gradient(180deg, rgba(10, 10, 10, 0.32) 0%, rgba(10, 10, 10, 0.12) 32%, rgba(10, 10, 10, 0.72) 100%) !important;
 }
 
-/* Das Logo im Hero blendet sich mit dem Bild dahinter. CSS kennt kein
-   Vivid Light; hard-light kommt dem am naechsten, weil es Lichter und Tiefen
-   gleichermassen verstaerkt.
-   Wichtig: .hero__content darf dabei KEINEN eigenen Stapelkontext aufmachen,
-   sonst mischt sich das Logo nur mit dem durchsichtigen Kasten darum und die
-   helle Haelfte verschwindet im Schwarz. Die Reihenfolge im Markup sorgt
-   ohnehin dafuer, dass der Inhalt ueber dem Bild liegt. */
+/* Kein eigener Stapelkontext auf dem Inhalt: Das Logo muss sich mit dem Foto
+   dahinter mischen koennen und nicht mit dem durchsichtigen Kasten darum.
+   Dass der Inhalt trotzdem ueber der Bildebene liegt, regelt die Reihenfolge
+   im Markup. */
 .hero__content { z-index: auto; }
 
 /* Frueher lag hier ein dunkler Schleier hinter der Wortmarke, damit das Logo
