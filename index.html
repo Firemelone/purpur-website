@@ -1,35 +1,369 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>purpur</title>
-  <meta name="description" content="purpur — placeholder. Content coming soon.">
-  <link rel="preload" href="/assets/fonts/Mosher-Regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/assets/fonts/GCFurion-Regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/assets/css/style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PURPUR / 03.10.26 / Berlin</title>
+<meta name="description" content="PURPUR. A queer fetish subculture night in Berlin. 03.10.26, 22 to 06h, Nollendorfplatz. Transform into the purest version of yourself." />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="PURPUR. Expressing queer subculture. 03-10-26 | Berlin" />
+<meta property="og:description" content="Transform into the purest version of yourself." />
+<meta property="og:image" content="https://purpur.berlin/assets/share-card.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="1200" />
+<meta property="og:locale" content="en_GB" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="PURPUR. Expressing queer subculture. 03-10-26 | Berlin" />
+<meta name="twitter:description" content="Transform into the purest version of yourself." />
+<meta name="twitter:image" content="https://purpur.berlin/assets/share-card.jpg" />
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+<link rel="preload" href="/assets/fonts/Mosher-Regular.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/assets/fonts/GCFurion-Light.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="/styles.css?v=100" />
 </head>
 <body>
-  <header class="site-header">
-    <a class="wordmark" href="/">purpur</a>
-  </header>
 
-  <main>
-    <section class="hero">
-      <h1>purpur</h1>
-      <p class="lead">The new site is taking shape here.</p>
-      <a class="btn" href="mailto:info@purpur.berlin">Get in touch</a>
-    </section>
-  </main>
+<!-- Ladesequenz: erst dreht sich das Symbol einmal, dann glitcht es zum vollen Logo -->
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader__stage">
+    <img class="loader__symbol" id="loaderSymbol" src="/Media/Logo_Animated/PURPUR-Turntable_pitch-0.webp" alt="" />
+    <img class="loader__full glitch" id="loaderFull" src="/Media/Logo_SVG/PURPUR-Logo-PurpleWhite.svg" alt="" />
+  </div>
+</div>
 
-  <footer class="site-footer">
-    <p>&copy; <span id="year">2026</span> purpur</p>
-    <nav>
-      <a href="/imprint.html">Imprint</a>
-      <a href="/privacy.html">Privacy</a>
-    </nav>
-  </footer>
+<div class="cursor" id="cursor" aria-hidden="true">
+  <svg class="cursor__svg" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+    <polygon class="cursor__sticker" points="20.00,1.00 22.16,4.95 25.35,1.77 26.31,6.17 30.27,4.02 29.95,8.51 34.36,7.56 32.79,11.78 37.28,12.11 34.58,15.72 38.81,17.30 35.20,20.00 38.81,22.70 34.58,24.28 37.28,27.89 32.79,28.22 34.36,32.44 29.95,31.49 30.27,35.98 26.31,33.83 25.35,38.23 22.16,35.05 20.00,39.00 17.84,35.05 14.65,38.23 13.69,33.83 9.73,35.98 10.05,31.49 5.64,32.44 7.21,28.22 2.72,27.89 5.42,24.28 1.19,22.70 4.80,20.00 1.19,17.30 5.42,15.72 2.72,12.11 7.21,11.78 5.64,7.56 10.05,8.51 9.73,4.02 13.69,6.17 14.65,1.77 17.84,4.95" />
+  </svg>
+</div>
 
-  <script src="/assets/js/main.js"></script>
+<nav class="nav">
+  <a class="nav__brand" href="#top">
+    <img src="/Media/Logo_Animated/PURPUR-Turntable_pitch-minus30.webp" width="800" height="800" alt="PURPUR spinning symbol" />
+  </a>
+  <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+  <ul class="nav__links" id="navLinks">
+    <li><a class="btn" href="https://ra.co/events/2518411" target="_blank" rel="noopener"><span>Tickets</span></a></li>
+    <li><a class="btn btn--ghost" href="https://boothbunny.net/pages/shop" target="_blank" rel="noopener"><span>Supporter Bundle</span></a></li>
+  </ul>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero__media">
+  <!-- DIASHOW-ANFANG (erzeugt von tools/build-diashow.py) -->
+  <div class="hero__slideshow" aria-hidden="true">
+      <img class="hero__slide" src="/Media/Diashow/01-Pants-Banner.webp" srcset="/Media/Diashow/01-Pants-Banner.webp 1132w, /Media/Diashow/01-Pants-Banner@2400.webp 1697w, /Media/Diashow/01-Pants-Banner@3200.webp 2094w" sizes="100vw" width="1132" height="1600" alt="" style="--slide-hell: 1.23" fetchpriority="high" decoding="async" />
+      <img class="hero__slide" src="/Media/Diashow/02-LatexInfraPurp-UPSCALED.webp" srcset="/Media/Diashow/02-LatexInfraPurp-UPSCALED.webp 1600w, /Media/Diashow/02-LatexInfraPurp-UPSCALED@2400.webp 2400w, /Media/Diashow/02-LatexInfraPurp-UPSCALED@3200.webp 3150w" sizes="100vw" width="1600" height="1000" alt="" style="--slide-hell: 1.15" fetchpriority="low" decoding="async" />
+      <img class="hero__slide" src="/Media/Diashow/02-TacticalBW-UPSCALED.webp" srcset="/Media/Diashow/02-TacticalBW-UPSCALED.webp 1600w, /Media/Diashow/02-TacticalBW-UPSCALED@2400.webp 2400w, /Media/Diashow/02-TacticalBW-UPSCALED@3200.webp 3150w" sizes="100vw" width="1600" height="1000" alt="" style="--slide-hell: 1.1" fetchpriority="low" decoding="async" />
+      <img class="hero__slide" src="/Media/Diashow/04-PuppyInfrared-UPSCALED.webp" srcset="/Media/Diashow/04-PuppyInfrared-UPSCALED.webp 1600w, /Media/Diashow/04-PuppyInfrared-UPSCALED@2400.webp 2400w, /Media/Diashow/04-PuppyInfrared-UPSCALED@3200.webp 3150w" sizes="100vw" width="1600" height="1000" alt="" style="--slide-hell: 0.67" fetchpriority="low" decoding="async" />
+      <img class="hero__slide" src="/Media/Diashow/06-SpikePurpleDark-UPSCALED.webp" srcset="/Media/Diashow/06-SpikePurpleDark-UPSCALED.webp 1600w, /Media/Diashow/06-SpikePurpleDark-UPSCALED@2400.webp 2400w, /Media/Diashow/06-SpikePurpleDark-UPSCALED@3200.webp 3150w" sizes="100vw" width="1600" height="1000" alt="" style="--slide-hell: 1.19" fetchpriority="low" decoding="async" />
+      <img class="hero__slide" src="/Media/Diashow/08-RubberBW-UPSCALED.webp" srcset="/Media/Diashow/08-RubberBW-UPSCALED.webp 1600w, /Media/Diashow/08-RubberBW-UPSCALED@2400.webp 2400w, /Media/Diashow/08-RubberBW-UPSCALED@3200.webp 3150w" sizes="100vw" width="1600" height="1000" alt="" style="--slide-hell: 0.62" fetchpriority="low" decoding="async" />
+      <img class="hero__slide" src="/Media/Diashow/10-IMG_9873-2.webp" srcset="/Media/Diashow/10-IMG_9873-2.webp 1067w, /Media/Diashow/10-IMG_9873-2@2400.webp 1600w, /Media/Diashow/10-IMG_9873-2@3200.webp 2033w" sizes="100vw" width="1067" height="1600" alt="" style="--slide-hell: 0.88" fetchpriority="low" decoding="async" />
+    </div>
+  <!-- DIASHOW-ENDE -->
+    <div class="hero__grain"></div>
+    <!-- Umschaltmoment: kurzer Lichtstreifen wie beim Kanalwechsel am Roehrenfernseher -->
+    <div class="hero__zap" aria-hidden="true"></div>
+  </div>
+  <div class="hero__content">
+    <h1 class="hero__title">
+      <img class="hero__logo" id="titleMain" src="/Media/Logo_SVG/PURPUR-Logo-PurpleWhite.svg" alt="PURPUR" />
+    </h1>
+    <div class="hero__actions">
+      <a class="btn" href="https://ra.co/events/2518411" target="_blank" rel="noopener"><span>Tickets</span></a>
+      <a class="btn btn--ghost" href="https://boothbunny.net/pages/shop" target="_blank" rel="noopener"><span>Supporter Bundle</span></a>
+    </div>
+  </div>
+</header>
+
+<!-- Absperrband: schraeg ueber die Seite, laeuft von rechts nach links durch -->
+<section class="tape" id="details" aria-label="Event date and countdown">
+  <div class="tape__track" id="tapeTrack"></div>
+</section>
+
+<section class="about reveal" id="about">
+  <div class="wrap about__inner">
+    <p class="eyebrow decode">About</p>
+    <p class="about__lead">
+      <span class="decode fx-black">PURPUR is expression.</span>
+      <span class="decode fx-thin fx-italic">PURPUR is experience.</span>
+      <span class="decode fx-regular">PURPUR is subculture.</span>
+    </p>
+    <p class="about__body">The core is you, in the most pure form that exists. As a queer culture we unfold an immersive nightlife where music, expression, performance, and play converge. PURPUR exists to make the &lsquo;sub&rsquo; in &lsquo;culture&rsquo;. Make it creative, present local artists, and emerge spaces where pleasure, identity, and experimentation can thrive.</p>
+  </div>
+</section>
+
+<section class="visual reveal" id="visual">
+  <video class="visual__img" autoplay muted loop playsinline preload="metadata" poster="/Media/ColorPalette_Main.webp">
+    <source src="/Media/purpleWave1.mp4" type="video/mp4" />
+  </video>
+  <div class="visual__tear" aria-hidden="true"></div>
+  <div class="visual__word">
+    <span class="fx-line">
+      <span class="decode fx-extrabold">from fetish</span> <span class="decode mosher fx-acid">to fuckers.</span>
+    </span>
+    <span class="fx-line">
+      <span class="decode fx-thin fx-italic">from hounds</span> <span class="decode mosher fx-mint">to hoes.</span>
+    </span>
+    <span class="fx-line">
+      <span class="decode fx-thin">from purpur</span> <span class="decode mosher fx-purpur">to you.</span>
+    </span>
+  </div>
+</section>
+
+<!-- Bio / Vision: die Herkunft der Farbe, knapp gehalten. Ein Schlagsatz oben,
+     drei kurze Stationen, ein Schlusssatz. Bewusst kompakt, damit der Abschnitt
+     den Seitenfluss nicht anhaelt. -->
+<section class="origin reveal" id="origin">
+  <div class="wrap origin__inner">
+    <p class="origin__opener">
+      <span class="decode mosher">Long before it was a flag,</span>
+      <span class="decode mosher fx-acid">it was a code.</span>
+    </p>
+
+    <div class="origin__grid">
+      <div class="origin__step">
+        <p>Sappho weaving purple crowns in ancient Greece. Oscar Wilde pinning orchids to his lapel to spit in the face of Victorian morality. The color you wore when the world said you shouldn't exist, but you went out anyway.</p>
+      </div>
+      <div class="origin__step">
+        <p>In the 1950s the system tried to turn the color into a cage. They called it the Lavender Lads, and used the word to hunt us, fire us, and erase us from public life. We took their slur and turned it into armor.</p>
+      </div>
+      <div class="origin__step">
+        <p>In the first pride flag the purple stripe didn't represent peace, it represented the unhinged spirit of a community that refused to comply. Now the capitalistic machine wants to sell our history back to us, safe and clean and digestible.</p>
+      </div>
+    </div>
+
+    <p class="origin__close">
+      <span class="origin__no">Fuck that.</span> PURPUR is the reclamation of the
+      raw violet flame, back to the underground, back to the sweat, back to the
+      margins where it belongs.
+    </p>
+  </div>
+</section>
+
+<!-- Naechstes Event, im Stil von Ellies urspruenglichem Ticketabriss:
+     lila Flaeche, gestrichelte Kanten, kleines Label ueber grossem Wert.
+     Die ganze Flaeche ist ein Link zur RA-Seite. -->
+<section class="next" id="next">
+  <a class="next__link" href="https://ra.co/events/2518411" target="_blank" rel="noopener">
+    <div class="wrap next__inner">
+      <span class="next__no" aria-hidden="true">#1</span>
+      <div class="next__grid">
+        <div class="next__item">
+          <span class="next__label">Date</span>
+          <span class="next__value mosher next__value--gestapelt">03<span class="next__trenner">/</span><br />10<span class="next__trenner">/</span><br />26</span>
+        </div>
+        <div class="next__item next__item--wide">
+          <span class="next__label">Line-up</span>
+          <span class="next__value mosher">Boothbunny · DJ Anmeldung · <br />Floss · Falk · Novex (DE) · <br />Rubberax</span>
+        </div>
+        <div class="next__item">
+          <span class="next__label">Location</span>
+          <span class="next__value mosher">Berlin</span>
+          <span class="next__label next__label--zweit">Doors</span>
+          <span class="next__value mosher">22-06h</span>
+        </div>
+      </div>
+      <span class="next__arrow" aria-hidden="true">
+        <svg viewBox="0 0 48 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 12 H42 M32 3 L43 12 L32 21" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter"/>
+        </svg>
+      </span>
+      <span class="visually-hidden">Tickets and full line-up on Resident Advisor</span>
+    </div>
+  </a>
+</section>
+
+<section class="insight reveal" id="insight">
+  <div class="wrap">
+    <p class="eyebrow decode insight__eyebrow">Insight</p>
+    <div class="insight__inner">
+      <div class="insight__photo">
+        <img src="/Media/purpur-poster.webp" alt="PURPUR poster: 03-10-26, Berlin" width="1200" height="1697" loading="lazy" decoding="async" />
+      </div>
+      <div class="insight__copy">
+        <p class="insight__quote">
+          <span class="decode fx-black">&ldquo;PURPUR, the new experience born from diverse fetish communities of Berlin,</span><span class="insight__rest"> brings their signature queer, safe-space-first events to the scenes. A raw focus on unique analogue experiences, fetish and subculture expression creates a new space for everyone who wants to transform into the most unhinged version of themself.&rdquo;</span>
+        </p>
+        <p>PURPUR resembles not only a safe space for queer subcultures, but also a clear statement against the rising fascist, racist, misogynist &amp; kink-shaming society. Simply said: <span class="fx-purpur">we are anti-fuckface*</span>, but big supporters on consensual face fuck!</p>
+        <p class="insight__credit">Boothbunny &amp; Kili, creators of PURPUR</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span class="marquee__group">
+      <span>Fetish</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Self-Made</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Gear</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Rubber</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Femboy</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Tomboy</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Drag</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Queens</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Cosplay</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Workwear</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Biker</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Furry</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Canine</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Hound</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Puppy</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Slutty</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Skin</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Colorful</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Dark</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Gearheads</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>FLINTA</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Furballs</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Mascgirls</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Inbetweens</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Outstanders</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Gimps</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Slutbuns</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Fags</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Cumdumps</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Fuckers</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+    </span>
+    <span class="marquee__group">
+      <span>Fetish</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Self-Made</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Gear</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Rubber</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Femboy</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Tomboy</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Drag</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Queens</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Cosplay</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Workwear</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Biker</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Furry</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Canine</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Hound</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Puppy</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Slutty</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Skin</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Colorful</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Dark</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Gearheads</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>FLINTA</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Furballs</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Mascgirls</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Inbetweens</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Outstanders</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Gimps</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Slutbuns</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Fags</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Cumdumps</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+      <span>Fuckers</span>
+      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
+    </span>
+  </div>
+</div>
+
+<footer class="site-footer" id="footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <img src="/Media/Logo_SVG/PURPUR-Logo-PurpleWhite.svg" alt="PURPUR" />
+      </div>
+      <div class="footer__cols">
+        <div class="footer__col">
+          <h4>Event</h4>
+          <ul>
+            <li><a href="https://ra.co/events/2518411" target="_blank" rel="noopener">Tickets / RA</a></li>
+            <li><a href="https://boothbunny.net/pages/shop" target="_blank" rel="noopener">Supporter Bundle / Boothbunny</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Community</h4>
+          <ul>
+            <li><a href="https://instagram.com/purpur.berlin" target="_blank" rel="noopener">Instagram</a></li>
+            <li><a href="https://t.me/purpurberlin" target="_blank" rel="noopener">Telegram</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:info@purpur.berlin">info@purpur.berlin</a></li>
+            <li><a href="mailto:booking@purpur.berlin">booking@purpur.berlin</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>&copy; 2026 PURPUR.</span>
+      <span class="footer__legal"><a href="/imprint.html">Imprint</a> · <a href="/privacy.html">Privacy</a> · <a href="/community.html">Community</a></span>
+    </div>
+  </div>
+  <p class="footer__wordmark">
+    <span class="decode mosher">From subcultures</span><br>
+    <span class="decode mosher fx-mint">to domcultures.</span>
+  </p>
+</footer>
+
+<script src="/script.js?v=31"></script>
 </body>
 </html>

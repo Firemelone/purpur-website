@@ -1,0 +1,2231 @@
+/* ==========================================================================
+   PURPUR — fonts
+   ========================================================================== */
+
+@font-face {
+  font-family: "Mosher";
+  src: url("/assets/fonts/Mosher-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Furion";
+  src: url("/assets/fonts/GCFurion-Thin.woff2") format("woff2");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Furion";
+  src: url("/assets/fonts/GCFurion-ExtraLight.woff2") format("woff2");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Furion";
+  src: url("/assets/fonts/GCFurion-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Furion";
+  src: url("/assets/fonts/GCFurion-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Furion";
+  src: url("/assets/fonts/GCFurion-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Furion";
+  src: url("/assets/fonts/GCFurion-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Furion";
+  src: url("/assets/fonts/GCFurion-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Furion";
+  src: url("/assets/fonts/GCFurion-ExtraBold.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Furion";
+  src: url("/assets/fonts/GCFurion-Black.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ==========================================================================
+   Tokens
+   ========================================================================== */
+
+:root {
+  --purpur: #9d00ff;
+  --purpur-dim: #6c00b2;
+  --magenta: #ff00e2;
+  --blue: #1d00ff;
+  --acid: #e2ff00;
+  --mint: #00ff9d;
+  --orange: #ff9d00;
+
+  --bone: #f3ece4;
+  --black: #0a0a0a;
+  --deep: #1b0026;
+
+  --bg: var(--black);
+  --fg: var(--bone);
+
+  --font-display: "Mosher", cursive;
+  --font-body: "Furion", "Helvetica Neue", Arial, sans-serif;
+
+  --container: 1180px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.5;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+body.is-loading {
+  overflow: hidden;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+.wrap {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 56px);
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  color: var(--purpur);
+}
+
+.mosher {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 0.86;
+}
+
+/* ==========================================================================
+   Typographic mixing utilities — combine Furion weights/styles (and
+   occasionally Mosher) within a single heading for a playful, hand-set feel
+   ========================================================================== */
+
+.fx-black { font-weight: 900; }
+.fx-extrabold { font-weight: 800; }
+.fx-semibold { font-weight: 600; }
+.fx-regular { font-weight: 400; }
+.fx-thin { font-weight: 300; }
+.fx-italic { font-style: italic; }
+.fx-mint { color: var(--mint); }
+.fx-acid { color: var(--acid); }
+
+/* text-decode scramble target — see script.js runDecode() */
+.decode {
+  display: inline-block;
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+
+.btn {
+  --btn-wiggle: polygon(
+    3% 6px, 22% 1px, 40% 5px, 60% 1px, 79% 5px, 97% 2px,
+    100% 22%, calc(100% - 4px) 45%, 100% 68%, calc(100% - 3px) 90%,
+    80% calc(100% - 2px), 61% calc(100% - 6px), 41% calc(100% - 1px),
+    21% calc(100% - 5px), 4% calc(100% - 1px),
+    1px 80%, 5px 55%, 0px 30%, 4px 14%
+  );
+  /* same wobble path, 0-100 space, as a stroke-only SVG for outline states */
+  --btn-stroke-purpur: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M3,6 L22,1 L40,5 L60,1 L79,5 L97,2 L100,22 L96,45 L100,68 L97,90 L80,98 L61,94 L41,99 L21,95 L4,99 L1,80 L5,55 L0,30 L4,14 Z' fill='none' stroke='%239d00ff' stroke-width='2.5'/%3E%3C/svg%3E");
+  --btn-stroke-bone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M3,6 L22,1 L40,5 L60,1 L79,5 L97,2 L100,22 L96,45 L100,68 L97,90 L80,98 L61,94 L41,99 L21,95 L4,99 L1,80 L5,55 L0,30 L4,14 Z' fill='none' stroke='%23f3ece4' stroke-width='2.5'/%3E%3C/svg%3E");
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  border: none;
+  background: var(--purpur);
+  background-image: none;
+  background-size: 100% 100%;
+  clip-path: var(--btn-wiggle);
+  color: var(--black);
+  font-family: var(--font-body);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.95rem;
+  padding: 0.95em 1.7em;
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.btn > span {
+  position: relative;
+  z-index: 1;
+}
+
+.btn:hover,
+.btn:focus-visible {
+  background: transparent;
+  background-image: var(--btn-stroke-purpur);
+  clip-path: none;
+  color: var(--bone);
+  transform: translate(-2px, -2px);
+  filter: drop-shadow(4px 4px 0 var(--magenta));
+}
+
+.btn--ghost {
+  background: transparent;
+  background-image: var(--btn-stroke-bone);
+  clip-path: none;
+  color: var(--bone);
+}
+.btn--ghost:hover,
+.btn--ghost:focus-visible {
+  background: var(--bone);
+  background-image: none;
+  clip-path: var(--btn-wiggle);
+  color: var(--black);
+  filter: drop-shadow(4px 4px 0 var(--purpur));
+}
+
+/* ==========================================================================
+   Glitch text
+   ========================================================================== */
+
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .glitch:hover::before,
+  .glitch:hover::after,
+  .glitch.is-active::before,
+  .glitch.is-active::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    background: var(--bg);
+    clip-path: inset(0 0 0 0);
+  }
+  .glitch:hover::before,
+  .glitch.is-active::before {
+    color: var(--magenta);
+    animation: glitch-1 0.5s steps(2, end) infinite;
+  }
+  .glitch:hover::after,
+  .glitch.is-active::after {
+    color: var(--blue);
+    animation: glitch-2 0.5s steps(2, end) infinite;
+  }
+}
+
+@keyframes glitch-1 {
+  0% { clip-path: inset(10% 0 70% 0); transform: translate(-3px, -1px); }
+  30% { clip-path: inset(60% 0 5% 0); transform: translate(3px, 1px); }
+  60% { clip-path: inset(20% 0 55% 0); transform: translate(-2px, 1px); }
+  100% { clip-path: inset(80% 0 2% 0); transform: translate(2px, -1px); }
+}
+@keyframes glitch-2 {
+  0% { clip-path: inset(70% 0 5% 0); transform: translate(3px, 1px); }
+  30% { clip-path: inset(5% 0 80% 0); transform: translate(-3px, -1px); }
+  60% { clip-path: inset(45% 0 30% 0); transform: translate(2px, -1px); }
+  100% { clip-path: inset(15% 0 60% 0); transform: translate(-2px, 1px); }
+}
+
+/* glitch variant for replaced elements (img/svg) — ::before/::after don't
+   apply to them, so use a chromatic-aberration drop-shadow instead */
+img.glitch {
+  display: inline-block;
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* Beim Ueberfahren nur ein Farbversatz, ohne Zerschneiden und ohne
+     Dauerschleife — sonst zerfaellt das Logo, solange die Maus darauf steht. */
+  img.glitch:hover {
+    filter:
+      drop-shadow(4px 0 var(--magenta))
+      drop-shadow(-4px 0 var(--blue))
+      contrast(1.12);
+  }
+  /* Der automatische Puls darf kraeftiger sein, er dauert nur eine halbe
+     Sekunde und laeuft genau einmal. */
+  img.glitch.is-active {
+    filter:
+      drop-shadow(7px 0 var(--magenta))
+      drop-shadow(-7px 0 var(--blue))
+      drop-shadow(0 -5px var(--acid))
+      contrast(1.25);
+    animation: glitch-img-strong 0.5s steps(3, end) 1;
+  }
+}
+@keyframes glitch-img-strong {
+  0%   { transform: translate(0, 0) scaleX(1); clip-path: inset(0 0 0 0); }
+  15%  { transform: translate(-8px, 3px) scaleX(1.04); clip-path: inset(8% 0 62% 0); }
+  30%  { transform: translate(7px, -4px) skewX(-3deg); clip-path: inset(55% 0 6% 0); }
+  45%  { transform: translate(-6px, 2px) scaleX(0.97); clip-path: inset(30% 0 42% 0); }
+  60%  { transform: translate(8px, -3px) skewX(2deg); clip-path: inset(4% 0 74% 0); }
+  75%  { transform: translate(-5px, 4px); clip-path: inset(66% 0 12% 0); }
+  90%  { transform: translate(4px, -2px); clip-path: inset(18% 0 55% 0); }
+  100% { transform: translate(0, 0) scaleX(1); clip-path: inset(0 0 0 0); }
+}
+
+/* ==========================================================================
+   Nav
+   ========================================================================== */
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px clamp(20px, 5vw, 56px);
+  background: linear-gradient(to bottom, rgba(10, 10, 10, 0.85), transparent);
+  backdrop-filter: blur(2px);
+  transform: translateY(-100%);
+  transition: transform 0.35s ease;
+}
+
+.nav.is-visible {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav {
+    transition: none;
+  }
+}
+
+.nav__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.nav__brand img {
+  height: 40px;
+  width: auto;
+}
+
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 3vw, 34px);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav__links a {
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+}
+
+.nav__links a:not(.btn):hover {
+  color: var(--purpur);
+}
+
+.nav__links .btn {
+  padding: 0.7em 1.3em;
+  font-size: 0.78rem;
+}
+
+.nav__toggle {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  /* Kein Vollbild-Menue mehr. Es enthielt nur Tickets und Supporter Bundle,
+     die ohnehin im Hero, im Ticketabriss und in der Fusszeile stehen — ein
+     Overlay fuer zwei Knoepfe ist auf dem Handy Ballast.
+     Dazu kam ein handfester Fehler: .nav traegt transform und backdrop-filter,
+     beides macht die Kopfzeile zum Bezugsrahmen fuer position: fixed. Das
+     Menue haftete dadurch an der Kopfzeile statt am Fenster und oeffnete sich
+     76 px zu hoch, also mit abgeschnittenen Eintraegen. */
+  .nav__toggle { display: none; }
+
+  .nav__links {
+    position: static;
+    flex-direction: row;
+    height: auto;
+    background: none;
+    transform: none;
+    gap: 10px;
+  }
+
+  /* Neben dem Logo ist nur fuer einen Knopf Platz */
+  .nav__links li:nth-child(n + 2) { display: none; }
+
+  .nav__links .btn {
+    font-size: .8rem;
+    padding: .95em 1.2em;
+  }
+}
+
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  /* single-cell grid instead of flex: a background layer and the content
+     both stack in the same cell, and the (auto-height) row is guaranteed
+     to stretch to fill min-height when content is short, or grow to match
+     content when it's taller than one screen — either way hero__media's
+     grid-stretch sizing tracks it exactly, unlike absolute-positioning
+     over an auto-height flex parent, which could leave it short on some
+     narrow/tall viewports */
+  display: grid;
+  overflow: hidden;
+}
+
+.hero__media {
+  position: relative;
+  grid-column: 1;
+  grid-row: 1;
+  z-index: 0;
+}
+
+.hero__slideshow {
+  position: absolute;
+  inset: 0;
+}
+
+.hero__slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(0.35) contrast(1.08) saturate(1.1);
+  opacity: 0;
+}
+
+/* DIASHOW-ANFANG (erzeugt von tools/build-diashow.py) */
+@media (prefers-reduced-motion: no-preference) {
+  .hero__slide { animation: hero-slideshow 28s step-end infinite; }
+  .hero__slide:nth-child(1) { animation-delay: 0s; }
+  .hero__slide:nth-child(2) { animation-delay: 4s; }
+  .hero__slide:nth-child(3) { animation-delay: 8s; }
+  .hero__slide:nth-child(4) { animation-delay: 12s; }
+  .hero__slide:nth-child(5) { animation-delay: 16s; }
+  .hero__slide:nth-child(6) { animation-delay: 20s; }
+  .hero__slide:nth-child(7) { animation-delay: 24s; }
+  .hero__zap { animation: hero-zap 4s linear infinite; }
+}
+@keyframes hero-slideshow {
+  0%              { opacity: 1; }
+  14.2857%   { opacity: 0; }
+  100%            { opacity: 0; }
+}
+/* --zap-dreh setzt script.js bei jedem Durchlauf neu, damit der
+   Streifen nicht jedes Mal gleich liegt. Die Drehung steht vor dem
+   Stauchen, sonst kippt nicht der Streifen, sondern seine Achse. */
+@keyframes hero-zap {
+  0%       { opacity: 1; transform: rotate(var(--zap-dreh, 0deg)) scaleY(1); }
+  1.1250%  { opacity: 1; transform: rotate(var(--zap-dreh, 0deg)) scaleY(.06); }
+  2.5000%  { opacity: .9; transform: rotate(var(--zap-dreh, 0deg)) scaleY(.014); }
+  4.2500%  { opacity: 0; transform: rotate(var(--zap-dreh, 0deg)) scaleY(.005); }
+  100%     { opacity: 0; transform: rotate(var(--zap-dreh, 0deg)) scaleY(.005); }
+}
+/* DIASHOW-ENDE */
+  1%    { opacity: 1; }
+  5%    { opacity: 1; }
+  6.25% { opacity: 0; }
+  100%  { opacity: 0; }
+}
+
+.hero__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 50% 100%, rgba(10, 10, 10, 0.95) 0%, rgba(10, 10, 10, 0.6) 45%, rgba(157, 0, 255, 0.4) 100%),
+    linear-gradient(180deg, rgba(10, 10, 10, 0.65) 0%, rgba(10, 10, 10, 0.35) 30%, rgba(10, 10, 10, 0.88) 100%);
+}
+
+/* fine noise/grain texture over the hero, VHS-static feel */
+.hero__grain {
+  position: absolute;
+  inset: -10%;
+  z-index: 1;
+  /* Deutlich sichtbarer als frueher (war 0.1 / overlay). soft-light statt
+     overlay, weil overlay den Kontrast hochzieht und die Farben kippt —
+     gewuenscht ist eine graue Koernung, die das Bild in Ruhe laesst. */
+  opacity: 0.22;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero__grain {
+    animation: grain-shift 0.7s steps(4, end) infinite;
+  }
+}
+@keyframes grain-shift {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-2%, 1%); }
+  50% { transform: translate(1%, -2%); }
+  75% { transform: translate(-1%, -1%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* periodic horizontal tear — same VHS-tracking glitch used on the purple
+   wave video in the visual section, ported here for consistency */
+.hero__tear {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 0, 226, 0.55) 0px,
+      rgba(255, 0, 226, 0.55) 2px,
+      transparent 2px,
+      transparent 38px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(29, 0, 255, 0.5) 0px,
+      rgba(29, 0, 255, 0.5) 2px,
+      transparent 2px,
+      transparent 51px
+    );
+  mix-blend-mode: screen;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero__tear {
+    animation: visual-tear 5s steps(1, end) infinite;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__tear {
+    display: none;
+  }
+}
+
+.hero__content {
+  --hero-pad: clamp(20px, 5vw, 56px);
+  grid-column: 1;
+  grid-row: 1;
+  align-self: end;
+  position: relative;
+  z-index: 1;
+  padding: 140px var(--hero-pad) 64px;
+}
+
+
+.hero__title {
+  margin: 0;
+  color: var(--bone);
+  text-align: center;
+}
+
+.hero__logo {
+  display: inline-block;
+  width: clamp(220px, 46vw, 460px);
+  height: auto;
+  transition: filter 0.15s ease;
+}
+
+.hero__tagline {
+  margin: 0.7em auto 0;
+  max-width: min(92vw, 60ch);
+  text-align: center;
+  font-size: clamp(1rem, 2.4vw, 1.4rem);
+  color: rgba(243, 236, 228, 0.85);
+}
+
+.hero__tagline em {
+  font-style: italic;
+  color: var(--acid);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 34px;
+}
+
+
+/* ==========================================================================
+   Section basics
+   ========================================================================== */
+
+section {
+  position: relative;
+  padding: clamp(70px, 12vw, 140px) 0;
+}
+
+/* ==========================================================================
+   Visual break — full-bleed duotone photo + stamped word, no body copy
+   ========================================================================== */
+
+.visual {
+  position: relative;
+  min-height: 78vh;
+  padding: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.visual__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(0.25) contrast(1.15) brightness(0.55) saturate(1.05);
+}
+
+/* fine noise/grain, same trick as the hero — sits between the video and the
+   duotone tint so it reads as texture, not a flat overlay */
+.visual::before {
+  content: "";
+  position: absolute;
+  inset: -10%;
+  z-index: 1;
+  opacity: 0.12;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .visual::before {
+    animation: grain-shift 0.7s steps(4, end) infinite;
+  }
+}
+
+.visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(160deg, rgba(90, 0, 150, 0.55), rgba(157, 0, 255, 0.25) 45%, rgba(10, 10, 10, 0.75) 100%);
+  mix-blend-mode: color;
+}
+
+/* periodic horizontal tear — thin RGB-shifted bars that jump in, hold a
+   beat, then vanish, like a VHS tracking glitch */
+.visual__tear {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 0, 226, 0.55) 0px,
+      rgba(255, 0, 226, 0.55) 2px,
+      transparent 2px,
+      transparent 38px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(29, 0, 255, 0.5) 0px,
+      rgba(29, 0, 255, 0.5) 2px,
+      transparent 2px,
+      transparent 51px
+    );
+  mix-blend-mode: screen;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .visual__tear {
+    animation: visual-tear 5s steps(1, end) infinite;
+  }
+}
+
+@keyframes visual-tear {
+  0%, 91%, 100% { opacity: 0; transform: translate(0, 0); }
+  92% { opacity: 0.9; transform: translate(-1.5%, 6px); }
+  93% { opacity: 0; transform: translate(0, 0); }
+  94% { opacity: 0.8; transform: translate(2%, -10px); }
+  94.5% { opacity: 0; }
+  97% { opacity: 0.7; transform: translate(-2.5%, 3px); }
+  97.6% { opacity: 0; transform: translate(0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .visual__tear {
+    display: none;
+  }
+}
+
+.visual__word {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8%;
+  color: var(--bone);
+  background: linear-gradient(180deg, rgba(10, 10, 10, 0) 0%, rgba(10, 10, 10, 0.45) 100%);
+}
+
+.visual__word .fx-line {
+  display: block;
+}
+
+/* Ebenen, die sich zur Maus neigen. Die Perspektive bringt das Skript im
+   transform selbst mit — als perspective-Eigenschaft im Elternelement wuerde
+   sie dort einen Stapelkontext aufmachen und im Hero das Durchscheinen der
+   Wortmarke zerstoeren.
+   Das Nachziehen macht die Bewegung weich: Das Skript setzt nur den
+   Zielwinkel, den Weg dorthin uebernimmt der Browser. */
+.visual__word .fx-line,
+.hero__logo,
+.hero__actions,
+.insight__photo,
+.insight__copy {
+  transition: transform .4s cubic-bezier(.22, .61, .36, 1);
+  will-change: transform;
+}
+/* Die Wortmarke hatte schon einen Uebergang fuer den Filter — beide behalten */
+.hero__logo {
+  transition: transform .4s cubic-bezier(.22, .61, .36, 1), filter .15s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .visual__word .fx-line,
+  .hero__logo,
+  .hero__actions,
+  .insight__photo,
+  .insight__copy {
+    transition: none;
+    transform: none !important;
+  }
+}
+
+.visual__word span {
+  text-transform: uppercase;
+  font-size: clamp(3rem, 10vw, 8rem);
+  line-height: 0.86;
+}
+
+.visual__word .mosher {
+  font-family: var(--font-display);
+}
+
+/* ==========================================================================
+   About — short brand statement
+   ========================================================================== */
+
+.about {
+  background:
+    radial-gradient(120% 100% at 50% 0%, rgba(0, 255, 157, 0.06), transparent 60%),
+    var(--black);
+  text-align: center;
+}
+
+.about__inner {
+  max-width: 720px;
+}
+
+.about__lead {
+  margin: 14px 0 22px;
+  font-size: clamp(1.5rem, 3.4vw, 2.2rem);
+  font-weight: 700;
+  color: var(--bone);
+  line-height: 1.3;
+}
+
+.about__body {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: rgba(243, 236, 228, 0.75);
+  line-height: 1.6;
+}
+
+.about__signoff {
+  margin-top: 32px;
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  color: var(--purpur);
+  text-shadow: 2px 0 var(--magenta), -2px 0 var(--blue);
+}
+
+/* ==========================================================================
+   Insight — creators commentary + host photo placeholder
+   ========================================================================== */
+
+.insight {
+  background:
+    radial-gradient(100% 100% at 100% 50%, rgba(226, 255, 0, 0.05), transparent 60%),
+    var(--black);
+}
+
+.insight__eyebrow {
+  margin-bottom: 24px;
+}
+
+.insight__inner {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: clamp(30px, 6vw, 70px);
+  /* stretch: the photo fills the row to match the text column's height —
+     both start and end at the same line, no matter how tall the quote gets */
+  align-items: stretch;
+}
+
+@media (max-width: 760px) {
+  .insight__inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+.insight__photo {
+  position: relative;
+  min-height: 320px;
+  border: 1px solid rgba(243, 236, 228, 0.18);
+  border-radius: 10px;
+  background: var(--deep);
+  overflow: hidden;
+}
+
+@media (max-width: 760px) {
+  .insight__photo {
+    aspect-ratio: 4 / 5;
+    min-height: 0;
+  }
+}
+
+.insight__photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  filter: contrast(1.1);
+}
+
+/* color glitch flash over the photo, plays once as the section (and its
+   decode text) comes into view */
+.insight__photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  mix-blend-mode: color;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .insight.in-view .insight__photo::before {
+    animation: insight-color-glitch 900ms steps(2, end) 1;
+  }
+}
+
+@keyframes insight-color-glitch {
+  0% { opacity: 0.5; background: var(--magenta); }
+  15% { opacity: 0.45; background: var(--mint); }
+  30% { opacity: 0.4; background: var(--acid); }
+  45% { opacity: 0.5; background: var(--blue); }
+  60% { opacity: 0.3; background: var(--magenta); }
+  75% { opacity: 0.35; background: var(--mint); }
+  100% { opacity: 0; background: transparent; }
+}
+
+.insight__quote {
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+  line-height: 1.35;
+  color: var(--bone);
+  margin: 8px 0 22px;
+}
+
+.insight__copy p:not(.eyebrow):not(.insight__quote) {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: rgba(243, 236, 228, 0.75);
+}
+
+.insight__credit {
+  margin-top: 18px;
+  font-weight: 700;
+  color: var(--purpur);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.85rem;
+}
+
+/* ==========================================================================
+   Date / location stub block
+   ========================================================================== */
+
+
+
+@media (max-width: 900px) {
+}
+@media (max-width: 520px) {
+}
+
+
+
+/* ==========================================================================
+   Marquee ticker
+   ========================================================================== */
+
+.marquee {
+  background: var(--black);
+  border-top: 1px solid rgba(243, 236, 228, 0.08);
+  border-bottom: 1px solid rgba(243, 236, 228, 0.08);
+  overflow: hidden;
+  padding: 18px 0;
+}
+
+.marquee__track {
+  display: flex;
+  width: max-content;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .marquee__track {
+    /* 20 s stammten aus der Zeit mit drei kurzen Phrasen. Mit 30 Woertern ist
+       die Spur rund 10 000 px breit, das waeren 260 px pro Sekunde gewesen —
+       zum Mitlesen viel zu schnell. 80 s ergeben rund 65 px/s. */
+    animation: marquee-scroll 80s linear infinite;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee__group:nth-child(2) {
+    display: none;
+  }
+}
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee__group {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding-right: 28px;
+  flex-shrink: 0;
+  font-family: var(--font-body);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: clamp(1rem, 2.2vw, 1.4rem);
+  color: var(--bone);
+  white-space: nowrap;
+}
+
+.marquee__icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.site-footer {
+  background: var(--deep);
+  border-top: 1px solid rgba(243, 236, 228, 0.08);
+  padding: 64px 0 32px;
+  overflow: hidden;
+}
+
+.footer__top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+  justify-content: space-between;
+  padding-bottom: 44px;
+}
+
+.footer__brand img {
+  height: 54px;
+  width: auto;
+  margin-bottom: 16px;
+}
+
+.footer__brand p {
+  max-width: 32ch;
+  color: rgba(243, 236, 228, 0.65);
+  font-size: 0.92rem;
+}
+
+.footer__cols {
+  display: flex;
+  gap: clamp(30px, 6vw, 90px);
+  flex-wrap: wrap;
+}
+
+.footer__col h4 {
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--purpur);
+  margin: 0 0 14px;
+}
+
+.footer__col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer__col a {
+  text-decoration: none;
+  font-weight: 600;
+  color: rgba(243, 236, 228, 0.85);
+}
+.footer__col a:hover {
+  color: var(--magenta);
+}
+
+.footer__bottom {
+  border-top: 1px solid rgba(243, 236, 228, 0.1);
+  padding-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: rgba(243, 236, 228, 0.5);
+}
+
+.footer__bottom a {
+  text-decoration: underline;
+}
+
+.footer__wordmark {
+  margin: 48px 0 8px;
+  text-align: center;
+  font-size: clamp(2rem, 7vw, 5.5rem);
+  line-height: 0.9;
+  color: var(--bone);
+}
+
+/* ==========================================================================
+   Shard mark — shared glitch-shard glyph (loader + cursor)
+
+   A single jagged arrow silhouette (tip = the actual pointer position,
+   top-left point) drawn three times and offset per layer to fake a
+   chromatic-aberration / VHS glitch fringe, same trick as the .glitch
+   text treatment used elsewhere on the page.
+   ========================================================================== */
+
+.shard {
+  fill: var(--bone);
+}
+.shard--magenta {
+  fill: var(--magenta);
+  transform: translate(-1.6px, 1px);
+  mix-blend-mode: screen;
+  opacity: 0.75;
+}
+.shard--blue {
+  fill: var(--blue);
+  transform: translate(1.6px, -1px);
+  mix-blend-mode: screen;
+  opacity: 0.75;
+}
+
+/* ==========================================================================
+   Loader
+   ========================================================================== */
+
+
+
+
+
+@media (prefers-reduced-motion: no-preference) {
+  .loader__mark .shard--magenta,
+}
+
+@keyframes shard-glitch-jitter {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-3px, 2px); }
+  40% { transform: translate(2px, -2px) rotate(-4deg); }
+  60% { transform: translate(-2px, -1px); }
+  80% { transform: translate(3px, 1px) rotate(3deg); }
+}
+@keyframes shard-glitch-flicker {
+  0%, 100% { opacity: 0.75; }
+  50% { opacity: 0.25; }
+}
+@keyframes loader-pulse {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 0.95; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader__mark,
+  .loader__mark .shard--magenta,
+  .loader__mark .shard--blue,
+}
+
+/* ==========================================================================
+   Custom cursor — glitch shard
+
+   Contrast fix: the whole cursor is composited with mix-blend-mode:
+   difference against everything under it, so it auto-inverts against any
+   background (purple hero, black sections, the looping video) instead of
+   relying on a fixed fill color that can vanish on a matching background.
+   ========================================================================== */
+
+html.has-custom-cursor,
+html.has-custom-cursor a,
+html.has-custom-cursor button,
+html.has-custom-cursor input,
+html.has-custom-cursor textarea,
+html.has-custom-cursor select,
+html.has-custom-cursor label,
+html.has-custom-cursor [role="button"] {
+  cursor: none !important;
+}
+
+
+html.has-custom-cursor .cursor {
+  opacity: 1;
+}
+
+
+/* interactable state — buttons, links, cards */
+
+/* pressed / active state */
+
+/* loading state — page (or async content) still loading */
+@keyframes cursor-loading-glitch {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.15) rotate(-8deg); }
+  50% { transform: scale(0.95) rotate(4deg); }
+  75% { transform: scale(1.1) rotate(-3deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor__svg,
+  .cursor.is-hover .cursor__svg,
+}
+
+/* hide the custom cursor entirely on touch/coarse-pointer devices */
+@media (hover: none), (pointer: coarse) {
+}
+
+/* ==========================================================================
+   Reveal-on-scroll utility (generic sections)
+   ========================================================================== */
+
+/* Kein Einblenden beim Scrollen mehr: die Abschnitte stehen von Anfang an da
+   und schieben sich beim Scrollen einfach ueber die feste Bildebene.
+   Wichtig auch technisch — ein transform auf dem Abschnitt haette ihn zum
+   Bezugsrahmen fuer die feste Ebene gemacht und den Effekt zerstoert. */
+.reveal { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ==========================================================================
+   Rechtstexte (Imprint, Privacy)
+   Eigene, ruhige Seiten: dieselbe Farb- und Schriftwelt wie die Landingpage,
+   aber ohne Diashow, Glitch und Marquee — Pflichtangaben muessen lesbar sein.
+   ========================================================================== */
+
+.legal {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.legal__header {
+  padding: 2rem 1.5rem;
+  border-bottom: 1px solid rgba(243, 236, 228, .12);
+}
+.legal__header img { width: 140px; height: auto; display: block; }
+
+.legal__main { flex: 1; padding: 3rem 1.5rem 4rem; }
+
+.legal__inner {
+  max-width: 46rem;
+  margin-inline: auto;
+}
+
+.legal__inner h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--purpur);
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  line-height: 1.05;
+  margin: 0 0 1.5rem;
+}
+
+.legal__inner h2 {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--mint);
+  margin: 2.5rem 0 .5rem;
+}
+
+.legal__inner p { margin-block: .9rem; line-height: 1.65; }
+.legal__inner a { color: var(--purpur); }
+.legal__inner a:hover { color: var(--mint); }
+.legal__inner strong { font-weight: 700; }
+
+.legal__note {
+  color: rgba(243, 236, 228, .55);
+  font-size: .9rem;
+  margin-top: -.5rem;
+}
+
+.legal__footer {
+  border-top: 1px solid rgba(243, 236, 228, .12);
+  padding: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  font-size: .9rem;
+  color: rgba(243, 236, 228, .55);
+}
+.legal__footer a { color: inherit; }
+.legal__footer nav { display: flex; gap: 1rem; }
+
+/* ==========================================================================
+   Ladesequenz
+   Erst dreht sich das Symbol einmal um sich selbst, dann glitcht es zum
+   vollen Wortmarken-Logo. Beide Ebenen liegen uebereinander, getauscht wird
+   ueber .is-glitching.
+   ========================================================================== */
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  background: var(--black);
+  transition: opacity .5s ease, visibility .5s ease;
+}
+.loader.is-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+.loader__stage {
+  position: relative;
+  width: min(68vw, 460px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+}
+
+.loader__symbol,
+.loader__full {
+  grid-area: 1 / 1;
+  max-width: 100%;
+  transition: opacity .18s steps(2, end);
+}
+.loader__symbol { width: 68%; }
+.loader__full   { width: 100%; opacity: 0; }
+
+.loader.is-glitching .loader__symbol { opacity: 0; }
+.loader.is-glitching .loader__full {
+  opacity: 1;
+  animation: loader-glitch .55s steps(2, end) 1;
+}
+
+/* Harte Sprunge statt weicher Blende: Versatz in Magenta und Blau, wie ein
+   verrutschter Druck */
+@keyframes loader-glitch {
+  0%   { transform: translate(0, 0);        filter: none; }
+  15%  { transform: translate(-3%, 1%);     filter: drop-shadow(6px 0 0 var(--magenta)) drop-shadow(-6px 0 0 var(--blue)); }
+  30%  { transform: translate(4%, -2%);     filter: drop-shadow(-8px 0 0 var(--acid)); }
+  45%  { transform: translate(-2%, 2%);     filter: drop-shadow(5px 0 0 var(--magenta)); }
+  60%  { transform: translate(3%, 0);       filter: drop-shadow(-4px 0 0 var(--blue)); }
+  80%  { transform: translate(-1%, -1%);    filter: none; }
+  100% { transform: translate(0, 0);        filter: none; }
+}
+
+body.is-loading { overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .loader__symbol { opacity: 0; }
+  .loader__full { opacity: 1; animation: none; }
+}
+
+/* ==========================================================================
+   Sticker-Cursor
+   Ein Kreis mit Zackenrand, wie ein aufgeklebter Aufkleber. Folgt dem Zeiger
+   praktisch ohne Nachlauf, siehe script.js.
+   ========================================================================== */
+
+.has-custom-cursor,
+.has-custom-cursor a,
+.has-custom-cursor button,
+.has-custom-cursor .btn { cursor: none; }
+
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 34px;
+  height: 34px;
+  z-index: 9998;
+  pointer-events: none;
+  will-change: transform;
+  transition: opacity .2s ease;
+}
+.cursor.is-loading { opacity: 0; }
+.cursor__svg { width: 100%; height: 100%; overflow: visible; display: block; }
+
+.cursor__sticker {
+  fill: var(--magenta);
+  stroke: var(--bone);
+  stroke-width: 1.5;
+  transform-origin: 50% 50%;
+  transition: fill .15s ease, transform .18s cubic-bezier(.34,1.56,.64,1);
+  animation: sticker-spin 9s linear infinite;
+}
+
+@keyframes sticker-spin { to { transform: rotate(360deg); } }
+
+.cursor.is-hover .cursor__sticker { fill: var(--acid); transform: scale(1.45); }
+.cursor.is-active .cursor__sticker { fill: var(--mint); transform: scale(.8); }
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor__sticker { animation: none; }
+}
+@media (hover: none), (pointer: coarse) {
+  .cursor { display: none; }
+}
+
+/* ==========================================================================
+   Absperrband mit Countdown
+   Schraeg ueber die Seite gelegt und von rechts nach links durchlaufend.
+   Die Spur enthaelt denselben Block zweimal; verschoben wird um genau die
+   halbe Breite, dadurch entsteht keine Luecke beim Umbruch.
+   ========================================================================== */
+
+
+/* Zweites Band als Gegenschraege dahinter, das erzeugt die Kreuzung, die man
+   von echten Absperrbaendern kennt */
+
+
+
+
+
+
+.cd, .cd-d { display: inline-block; font-variant-numeric: tabular-nums; }
+.cd-d { min-width: .62em; text-align: center; }
+.cd-sep { opacity: .55; padding-inline: .12em; }
+
+@media (prefers-reduced-motion: reduce) {
+}
+
+/* ==========================================================================
+   Schnitt-Wobble
+   Waehrend des Decodes bekommt jeder Buchstabe kurzzeitig einen zufaelligen
+   GC-Furion-Schnitt. Vorbild ist das Announcement-Reel, in dem innerhalb
+   eines Wortes mehrere Strichstaerken nebeneinander stehen.
+   ========================================================================== */
+
+/* Bewusst inline und nicht inline-block: als inline-block duerfte der Browser
+   zwischen JEDEM Buchstaben umbrechen, dann landet etwa ein einzelnes Komma
+   allein auf der naechsten Zeile. Schnitt, Neigung und Farbe wirken auf inline
+   genauso. */
+.wb { display: inline; transition: none; }
+.wb-thin       { font-weight: 100; }
+.wb-extralight { font-weight: 200; }
+.wb-light      { font-weight: 300; }
+.wb-regular    { font-weight: 400; }
+.wb-medium     { font-weight: 500; }
+.wb-semibold   { font-weight: 600; }
+.wb-bold       { font-weight: 700; }
+.wb-extrabold  { font-weight: 800; }
+.wb-black      { font-weight: 900; }
+/* GC Furion hat keine echten Kursiven, der Browser schraegt selbst */
+.wb-oblique    { font-style: italic; }
+.wb-acid       { color: var(--acid); }
+.wb-mint       { color: var(--mint); }
+.wb-magenta    { color: var(--magenta); }
+
+/* ==========================================================================
+   Anpassungen nach Durchsicht
+   Diese Regeln stehen bewusst am Ende und ueberschreiben die darueberliegenden
+   Werte, damit Ellies urspruenglicher Aufbau nachvollziehbar bleibt.
+   ========================================================================== */
+
+/* Ersatzschrift: "cursive" haette bei fehlendem Mosher auf Comic Sans
+   zurueckgegriffen. Eine schmale Grotesk trifft den Charakter deutlich besser. */
+:root {
+  --font-display: "Mosher", "Arial Black", "Helvetica Neue", sans-serif;
+}
+
+/* Fliesstext: kleiner und in Light. Die Seite lebt von den grossen Setzungen,
+   der Lesetext soll sich dagegen zuruecknehmen. */
+body { font-weight: 300; font-size: 0.95rem; }
+
+.about__body,
+.insight__copy p,
+.footer__brand p,
+.footer__col a,
+.legal__inner p {
+  font-weight: 300;
+}
+
+.about__body {
+  font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+  line-height: 1.7;
+}
+.insight__copy p { font-size: clamp(0.88rem, 1.4vw, 1rem); line-height: 1.7; }
+.hero__tagline   { font-size: clamp(0.95rem, 1.9vw, 1.15rem); font-weight: 300; }
+.legal__inner p  { font-size: 0.95rem; }
+
+/* Die neongelbe Hervorhebung im Hero faellt weg: der Satz soll in einer Farbe
+   stehen. */
+.hero__tagline em { color: inherit; font-style: italic; }
+
+/* Hintergrundbilder deutlich sichtbarer: weniger Entsaettigung, heller, und
+   der Verdunkelungsverlauf zieht nicht mehr so stark zu. */
+.hero__slide {
+  /* --slide-hell setzt tools/build-diashow.py je Bild im HTML, damit helle und
+     dunkle Aufnahmen unter demselben Verlauf gleich gut tragen. */
+  filter: grayscale(0.12) contrast(1.12) saturate(1.25) brightness(var(--slide-hell, 1));
+}
+.hero__media::after {
+  background:
+    linear-gradient(180deg, rgba(10, 10, 10, 0.40) 0%, rgba(10, 10, 10, 0.24) 32%, rgba(10, 10, 10, 0.76) 100%) !important;
+}
+
+/* Kein eigener Stapelkontext auf dem Inhalt: Das Logo muss sich mit dem Foto
+   dahinter mischen koennen und nicht mit dem durchsichtigen Kasten darum.
+   Dass der Inhalt trotzdem ueber der Bildebene liegt, regelt die Reihenfolge
+   im Markup. */
+.hero__content { z-index: auto; }
+
+/* Frueher lag hier ein dunkler Schleier hinter der Wortmarke, damit das Logo
+   auf jedem Slide gleich gut las. Der war als weicher Fleck im Bild sichtbar
+   und hat den Blend zunichte gemacht: Das Logo mischte sich mit dem Schleier
+   statt mit dem Foto und wirkte deckend. Seit die Diashow beim Bauen je Bild
+   auf eine einheitliche Helligkeit gebracht wird, braucht es ihn nicht mehr. */
+/* Das Logo soll wirken wie eine Scheibe aus eingefaerbtem Acrylglas: das
+   Bild dahinter scheint gedaempft durch, rosa getoent, aber die Farbtoene
+   bleiben richtig. Frueher stand hier mix-blend-mode: hard-light — das
+   verrechnet die Kanaele und hat gerade das Lila verfaelscht.
+   Echte Transparenz trifft es besser: Was durchscheint, faerbt sich von
+   selbst rosa, weil die untere Haelfte der Wortmarke magenta ist. */
+.hero__logo {
+  mix-blend-mode: normal;
+  opacity: .88;
+  /* Kein Farbfilter: Das fruehere saturate() hat das Lila #9d00ff Richtung
+     Magenta geschoben, daher wirkte die Wortmarke rosastichig. drop-shadow
+     ruehrt die Farben dagegen nicht an, es legt nur die Silhouette noch
+     einmal versetzt darunter.
+     Ohne Weichzeichnung (0 Radius) bleibt der Schatten scharf und nimmt die
+     ausgefransten Kanten der Wortmarke mit. Drei leicht gegeneinander
+     versetzte Lagen statt einer einzigen: Das bricht den Rand auf, statt eine
+     saubere zweite Kontur zu ziehen. Gebraucht wird er nur ueber hellen
+     Motiven — auf dunklem Grund faellt er von selbst weg. */
+  filter:
+    drop-shadow(2px 3px 0 rgba(10, 10, 10, .30))
+    drop-shadow(-1px 2px 0 rgba(10, 10, 10, .16))
+    drop-shadow(3px 1px 0 rgba(10, 10, 10, .12));
+}
+
+/* Langsame Eigenbewegung der Bildebene. Die Diashow steht sonst voellig
+   still, was neben dem harten Schnitt tot wirkt. Die Bilder driften deshalb
+   dauerhaft ganz langsam hin und her.
+   Die Stuetzpunkte liegen bewusst unregelmaessig — gleichmaessige Abstaende
+   ergaeben ein sichtbares Pendeln, so wirkt es wie ein leichtes Treiben.
+   Die Vergroesserung auf 105 % schafft den Rand, in den hinein verschoben
+   wird; ohne sie kaeme an den Kanten der Hintergrund durch. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero__slideshow { animation: hero-drift 52s ease-in-out infinite; }
+}
+.hero__slideshow { transform: scale(1.05); }
+
+@keyframes hero-drift {
+  0%   { transform: scale(1.05) translate(0, 0); }
+  9%   { transform: scale(1.05) translate(-.55%, .35%); }
+  21%  { transform: scale(1.05) translate(.42%, .62%); }
+  30%  { transform: scale(1.05) translate(-.28%, -.48%); }
+  44%  { transform: scale(1.05) translate(.68%, -.22%); }
+  55%  { transform: scale(1.05) translate(-.72%, .18%); }
+  63%  { transform: scale(1.05) translate(.24%, .55%); }
+  77%  { transform: scale(1.05) translate(-.44%, -.6%); }
+  88%  { transform: scale(1.05) translate(.58%, .28%); }
+  100% { transform: scale(1.05) translate(0, 0); }
+}
+
+/* Kanalwechsel-Streifen. Liegt ueber der Bildebene und wird nur im Moment des
+   Bildwechsels sichtbar: erst ein kurzer lilafarbener Aufblitz ueber die volle
+   Hoehe, der dann in einen waagerechten Lichtstreifen zusammenfaellt und
+   erlischt — der Zap vom Roehrenfernseher.
+   mix-blend-mode: screen, damit der Streifen Licht hinzufuegt statt das Bild
+   zuzudecken. */
+.hero__zap {
+  position: absolute;
+  /* Ragt ueber den Rand hinaus: Der Streifen wird bei jedem Durchlauf leicht
+     gedreht, und ein randbuendiges Element wuerde dabei in den Ecken Luecken
+     lassen. */
+  inset: -12%;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: center;
+  mix-blend-mode: screen;
+  background: linear-gradient(
+    180deg,
+    rgba(157, 0, 255, 0) 0%,
+    rgba(157, 0, 255, .16) 34%,
+    rgba(214, 158, 255, .30) 50%,
+    rgba(157, 0, 255, .16) 66%,
+    rgba(157, 0, 255, 0) 100%
+  );
+}
+
+/* Hyperpop: Buttons greller, Ecken spielerischer, Ueberschriften mit dem
+   Farbversatz aus den Plakaten. */
+.btn { letter-spacing: .08em; }
+.btn:hover { background: var(--acid); color: var(--black); }
+.btn--ghost:hover { background: var(--mint); color: var(--black); }
+
+/* Farbversatz wie auf den Flyern ("NOLLENDORFPLATZ") */
+.fx-split {
+  text-shadow:
+    -0.03em 0 0 var(--magenta),
+     0.03em 0 0 var(--mint);
+}
+
+.eyebrow {
+  font-weight: 800;
+  letter-spacing: .28em;
+}
+
+/* Kleine Auszeichner in Kursiv, wie "DJ & Hybrid" / "Hosted by" auf den
+   Plakaten */
+.footer__col h4 {
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.legal__cta { margin-top: 2rem; }
+.legal__cta .btn { color: var(--black); }
+
+/* ==========================================================================
+   Absperrband mit Countdown
+   Liegt bewusst UEBER der Kante zwischen Diashow und naechstem Abschnitt,
+   nicht als eigener schwarzer Streifen dazwischen. Deshalb negative
+   Aussenabstaende und ein eigener Stapelplatz.
+   ========================================================================== */
+
+.tape {
+  position: relative;
+  z-index: 5;
+  /* zieht das Band ueber die Kante der Diashow und in den Folgeabschnitt */
+  margin-block: clamp(-5rem, -7vw, -3.5rem);
+  padding-block: clamp(1.1rem, 2.6vw, 2rem);
+  background: var(--purpur);
+  color: var(--black);
+  border-block: 4px solid var(--black);
+  transform: rotate(-3.4deg) scale(1.08);
+  overflow: hidden;
+  white-space: nowrap;
+  box-shadow: 0 0 60px rgba(157, 0, 255, .45);
+}
+
+.tape::before {
+  content: "";
+  position: absolute;
+  inset: -40% 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent 0 26px,
+    rgba(10, 10, 10, .16) 26px 52px
+  );
+  pointer-events: none;
+}
+
+.tape__track {
+  display: inline-flex;
+  align-items: center;
+  animation: tape-run 34s linear infinite;
+  will-change: transform;
+}
+
+@keyframes tape-run {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+.tape__group {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(1.4rem, 3.2vw, 2.8rem);
+  padding-right: clamp(1.4rem, 3.2vw, 2.8rem);
+}
+
+.tape__item {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: clamp(1.3rem, 3vw, 2.3rem);
+  letter-spacing: .05em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+/* Die Symbole brauchen festen Platz, sonst schieben sie sich in die Ziffern */
+/* Genauso hoch wie die Versalien daneben. 1em waere hier falsch: das bezoege
+   sich auf die Schriftgroesse des Bandes, nicht auf die der Textelemente.
+   Deshalb dieselbe clamp-Formel wie .tape__item, leicht reduziert, damit das
+   Symbol optisch auf Hoehe der Grossbuchstaben sitzt statt darueber
+   hinauszuragen. */
+.tape__icon {
+  /* Breite ausdruecklich setzen, nicht auto: als Flex-Element leitet ein Bild
+     seine Grundbreite sonst aus der Naturgroesse (106 px) ab und nicht aus der
+     hier gesetzten Hoehe. Das Symbol ragte dadurch ueber den rechten Rand
+     seiner Gruppe hinaus und lag auf dem Text der naechsten. Seitenverhaeltnis
+     der SVG ist 106:150. */
+  --icon-h: clamp(1.02rem, 2.35vw, 1.8rem);
+  flex: 0 0 auto;
+  height: var(--icon-h);
+  width: calc(var(--icon-h) * 0.707);
+  filter: brightness(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tape__track { animation: none; }
+  .tape { transform: none; margin-block: 0; }
+}
+
+/* ==========================================================================
+   Origin — Bio und Vision
+   Der laengste Text der Seite. Als Textwand waere er unlesbar, deshalb ein
+   Wechsel aus grossen Schlagsaetzen in Mosher und kleiner Erzaehlung in
+   Furion Light, aufgereiht an einer senkrechten Linie.
+   ========================================================================== */
+
+
+
+
+/* Zeitachse */
+
+
+
+
+
+/* Schluesselsatz, gross gesetzt */
+
+
+
+.fx-magenta { color: var(--magenta); }
+.fx-purpur  { color: var(--purpur); font-weight: 700; }
+.fx-light   { font-weight: 300; }
+
+/* Insight: ruhiger setzen. Nur der Einstieg fett, der Rest liest sich normal. */
+.insight__rest {
+  font-weight: 300;
+}
+
+/* Footer: Wortmarke steht ganz unten, die Rechtslinks darueber und ohne
+   Unterstreichung. */
+.footer__legal a { text-decoration: none; }
+.footer__legal a:hover { text-decoration: none; color: var(--acid); }
+.footer__wordmark { margin-top: clamp(2rem, 5vw, 3.5rem); }
+
+/* Das Band ragt in den Hero hinein, deshalb brauchen die Schaltflaechen darunter
+   mehr Abstand — sonst schiebt sich das Band darueber. */
+.hero__content { padding-bottom: clamp(150px, 19vh, 215px); }
+
+
+/* ==========================================================================
+   Origin — Bio und Vision
+   Bewusst kompakt: ein Schlagsatz, drei kurze Stationen nebeneinander statt
+   untereinander, ein Schlusssatz. Die drei Spalten sparen gegenueber der
+   frueheren Zeitachse rund die halbe Hoehe.
+   ========================================================================== */
+
+.origin {
+  position: relative;
+  padding-block: clamp(3.5rem, 8vw, 6rem);
+  background:
+    radial-gradient(80% 55% at 12% 0%, rgba(157, 0, 255, .14), transparent 62%),
+    var(--black);
+}
+
+.origin__opener {
+  margin: 0;
+  max-width: 22ch;
+  font-size: clamp(1.9rem, 5.2vw, 3.6rem);
+  line-height: .95;
+  text-transform: uppercase;
+}
+.origin__opener .fx-acid { display: block; }
+
+.origin__grid {
+  margin-top: clamp(2rem, 4.5vw, 3.2rem);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: clamp(1.4rem, 3vw, 2.6rem);
+}
+
+/* Die drei Spalten sind unterschiedlich lang; als Raster-Elemente sind sie aber
+   gleich hoch. Eine Abschlusslinie unten schliesst deshalb alle drei auf
+   derselben Hoehe ab, und der unterschiedlich weit reichende Text faellt kaum
+   noch auf. */
+.origin__step {
+  display: flex;
+  flex-direction: column;
+  padding-top: .9rem;
+  padding-bottom: .9rem;
+  border-top: 2px solid rgba(157, 0, 255, .45);
+  border-bottom: 2px solid rgba(157, 0, 255, .18);
+}
+.origin__step p { flex: 1 1 auto; }
+
+.origin__step p {
+  margin: 0;
+  font-weight: 300;
+  font-size: clamp(.84rem, 1.3vw, .95rem);
+  line-height: 1.65;
+  color: rgba(243, 236, 228, .76);
+}
+
+.origin__close {
+  margin: clamp(2rem, 4.5vw, 3rem) 0 0;
+  max-width: 62ch;
+  font-weight: 300;
+  font-size: clamp(.92rem, 1.6vw, 1.08rem);
+  line-height: 1.7;
+}
+
+/* "Fuck that." sitzt jetzt im Satz statt als Riesenblock daneben — der Bruch
+   wirkt so beilaeufiger und der Abschnitt bleibt ruhig. */
+.origin__no {
+  font-family: var(--font-body);
+  font-weight: 900;
+  color: var(--magenta);
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   Naechstes Event
+   Ticketabriss im Stil des urspruenglichen Entwurfs: lila Flaeche, gestrichelte
+   Kanten, kleines Label ueber grossem Wert. Die gesamte Flaeche ist ein Link
+   zur RA-Seite, deshalb der Pfeil rechts.
+   ========================================================================== */
+
+.next {
+  position: relative;
+  background: var(--purpur);
+  color: var(--black);
+  overflow: hidden;
+  /* Die allgemeine section-Regel setzt oben und unten bis zu 140 px Abstand.
+     Der Abriss soll aber ein flaches Band sein, nicht ein gepolsterter
+     Abschnitt — der eigene Abstand steckt in .next__link. */
+  padding-block: 0;
+}
+
+.next__link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  padding-block: clamp(2rem, 5vw, 3.4rem);
+  transition: background-color .2s ease;
+}
+.next__link:hover { background: var(--acid); }
+
+.next__inner {
+  max-width: 1340px;
+  display: flex;
+  align-items: center;
+  gap: clamp(1.4rem, 4vw, 3rem);
+}
+
+.next__grid {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: clamp(1rem, 2.6vw, 2.4rem);
+  align-items: start;
+  border-top: 3px dashed rgba(10, 10, 10, .4);
+  border-bottom: 3px dashed rgba(10, 10, 10, .4);
+  padding-block: clamp(1.2rem, 3vw, 2.2rem);
+}
+
+.next__label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  opacity: .72;
+  margin-bottom: 8px;
+}
+
+.next__value {
+  display: block;
+  font-size: clamp(1.1rem, 2.4vw, 1.9rem);
+  line-height: 1.05;
+}
+
+
+/* Datum und Line-up stehen beide dreizeilig nebeneinander und sollen Zeile
+   fuer Zeile auf einer Hoehe liegen. Dafuer teilen sie sich dieselbe absolute
+   Zeilenhoehe — nur so trifft die dritte Datumszeile die dritte Line-up-Zeile.
+   Das Datum darf dabei groesser sein, solange die Zahlen in die gemeinsame
+   Zeile passen: Mosher ist rund 0.86em hoch, bei Faktor 1.18 bleibt es knapp
+   darunter und stoesst nicht an die Zeile darueber. */
+.next__grid {
+  --wert: clamp(1.1rem, 2.4vw, 1.9rem);
+  --zeile: calc(var(--wert) * 1.05);
+}
+.next__value--gestapelt {
+  font-size: calc(var(--wert) * 1.18);
+  line-height: var(--zeile);
+}
+/* Am Rechner steht das Datum dreizeilig, die Schraegstriche waeren dort
+   ueberfluessig. Auf dem Handy ist es umgekehrt: eine Zeile, dafuer mit
+   Trennern. Beides steckt im Markup, sichtbar ist je nach Breite nur eines. */
+.next__trenner { display: none; }
+.next__item--wide .next__value { line-height: var(--zeile); }
+
+/* Luft zwischen Datum und Line-up, damit die beiden Bloecke nicht
+   ineinanderlaufen. */
+.next__item:first-child { padding-right: clamp(1.8rem, 5.5vw, 5rem); }
+
+/* Zweites Beschriftungspaar in derselben Spalte (Times unter Location).
+   Braucht Abstand nach oben, sonst klebt es am Wert darueber. */
+.next__label--zweit { margin-top: .7em; }
+
+/* Das Line-up steht in derselben Groesse wie die uebrigen Werte — kleiner
+   gesetzt wirkte es wie ein Fehler. Wenn es doch umbrechen muss, verteilt
+   text-wrap: balance die Namen gleichmaessig auf beide Zeilen, statt einen
+   einzelnen unten allein stehen zu lassen. */
+/* Die Umbrueche stehen jetzt fest im Markup, damit die drei Zeilen genau so
+   fallen wie gewuenscht. text-wrap: balance wuerde dagegen arbeiten. */
+
+/* Laufende Nummer der Ausgabe, gross und fett links neben den Angaben */
+.next__no {
+  flex: 0 0 auto;
+  font-family: var(--font-body);
+  font-weight: 900;
+  font-size: clamp(2.6rem, 7vw, 5.5rem);
+  line-height: .85;
+  letter-spacing: -.02em;
+  align-self: center;
+}
+
+.next__arrow {
+  flex: 0 0 auto;
+  width: clamp(46px, 7vw, 84px);
+  color: var(--black);
+  transition: transform .25s cubic-bezier(.34, 1.4, .64, 1);
+}
+.next__arrow svg { display: block; width: 100%; height: auto; }
+.next__link:hover .next__arrow { transform: translateX(12px); }
+
+@media (max-width: 860px) {
+  .next__grid { grid-template-columns: 1fr 1fr; }
+  .next__item--wide { grid-column: 1 / -1; }
+}
+@media (max-width: 620px) {
+  /* Datum und Location teilen sich die obere Zeile, das Line-up laeuft
+     darunter ueber die volle Breite. Die Zuordnung passiert ueber
+     grid-column/row, weil das Line-up im Markup zwischen den beiden steht. */
+  .next__inner { flex-direction: column; align-items: stretch; gap: 1rem; }
+  .next__grid {
+    grid-template-columns: 1fr;
+    gap: 1.3rem;
+  }
+  /* Reihenfolge: Datum, Location, Line-up — alles untereinander ueber die
+     volle Breite. Das Datum traegt den Abschnitt und steht deshalb deutlich
+     groesser als der Rest. Die Zuordnung laeuft ueber grid-row, weil das
+     Line-up im Markup zwischen Datum und Location steht. */
+  .next__item:nth-child(1) { grid-row: 1; }
+  .next__item:nth-child(3) { grid-row: 2; }
+  .next__item--wide { grid-row: 3; }
+  .next__item { grid-column: 1 / -1; }
+
+  .next__item:nth-child(1) .next__value {
+    font-size: 3.1rem;
+    line-height: .95;
+  }
+  .next__no { align-self: flex-start; font-size: 3.2rem; }
+  .next__arrow { align-self: flex-end; width: 56px; }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%);
+  white-space: nowrap; border: 0;
+}
+
+/* ==========================================================================
+   Feinschliff
+   ========================================================================== */
+
+/* Logo und Schaltflaechen sitzen hoeher, seit die Tagline darunter weg ist */
+.hero__content {
+  align-self: center;
+  padding-bottom: clamp(150px, 19vh, 215px);
+}
+
+/* Beim Ueberfahren von Klickbarem wird der Cursor invertierend, man sieht also
+   hindurch statt darauf. difference kehrt die Farben darunter um; damit das
+   wirkt, darf der Sticker keine eigene Fuellung mehr ueberlagern. */
+.cursor.is-hover {
+  mix-blend-mode: difference;
+}
+.cursor.is-hover .cursor__sticker {
+  fill: var(--bone);
+  stroke: var(--bone);
+  transform: scale(1.45);
+}
+
+/* Insight schmaler setzen */
+.insight .wrap { max-width: 62rem; }
+.insight__copy p { max-width: 46ch; }
+
+/* Insight: der Flyer steht fuer sich, leicht angeschraegt wie ein abgelegter
+   Druck. */
+.insight__photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform: rotate(-1.5deg);
+  transition: transform .3s ease;
+}
+.insight__photo img:hover { transform: rotate(0deg) scale(1.02); }
+
+/* ==========================================================================
+   Feste Bildebene
+   Die Diashow bleibt beim Scrollen stehen, alles andere zieht darueber hinweg.
+   Umgesetzt ueber position: fixed statt background-attachment: fixed — letzteres
+   ignoriert iOS Safari seit jeher, das Bild wuerde dort einfach mitscrollen.
+   Die Ebene liegt auf z-index 0, die Abschnitte darueber auf 1; wer einen
+   eigenen Hintergrund hat, deckt sie zu, der Hero laesst sie durchscheinen.
+   ========================================================================== */
+
+.hero__media {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Der Hero selbst braucht keine eigene Flaeche mehr, er zeigt die feste Ebene */
+.hero { background: transparent; }
+.hero__content { position: relative; z-index: 1; }
+
+/* Alles nach dem Hero schiebt sich darueber und muss deshalb decken */
+.about,
+.visual,
+.origin,
+.next,
+.insight,
+.marquee,
+.site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* Das Absperrband liegt bewusst hoeher: es ragt mit negativen Aussenabstaenden
+   in die Nachbarabschnitte hinein und wurde sonst von der schwarzen Flaeche
+   des About-Abschnitts verdeckt. */
+.tape {
+  position: relative;
+  z-index: 6;
+}
+
+/* Bei "Bewegung reduzieren" bleibt die Ebene im Fluss, damit nichts unter
+   feststehenden Bildern durchwandert. */
+@media (prefers-reduced-motion: reduce) {
+  .hero__media { position: absolute; }
+}
+
+/* ==========================================================================
+   Mobil
+   ========================================================================== */
+
+/* Das gedrehte Absperrband, der Korn-Overlay und die Laufschriften ragen
+   konstruktionsbedingt ueber den Rand. Auf dem Handy liess sich die Seite
+   dadurch seitlich verschieben (407 statt 390 px). overflow-x: clip statt
+   hidden, weil clip keinen eigenen Scrollbereich aufmacht und damit weder
+   die feste Bildebene noch sticky-Elemente stoert. */
+html,
+body {
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+/* Tippziele: die Links in Fusszeile und Rechtszeile waren nur 13 bis 16 px
+   hoch. Auf dem Handy trifft man das kaum; Apple und Google empfehlen rund
+   44 px. Die Schrift bleibt gleich, nur die anklickbare Flaeche waechst. */
+@media (max-width: 720px) {
+  /* Tippflaeche bleibt bei rund 40 px hoch, aber ohne zusaetzlichen
+     Aussenabstand — sonst reisst die Spalte optisch auseinander. */
+  .footer__col li { margin-block: 0; }
+  .footer__col a,
+  .footer__legal a,
+  .legal__footer a {
+    display: inline-block;
+    padding-block: 11px;
+    line-height: 1.3;
+  }
+  .footer__legal { display: inline-flex; flex-wrap: wrap; gap: 4px 10px; }
+
+  /* Die Beschriftungen im Ticketabriss lagen bei 11,5 px */
+  .next__label { font-size: .8rem; }
+
+  /* Fusszeile untereinander statt gequetscht nebeneinander */
+  .footer__cols { gap: 1.6rem 2rem; }
+}
+
+@media (max-width: 720px) {
+  /* Auf dem Handy stehen die drei Origin-Bloecke ohnehin untereinander. Die
+     Linien haben dort nichts mehr zu trennen, sondern zerhacken nur den
+     Lesefluss. Am Rechner bleiben sie, dort ordnen sie die drei Spalten. */
+  .origin__step {
+    border-top: none;
+    border-bottom: none;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .origin__grid { gap: 1.6rem; }
+
+  /* Datum, Line-up und Location im Ticketabriss waren mit 17,6 px zu klein
+     gegenueber dem uebrigen Auftritt. */
+  .next__value { font-size: 1.5rem; }
+  .next__item--wide .next__value { font-size: 1.28rem; }
+}
+
+
+
+@media (max-width: 720px) {
+  /* Die Fusszeile lief auf dem Handy als Flex-Zeile mit Umbruch: die drei
+     Spalten wurden dadurch unterschiedlich breit (221, 84 und 158 px) und
+     brachen 2-dann-1 um, was ausgefranst wirkte. Jetzt ein festes Raster aus
+     zwei gleichen Spalten mit gemeinsamen linken Kanten. */
+  .footer__top {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .footer__cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.8rem 1.2rem;
+  }
+
+  .footer__col h4 { margin-bottom: .2rem; }
+
+  .footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .4rem;
+  }
+}
+
+/* Das Absperrband ist gedreht, die Flaeche des Folgeabschnitts beginnt aber an
+   einer waagerechten Kante. Dadurch schaute links ein schwarzer Keil neben dem
+   Band hervor, waehrend rechts daneben noch das Foto stand.
+   Die Flaeche startet jetzt oberhalb des Bandes, sodass das Band vollstaendig
+   davor liegt. Der Inhalt bleibt an Ort und Stelle, weil der negative
+   Aussenabstand durch denselben Innenabstand ausgeglichen wird. Der Wert
+   waechst mit der Fensterbreite, weil auch der Hoehenversatz der Drehung
+   mit der Breite zunimmt. */
+/* Das Absperrband ist gedreht, eine waagerechte Kante der Folgeflaeche liess
+   deshalb entweder einen schwarzen Keil daneben stehen oder einen schwarzen
+   Balken darueber. Die Flaeche wird jetzt parallel zum Band angeschnitten und
+   beginnt ein Stueck unterhalb dessen Oberkante, sodass das Band die Naht immer
+   verdeckt. Der Hoehenversatz der Drehung waechst mit der Fensterbreite,
+   deshalb in vw. */
+.about {
+  --band-neigung: 6.15vw;   /* Hoehenversatz des Bandes ueber die Fensterbreite */
+  --band-tiefe: 51px;       /* wie weit die Flaeche unter die Bandkante rutscht */
+
+  margin-top: calc(-6vw - 95px);
+  /* Der eigene Abstand des Abschnitts muss erhalten bleiben, sonst rueckt der
+     Inhalt um genau diesen Betrag nach oben an den Vorgaenger heran. */
+  padding-top: calc(6vw + 95px + clamp(70px, 12vw, 140px));
+
+  clip-path: polygon(
+    0 calc(var(--band-tiefe) + var(--band-neigung)),
+    100% var(--band-tiefe),
+    100% 100%,
+    0 100%
+  );
+}
+
+@media (max-width: 620px) {
+  /* Nur auf dem Handy weicht der Ticketabriss von Mosher ab: dort steht das
+     Datum allein gross in der Display-Schrift, Location und Line-up treten in
+     GC Furion zurueck. Am Rechner bleibt der Abriss durchgehend in Mosher. */
+  .next__item:nth-child(3) .next__value,
+  .next__item--wide .next__value {
+    font-family: var(--font-body);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    line-height: 1.25;
+  }
+  .next__item:nth-child(3) .next__value { font-weight: 500; }
+  .next__item--wide .next__value { font-weight: 300; font-style: italic; }
+
+  /* Die festen Umbrueche im Line-up gelten nur am Rechner, wo drei gleich
+     lange Zeilen neben dem Datum stehen sollen. Auf der schmalen Spalte am
+     Handy bricht der Text ohnehin um; die zusaetzlichen Umbrueche liessen
+     dort einen einzelnen Trennpunkt am Zeilenende stehen und darunter eine
+     Luecke. Deshalb hier ausblenden — das Leerzeichen davor bleibt stehen
+     und trennt die Namen sauber. */
+  .next__item--wide .next__value br { display: none; }
+
+  /* Datum auf dem Handy einzeilig als 03/10/26 statt dreizeilig — neben dem
+     ohnehin umbrechenden Line-up braucht es die Staffelung nicht mehr. */
+  .next__value--gestapelt br { display: none; }
+  .next__trenner { display: inline; }
+}
+
+/* ==========================================================================
+   Hero auf dem Handy: Wortmarke und Knoepfe groesser
+   Auf dem schmalen Schirm wirkte beides verloren. Die Wortmarke laeuft jetzt
+   fast ueber die volle Breite, die Knoepfe stehen untereinander statt
+   nebeneinander und nutzen dieselbe Breite — nebeneinander waeren sie bei
+   dieser Schriftgroesse zu schmal geworden und haetten umgebrochen.
+   ========================================================================== */
+
+@media (max-width: 620px) {
+  /* Wortmarke und Knoepfe teilen sich dieselbe Breite, damit ihre Kanten
+     uebereinander stehen. Eine gemeinsame Variable statt zweier gleicher
+     Werte — sonst laufen sie beim naechsten Nachjustieren auseinander. */
+  .hero__content { --hero-spalte: min(78vw, 340px); }
+
+  .hero__logo { width: var(--hero-spalte); }
+
+  .hero__actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin-top: 42px;
+  }
+  .hero__actions .btn {
+    width: var(--hero-spalte);
+    justify-content: center;
+    font-size: 1rem;
+    padding: 1.15em 1.4em;
+  }
+
+  /* Kuerzeres Nachziehen als am Rechner: Die Neigung folgt hier dem Geraet in
+     der Hand. Bei 0.4s haette sie sichtbar hinterhergehinkt und die Bewegung
+     traege wirken lassen. */
+  .visual__word .fx-line,
+  .hero__logo,
+  .hero__actions,
+  .insight__photo,
+  .insight__copy {
+    transition-duration: .18s;
+  }
+}
+
+/* ==========================================================================
+   Ladebildschirm auf dem Handy: nur das drehende Symbol
+   Die volle Wortmarke braucht Breite, um zu wirken; auf dem schmalen Schirm
+   soll allein das Symbol laufen. Weil die Choreografie das Symbol sonst zum
+   Schluss ausblendet, um Platz fuer die Wortmarke zu machen, muss es hier
+   ausdruecklich sichtbar bleiben.
+   ========================================================================== */
+
+@media (max-width: 620px) {
+  /* Zwei Klassen im Selektor, weil die Wortmarke auch .glitch traegt und
+     img.glitch { display: inline-block } sonst gewinnt — bei ungleicher
+     Spezifitaet hilft die spaetere Stelle in der Datei nicht. */
+  .loader .loader__full { display: none; }
+  .loader.is-glitching .loader__symbol { opacity: 1; }
+}
