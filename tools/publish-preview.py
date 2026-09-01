@@ -68,7 +68,16 @@ def relativ(ordner: pathlib.Path) -> int:
             continue
         alt = p.read_text()
         neu = alt.replace('href="/"', 'href="index.html"')
-        neu = re.sub(r'(src|href)="/(?!/)', r'\1="', neu)
+        neu = re.sub(r'(src|href|poster)="/(?!/)', r'\1="', neu)
+        # srcset ist eine Liste aus "Adresse Breitenangabe", durch Kommas
+        # getrennt. Die einfache Ersetzung oben fasst nur den ersten Eintrag
+        # und laesst die uebrigen absolut stehen — genau daran ist die
+        # Diashow in der Vorschau schon einmal ins Leere gelaufen.
+        neu = re.sub(
+            r'srcset="([^"]*)"',
+            lambda m: 'srcset="' + re.sub(r'(^|,\s*)/(?!/)', r'\1', m.group(1)) + '"',
+            neu,
+        )
         neu = neu.replace('url("/', 'url("')
         # Die Linkvorschau braucht volle Adressen, relative Pfade werten
         # viele Scraper nicht aus. Die zeigen bisher auf die Wurzel und
@@ -79,6 +88,23 @@ def relativ(ordner: pathlib.Path) -> int:
             p.write_text(neu)
             geaendert += 1
     return geaendert
+
+
+def pruefe(ordner: pathlib.Path) -> None:
+    """Abbrechen, wenn noch ein Pfad auf die Domainwurzel zeigt.
+
+    Unter /preview/ laeuft jeder verbliebene absolute Pfad ins Leere. Lieber
+    hier abbrechen als eine halb kaputte Vorschau veroeffentlichen.
+    """
+    treffer = []
+    for p in sorted(ordner.rglob("*")):
+        if p.suffix not in (".html", ".css", ".js") or not p.is_file():
+            continue
+        for n, zeile in enumerate(p.read_text().splitlines(), 1):
+            for fund in re.findall(r'(?:[a-zA-Z-]+="|url\(")/(?!/)[^"\s]*', zeile):
+                treffer.append(f"  {p.relative_to(ordner)}:{n}  {fund[:80]}")
+    if treffer:
+        sys.exit("Es zeigen noch Pfade auf die Domainwurzel:\n" + "\n".join(treffer[:20]))
 
 
 def main() -> None:
@@ -104,7 +130,8 @@ def main() -> None:
                 ziel.unlink()
 
         n = relativ(inhalt)
-        print(f"{n} Dateien auf relative Pfade umgeschrieben.")
+        pruefe(inhalt)
+        print(f"{n} Dateien auf relative Pfade umgeschrieben, keine Wurzelpfade uebrig.")
 
         # main in einem eigenen Arbeitsbaum, damit der preview-Zweig
         # hier ausgecheckt bleiben kann
