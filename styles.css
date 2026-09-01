@@ -1447,13 +1447,11 @@ body { font-weight: 300; font-size: 0.95rem; }
    ohnehin dafuer, dass der Inhalt ueber dem Bild liegt. */
 .hero__content { z-index: auto; }
 
-/* Die Diashow wechselt zwischen sehr hellen und sehr dunklen Bildern. Ohne
-   Zwischenschicht saeuft das Logo im Hellen ab und verschwindet im Dunklen,
-   je nach Slide. Ein weicher Schleier direkt hinter der Wortmarke gibt dem
-   Blend einen berechenbaren Untergrund, ohne das Foto zuzudecken. */
-.hero__title {
-  background: radial-gradient(58% 56% at 50% 48%, rgba(10, 10, 10, .78) 0%, rgba(10, 10, 10, .5) 55%, transparent 78%);
-}
+/* Frueher lag hier ein dunkler Schleier hinter der Wortmarke, damit das Logo
+   auf jedem Slide gleich gut las. Der war als weicher Fleck im Bild sichtbar
+   und hat den Blend zunichte gemacht: Das Logo mischte sich mit dem Schleier
+   statt mit dem Foto und wirkte deckend. Seit die Diashow beim Bauen je Bild
+   auf eine einheitliche Helligkeit gebracht wird, braucht es ihn nicht mehr. */
 .hero__logo {
   mix-blend-mode: hard-light;
   filter: saturate(1.35) contrast(1.12) brightness(1.06);

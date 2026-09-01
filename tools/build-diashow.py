@@ -24,9 +24,22 @@ REPO = pathlib.Path(__file__).resolve().parent.parent
 QUELLE = pathlib.Path.home() / "Documents" / "Claude" / "purpur-diashow"
 ZIEL = REPO / "Media" / "Diashow"
 
-MAXDIM = 1600      # reicht fuer Vollbild, auch auf Retina
-TARGET = 170_000   # Zielgroesse je Bild
-MINQ = 68          # darunter wird die Kompression sichtbar
+# Zwei Groessen je Bild. Ein Handy braucht bei dreifacher Pixeldichte rund
+# 1200 echte Pixel Breite, ein Rechner mit Retina-Schirm ueber 2800. Eine
+# einzige Datei kann beides nicht: 1600 Pixel wurden auf dem Rechner um mehr
+# als das Doppelte hochgerechnet und sahen matschig aus, waehrend eine grosse
+# Datei fuers Handy reine Verschwendung waere. Der Browser sucht sich per
+# srcset selbst die passende aus und laedt nur die.
+#
+# Statt einer festen Zielgroesse in Bytes gilt ein Budget je Pixel. Sonst
+# bekommt ein hochkantes Bild mit mehr Flaeche automatisch weniger Qualitaet
+# als ein flaches — genau daran sind vorher zwei koernige Fotos auf die
+# schlechteste Stufe gerutscht.
+GROESSEN = (
+    (1600, 0.130),   # Handys und einfache Bildschirme
+    (2200, 0.100),   # Retina-Rechner; grob koennen wir hier sparen, weil
+)                    # Artefakte auf mehr Pixeln weniger auffallen
+MINQ = 72          # darunter wird die Kompression sichtbar
 SEKUNDEN_PRO_BILD = 4
 
 # Helligkeitsausgleich. Die Bilder kommen aus ganz unterschiedlichen Quellen —
@@ -44,27 +57,35 @@ CSS_A = "/* DIASHOW-ANFANG (erzeugt von tools/build-diashow.py) */"
 CSS_E = "/* DIASHOW-ENDE */"
 
 
-def konvertiere(quelle: pathlib.Path, ziel: pathlib.Path) -> int:
-    """Nach WebP wandeln; Qualitaet so weit senken, bis die Zielgroesse passt."""
+def konvertiere(quelle: pathlib.Path, ziel: pathlib.Path,
+                maxdim: int, bpp: float) -> tuple[int, int, int]:
+    """Nach WebP wandeln. Gibt Qualitaet, Breite und Hoehe zurueck.
+
+    Hochgerechnet wird nie: ist die Vorlage kleiner als maxdim, bleibt sie
+    wie sie ist. Kuenstlich aufgeblasene Pixel bringen keine Schaerfe, nur
+    Dateigroesse.
+    """
     im = Image.open(quelle)
     w, h = im.size
-    faktor = min(1.0, MAXDIM / max(w, h))
+    faktor = min(1.0, maxdim / max(w, h))
+    breite, hoehe = round(w * faktor), round(h * faktor)
     eingabe = quelle
     temp = None
     if faktor < 1.0:
         temp = pathlib.Path(tempfile.mkstemp(suffix=".png")[1])
-        im.convert("RGB").resize((int(w * faktor), int(h * faktor)), Image.LANCZOS).save(temp)
+        im.convert("RGB").resize((breite, hoehe), Image.LANCZOS).save(temp)
         eingabe = temp
-    for q in (84, 80, 76, 72, MINQ):
+    budget = breite * hoehe * bpp
+    for q in (88, 84, 80, 76, MINQ):
         subprocess.run(
             ["cwebp", "-q", str(q), "-m", "6", "-quiet", str(eingabe), "-o", str(ziel)],
             check=True,
         )
-        if ziel.stat().st_size <= TARGET:
+        if ziel.stat().st_size <= budget:
             break
     if temp:
         temp.unlink()
-    return q
+    return q, breite, hoehe
 
 
 def helligkeit(ziel: pathlib.Path) -> float:
@@ -79,13 +100,22 @@ def helligkeit(ziel: pathlib.Path) -> float:
     return round(min(HELLIGKEIT_MAX, max(HELLIGKEIT_MIN, ZIEL_HELLIGKEIT / mittel)), 2)
 
 
-def bild_block(namen: list[tuple[str, float]]) -> str:
+def bild_block(eintraege: list[dict]) -> str:
+    """Das <img> mit srcset: der Browser waehlt selbst die passende Groesse.
+
+    sizes="100vw" sagt ihm, dass das Bild den ganzen Schirm fuellt. Zusammen
+    mit der Pixeldichte des Geraets rechnet er sich daraus die noetige Breite
+    aus und laedt genau eine der angebotenen Dateien.
+    """
     zeilen = [MARKE_A, '  <div class="hero__slideshow" aria-hidden="true">']
-    for i, (n, hell) in enumerate(namen):
+    for i, e in enumerate(eintraege):
         prio = "high" if i == 0 else "low"
+        srcset = ", ".join(f"/Media/Diashow/{n} {b}w" for n, b in e["fassungen"])
         zeilen.append(
-            f'      <img class="hero__slide" src="/Media/Diashow/{n}" alt="" '
-            f'style="--slide-hell: {hell}" '
+            f'      <img class="hero__slide" src="/Media/Diashow/{e["fassungen"][0][0]}" '
+            f'srcset="{srcset}" sizes="100vw" '
+            f'width="{e["breite"]}" height="{e["hoehe"]}" alt="" '
+            f'style="--slide-hell: {e["hell"]}" '
             f'fetchpriority="{prio}" decoding="async" />'
         )
     zeilen += ["    </div>", MARKE_E]
@@ -150,22 +180,38 @@ def main() -> None:
     for alt in ZIEL.glob("*.webp"):
         alt.unlink()
 
-    namen, gesamt = [], 0
+    eintraege = []
+    je_fassung = [0] * len(GROESSEN)
     for p in bilder:
-        ziel = ZIEL / (p.stem + ".webp")
-        q = konvertiere(p, ziel)
-        hell = helligkeit(ziel)
-        namen.append((ziel.name, hell))
-        gesamt += ziel.stat().st_size
-        print(f"  {p.name:<40} q{q}  {ziel.stat().st_size / 1024:5.0f} KB  Helligkeit x{hell}")
+        fassungen, zeile = [], f"  {p.name:<26}"
+        for stufe, (maxdim, bpp) in enumerate(GROESSEN):
+            anhang = "" if stufe == 0 else f"@{maxdim}"
+            ziel = ZIEL / f"{p.stem}{anhang}.webp"
+            q, b, h = konvertiere(p, ziel, maxdim, bpp)
+            groesse = ziel.stat().st_size
+            je_fassung[stufe] += groesse
+            fassungen.append((ziel.name, b))
+            zeile += f"  {b}x{h} q{q} {groesse / 1024:4.0f}KB"
+            if stufe == 0:
+                erste = (b, h, helligkeit(ziel))
+        # Doppelte Breiten wuerden das srcset unbrauchbar machen: der Browser
+        # koennte die Fassungen nicht auseinanderhalten. Passiert, wenn die
+        # Vorlage kleiner ist als die groessere Stufe.
+        fassungen = list({b: (n, b) for n, b in fassungen}.values())
+        eintraege.append({"fassungen": fassungen, "breite": erste[0],
+                          "hoehe": erste[1], "hell": erste[2]})
+        print(zeile + f"  Helligkeit x{erste[2]}")
 
     html = REPO / "index.html"
     css = REPO / "styles.css"
-    html.write_text(ersetze(html.read_text(), MARKE_A, MARKE_E, bild_block(namen), "index.html"))
-    css.write_text(ersetze(css.read_text(), CSS_A, CSS_E, css_block(len(namen)), "styles.css"))
+    html.write_text(ersetze(html.read_text(), MARKE_A, MARKE_E, bild_block(eintraege), "index.html"))
+    css.write_text(ersetze(css.read_text(), CSS_A, CSS_E, css_block(len(eintraege)), "styles.css"))
 
-    print(f"\nGesamt: {gesamt / 1048576:.2f} MB")
-    print(f"Ein Durchlauf dauert {len(namen) * SEKUNDEN_PRO_BILD} Sekunden.")
+    print()
+    for (maxdim, _), summe in zip(GROESSEN, je_fassung):
+        print(f"Fassung bis {maxdim}px: {summe / 1048576:.2f} MB "
+              f"— so viel laedt ein Geraet, das diese Stufe waehlt.")
+    print(f"Ein Durchlauf dauert {len(eintraege) * SEKUNDEN_PRO_BILD} Sekunden.")
     print("index.html und styles.css sind aktualisiert. Jetzt pruefen und pushen.")
 
 
