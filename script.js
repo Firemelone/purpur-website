@@ -219,8 +219,14 @@ if (loader) {
   const ausrichten = () => {
     if (!buehne || !vollesLogo || !heldenLogo) return;
     buehne.style.transform = "";
+    // Die Wortmarke neigt sich zur Maus. Bewegt sich der Zeiger schon
+    // waehrend des Ladens, verfaelscht die Neigung die Messung — deshalb
+    // wird sie hier kurz ausgesetzt und danach wiederhergestellt.
+    const geneigt = heldenLogo.style.transform;
+    heldenLogo.style.transform = "none";
     const versatz =
       heldenLogo.getBoundingClientRect().top - vollesLogo.getBoundingClientRect().top;
+    heldenLogo.style.transform = geneigt;
     if (Number.isFinite(versatz)) buehne.style.transform = `translateY(${versatz}px)`;
   };
 
@@ -259,38 +265,49 @@ if (loader) {
 }
 
 // ---------------------------------------------------------------------------
-// Zeilen im Videoabschnitt neigen sich zur Maus
+// Elemente neigen sich zur Maus
 // ---------------------------------------------------------------------------
-// Die drei Zeilen sollen der Maus zugewandt stehen, als wuerden sie sie
+// Mehrere Stellen der Seite wenden sich dem Zeiger zu, als wuerden sie ihn
 // ansehen. Der Ausschlag richtet sich danach, wie weit der Zeiger von der
-// Mitte des Blocks entfernt ist — auf eine halbe Blockbreite gerechnet und
-// gedeckelt, damit er nicht weiter kippt, je weiter man wegzieht.
-// Die unteren Zeilen schwenken etwas weniger als die obere. Dieser Versatz
-// laesst die drei wie hintereinanderliegende Ebenen wirken statt wie eine
-// starre Platte.
-const wortBlock = document.querySelector(".visual__word");
+// Mitte des Bezugsrahmens entfernt ist — auf eine halbe Rahmenbreite
+// gerechnet und gedeckelt, damit nichts weiterkippt, je weiter man wegzieht.
+//
+// Die uebergebenen Ebenen schwenken unterschiedlich stark: die erste am
+// meisten, jede weitere etwas weniger. Dieser Versatz laesst sie wie
+// hintereinanderliegende Schichten wirken statt wie eine starre Platte.
+//
+// Die Perspektive steckt bewusst im transform der Ebene selbst und nicht als
+// perspective-Eigenschaft im Elternelement: Letzteres wuerde dort einen
+// Stapelkontext aufmachen. Im Hero wuerde das die Wortmarke vom Foto
+// abschneiden, sie mischt sich dann nur noch mit dem durchsichtigen Kasten
+// darum und das Durchscheinen waere weg.
 const magNeigen =
   window.matchMedia("(hover: hover)").matches &&
   !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-if (wortBlock && magNeigen) {
-  const zeilen = [...wortBlock.querySelectorAll(".fx-line")];
-  const MAX_GRAD = 11;
-  let angefordert = false;
+function neigungAnhaengen(bezug, ebenen, maxGrad = 11, stufe = 0.18, tiefe = 900) {
+  if (!bezug || !ebenen.length) return;
 
+  let angefordert = false;
   const klemmen = (v) => Math.max(-1, Math.min(1, v));
 
-  const neigen = (e) => {
+  const setzen = (e) => {
     angefordert = false;
-    const r = wortBlock.getBoundingClientRect();
+    const r = bezug.getBoundingClientRect();
     if (!r.width || !r.height) return;
     const x = klemmen((e.clientX - (r.left + r.width / 2)) / (r.width / 2));
     const y = klemmen((e.clientY - (r.top + r.height / 2)) / (r.height / 2));
-    zeilen.forEach((zeile, i) => {
-      const tiefe = 1 - i * 0.18;
-      const drehY = x * MAX_GRAD * tiefe;
-      const drehX = -y * MAX_GRAD * tiefe;
-      zeile.style.transform = `rotateX(${drehX.toFixed(2)}deg) rotateY(${drehY.toFixed(2)}deg)`;
+    ebenen.forEach((el, i) => {
+      const anteil = Math.max(0.2, 1 - i * stufe);
+      const drehX = (-y * maxGrad * anteil).toFixed(2);
+      const drehY = (x * maxGrad * anteil).toFixed(2);
+      el.style.transform = `perspective(${tiefe}px) rotateX(${drehX}deg) rotateY(${drehY}deg)`;
+    });
+  };
+
+  const ruhen = () => {
+    ebenen.forEach((el) => {
+      el.style.transform = `perspective(${tiefe}px) rotateX(0deg) rotateY(0deg)`;
     });
   };
 
@@ -299,15 +316,44 @@ if (wortBlock && magNeigen) {
     (e) => {
       if (angefordert) return;
       angefordert = true;
-      requestAnimationFrame(() => neigen(e));
+      requestAnimationFrame(() => setzen(e));
     },
     { passive: true }
   );
 
-  // Zeiger verlaesst das Fenster: zurueck in die Ruhelage
-  document.addEventListener("mouseleave", () => {
-    zeilen.forEach((zeile) => (zeile.style.transform = "rotateX(0deg) rotateY(0deg)"));
-  });
+  document.addEventListener("mouseleave", ruhen);
+}
+
+if (magNeigen) {
+  // Die drei Zeilen ueber dem Video
+  neigungAnhaengen(
+    document.querySelector(".visual__word"),
+    [...document.querySelectorAll(".visual__word .fx-line")]
+  );
+
+  // Hero: Wortmarke voran, Knoepfe schwenken merklich weniger mit
+  neigungAnhaengen(
+    document.querySelector(".hero__content"),
+    [
+      document.querySelector(".hero__logo"),
+      document.querySelector(".hero__actions"),
+    ].filter(Boolean),
+    8,
+    0.45,
+    1200
+  );
+
+  // Insight: Plakat und Text als zwei Ebenen
+  neigungAnhaengen(
+    document.querySelector(".insight__inner"),
+    [
+      document.querySelector(".insight__photo"),
+      document.querySelector(".insight__copy"),
+    ].filter(Boolean),
+    7,
+    0.5,
+    1100
+  );
 }
 
 // ---------------------------------------------------------------------------
