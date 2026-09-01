@@ -1429,11 +1429,13 @@ body { font-weight: 300; font-size: 0.95rem; }
 /* Hintergrundbilder deutlich sichtbarer: weniger Entsaettigung, heller, und
    der Verdunkelungsverlauf zieht nicht mehr so stark zu. */
 .hero__slide {
-  filter: grayscale(0.12) contrast(1.12) saturate(1.25) brightness(1.18);
+  /* --slide-hell setzt tools/build-diashow.py je Bild im HTML, damit helle und
+     dunkle Aufnahmen unter demselben Verlauf gleich gut tragen. */
+  filter: grayscale(0.12) contrast(1.12) saturate(1.25) brightness(var(--slide-hell, 1));
 }
 .hero__media::after {
   background:
-    linear-gradient(180deg, rgba(10, 10, 10, 0.32) 0%, rgba(10, 10, 10, 0.08) 32%, rgba(10, 10, 10, 0.72) 100%) !important;
+    linear-gradient(180deg, rgba(10, 10, 10, 0.32) 0%, rgba(10, 10, 10, 0.12) 32%, rgba(10, 10, 10, 0.72) 100%) !important;
 }
 
 /* Das Logo im Hero blendet sich mit dem Bild dahinter. CSS kennt kein

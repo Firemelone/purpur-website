@@ -29,6 +29,15 @@ TARGET = 170_000   # Zielgroesse je Bild
 MINQ = 68          # darunter wird die Kompression sichtbar
 SEKUNDEN_PRO_BILD = 4
 
+# Helligkeitsausgleich. Die Bilder kommen aus ganz unterschiedlichen Quellen —
+# Infrarot-Aufnahmen sind fast weiss, Latex-Motive fast schwarz. Der feste
+# Abdunklungsverlauf im Hero kann beides nicht gleichzeitig tragen: was fuer
+# das helle Bild reicht, verschluckt das dunkle komplett. Darum bekommt jedes
+# Bild einen eigenen Faktor, der es in die Naehe des Zielwerts rueckt.
+ZIEL_HELLIGKEIT = 95    # mittlere Leuchtdichte (0-255) in der Logo-Zone
+HELLIGKEIT_MIN = 0.55   # Grenzen, damit ein Extrembild nicht flach wird
+HELLIGKEIT_MAX = 1.9
+
 MARKE_A = "  <!-- DIASHOW-ANFANG (erzeugt von tools/build-diashow.py) -->"
 MARKE_E = "  <!-- DIASHOW-ENDE -->"
 CSS_A = "/* DIASHOW-ANFANG (erzeugt von tools/build-diashow.py) */"
@@ -58,12 +67,25 @@ def konvertiere(quelle: pathlib.Path, ziel: pathlib.Path) -> int:
     return q
 
 
-def bild_block(namen: list[str]) -> str:
+def helligkeit(ziel: pathlib.Path) -> float:
+    """Faktor, der die Logo-Zone des Bildes auf ZIEL_HELLIGKEIT bringt."""
+    im = Image.open(ziel).convert("L")
+    w, h = im.size
+    zone = im.crop((int(w * 0.2), int(h * 0.2), int(w * 0.8), int(h * 0.7)))
+    px = list(zone.getdata())
+    mittel = sum(px) / len(px)
+    if mittel <= 0:
+        return HELLIGKEIT_MAX
+    return round(min(HELLIGKEIT_MAX, max(HELLIGKEIT_MIN, ZIEL_HELLIGKEIT / mittel)), 2)
+
+
+def bild_block(namen: list[tuple[str, float]]) -> str:
     zeilen = [MARKE_A, '  <div class="hero__slideshow" aria-hidden="true">']
-    for i, n in enumerate(namen):
+    for i, (n, hell) in enumerate(namen):
         prio = "high" if i == 0 else "low"
         zeilen.append(
             f'      <img class="hero__slide" src="/Media/Diashow/{n}" alt="" '
+            f'style="--slide-hell: {hell}" '
             f'fetchpriority="{prio}" decoding="async" />'
         )
     zeilen += ["    </div>", MARKE_E]
@@ -132,9 +154,10 @@ def main() -> None:
     for p in bilder:
         ziel = ZIEL / (p.stem + ".webp")
         q = konvertiere(p, ziel)
-        namen.append(ziel.name)
+        hell = helligkeit(ziel)
+        namen.append((ziel.name, hell))
         gesamt += ziel.stat().st_size
-        print(f"  {p.name:<40} q{q}  {ziel.stat().st_size / 1024:5.0f} KB")
+        print(f"  {p.name:<40} q{q}  {ziel.stat().st_size / 1024:5.0f} KB  Helligkeit x{hell}")
 
     html = REPO / "index.html"
     css = REPO / "styles.css"
