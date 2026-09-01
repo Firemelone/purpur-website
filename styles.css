@@ -2213,3 +2213,19 @@ body {
     transition-duration: .18s;
   }
 }
+
+/* ==========================================================================
+   Ladebildschirm auf dem Handy: nur das drehende Symbol
+   Die volle Wortmarke braucht Breite, um zu wirken; auf dem schmalen Schirm
+   soll allein das Symbol laufen. Weil die Choreografie das Symbol sonst zum
+   Schluss ausblendet, um Platz fuer die Wortmarke zu machen, muss es hier
+   ausdruecklich sichtbar bleiben.
+   ========================================================================== */
+
+@media (max-width: 620px) {
+  /* Zwei Klassen im Selektor, weil die Wortmarke auch .glitch traegt und
+     img.glitch { display: inline-block } sonst gewinnt — bei ungleicher
+     Spezifitaet hilft die spaetere Stelle in der Datei nicht. */
+  .loader .loader__full { display: none; }
+  .loader.is-glitching .loader__symbol { opacity: 1; }
+}

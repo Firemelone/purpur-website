@@ -222,10 +222,17 @@ if (loader) {
     // Die Wortmarke neigt sich zur Maus. Bewegt sich der Zeiger schon
     // waehrend des Ladens, verfaelscht die Neigung die Messung — deshalb
     // wird sie hier kurz ausgesetzt und danach wiederhergestellt.
+    // Auf dem Handy laeuft nur das Symbol, die volle Wortmarke ist dort
+    // ausgeblendet. Dann gibt es nichts auszurichten — das Symbol ist ja
+    // nicht dasselbe Zeichen, das gleich im Hero steht. Ohne diese Pruefung
+    // waere die Messung an einem Element mit Groesse null haengengeblieben
+    // und haette die Buehne weit aus dem Bild geschoben.
+    const kasten = vollesLogo.getBoundingClientRect();
+    if (!kasten.height) return;
+
     const geneigt = heldenLogo.style.transform;
     heldenLogo.style.transform = "none";
-    const versatz =
-      heldenLogo.getBoundingClientRect().top - vollesLogo.getBoundingClientRect().top;
+    const versatz = heldenLogo.getBoundingClientRect().top - kasten.top;
     heldenLogo.style.transform = geneigt;
     if (Number.isFinite(versatz)) buehne.style.transform = `translateY(${versatz}px)`;
   };
