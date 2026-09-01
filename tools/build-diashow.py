@@ -41,6 +41,7 @@ GROESSEN = (
 )                    # Artefakte auf mehr Pixeln weniger auffallen
 MINQ = 72          # darunter wird die Kompression sichtbar
 SEKUNDEN_PRO_BILD = 4
+BLITZ_MS = 110     # wie lange das Bild beim Wechsel ins Negativ kippt
 
 # Helligkeitsausgleich. Die Bilder kommen aus ganz unterschiedlichen Quellen —
 # Infrarot-Aufnahmen sind fast weiss, Latex-Motive fast schwarz. Der feste
@@ -138,32 +139,44 @@ def bild_block(eintraege: list[dict]) -> str:
 
 
 def css_block(anzahl: int) -> str:
-    """Uebergaenge so setzen, dass nie Schwarz durchscheint.
+    """Harter Schnitt statt Ueberblendung, dazu ein kurzer Negativ-Blitz.
 
-    Jedes Bild blendet genau dann auf, wenn das vorherige abblendet. Die
-    Ausblendphase reicht deshalb ueber den eigenen Anteil hinaus in den des
-    naechsten Bildes hinein — sonst klafft dazwischen eine schwarze Luecke.
+    Die Bilder loesen sich ohne Blende ab: jedes ist genau seinen Abschnitt
+    lang zu sehen, dann sofort das naechste. Weil ein harter Schnitt fuer sich
+    genommen nur wie ein Ruckler wirkt, kippt im Moment des Wechsels das ganze
+    Bild fuer rund eine Zehntelsekunde ins Negativ.
+
+    Der Blitz laeuft in einer eigenen Animation ueber der Bildebene. Ihre
+    Dauer ist die eines einzelnen Bildes, nicht die des ganzen Durchlaufs —
+    dadurch trifft sie jeden Wechsel, ohne dass die Keyframes von der Anzahl
+    der Bilder abhaengen.
     """
     dauer = anzahl * SEKUNDEN_PRO_BILD
-    anteil = 100 / anzahl          # Anteil eines Bildes am Durchlauf
-    blende = min(anteil * 0.3, 2)  # Dauer der Blende in Prozent
+    anteil = 100 / anzahl               # Anteil eines Bildes am Durchlauf
+    blitz = BLITZ_MS / (SEKUNDEN_PRO_BILD * 1000) * 100   # in Prozent
     zeilen = [
         CSS_A,
         "@media (prefers-reduced-motion: no-preference) {",
-        f"  .hero__slide {{ animation: hero-slideshow {dauer}s linear infinite; }}",
+        f"  .hero__slide {{ animation: hero-slideshow {dauer}s step-end infinite; }}",
     ]
     for i in range(anzahl):
         zeilen.append(
             f"  .hero__slide:nth-child({i + 1}) {{ animation-delay: {i * SEKUNDEN_PRO_BILD}s; }}"
         )
     zeilen += [
+        f"  .hero__media {{ animation: hero-negativ {SEKUNDEN_PRO_BILD}s step-end infinite; }}",
         "}",
         "@keyframes hero-slideshow {",
-        "  0%              { opacity: 0; }",
-        f"  {blende:.3f}%   {{ opacity: 1; }}",
-        f"  {anteil:.3f}%   {{ opacity: 1; }}",
-        f"  {anteil + blende:.3f}%   {{ opacity: 0; }}",
+        "  0%              { opacity: 1; }",
+        f"  {anteil:.4f}%   {{ opacity: 0; }}",
         "  100%            { opacity: 0; }",
+        "}",
+        "/* Der Blitz braucht dieselbe Filterkette in beiden Zustaenden, sonst",
+        "   rechnet der Browser zwischen den Schritten herum statt zu springen. */",
+        "@keyframes hero-negativ {",
+        "  0%              { filter: invert(1) hue-rotate(90deg) saturate(1.6); }",
+        f"  {blitz:.4f}%    {{ filter: invert(0) hue-rotate(0deg) saturate(1); }}",
+        "  100%            { filter: invert(0) hue-rotate(0deg) saturate(1); }",
         "}",
         CSS_E,
     ]
