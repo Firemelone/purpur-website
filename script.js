@@ -390,34 +390,98 @@ if (gruppen.length) {
     const HANDY_VERSTAERKUNG = 3.4;
     gruppen.forEach((g) => (g.maxGrad *= HANDY_VERSTAERKUNG * g.handyFaktor));
 
-    // gamma ist die Neigung nach links und rechts, beta die nach vorn und
-    // hinten. Der Bezugspunkt fuer beta liegt bei 45 Grad, also der Haltung,
-    // in der ein Handy ueblicherweise vor einem liegt — sonst staende die
-    // Ruhelage bei flach auf dem Tisch.
     // Sieben Grad Handbewegung reichen fuer den vollen Ausschlag — ein
-    // Handgelenk-Kippen genuegt also. Viel weiter runter sollte der Wert
-    // nicht: Wer ein Handy haelt, bewegt es ohnehin um ein paar Grad, und
-    // unterhalb davon staende der Effekt dauernd am Anschlag und wirkte
-    // dadurch wieder unbeweglich.
+    // Handgelenk-Kippen genuegt also.
     const EMPFINDLICHKEIT = 7;
+
+    // Wie lange die Rueckkehr in die Mitte dauert. Nach dieser Zeit ist rund
+    // zwei Drittel des Wegs zurueckgelegt, nach dem Dreifachen praktisch
+    // alles.
+    const RUECKKEHR_MS = 1600;
+
+    // Anteil des Wegs, der in der verstrichenen Zeit zurueckgelegt wird.
+    // Ueber die Zeit gerechnet und nicht je Ereignis, damit die Rueckkehr auf
+    // jedem Geraet gleich lang dauert — Sensoren melden sich unterschiedlich
+    // oft, und ein fester Schritt je Meldung waere auf dem einen Geraet
+    // doppelt so schnell wie auf dem anderen.
+    const wegAnteil = (dt) => 1 - Math.exp(-Math.min(200, dt) / RUECKKEHR_MS);
+
+    // --- Lagesensor -------------------------------------------------------
+    // gamma ist die Neigung nach links und rechts, beta die nach vorn und
+    // hinten. Gezeigt wird nicht die Lage selbst, sondern ihr Abstand zu
+    // einer mitwandernden Ruhelage: Die zieht langsam der aktuellen Haltung
+    // nach. Wer das Geraet kippt, sieht deshalb sofort den Ausschlag; wer es
+    // dann still haelt, sieht ihn ueber gut anderthalb Sekunden in die Mitte
+    // zurueckwandern, weil die Ruhelage aufholt.
+    // Nebenbei entfaellt damit der feste Bezugspunkt, den ich vorher fuer die
+    // Vorn-hinten-Achse annehmen musste: Die Ruhelage stellt sich auf jede
+    // Haltung von selbst ein, ob im Liegen oder im Stehen.
+    let ruheGamma = null;
+    let ruheBeta = null;
+    let letzteLage = 0;
+
     const nachLage = (e) => {
       if (e.gamma === null || e.beta === null) return;
+      const jetzt = performance.now();
+      if (ruheGamma === null) {
+        ruheGamma = e.gamma;
+        ruheBeta = e.beta;
+        letzteLage = jetzt;
+        return;
+      }
+      const anteil = wegAnteil(jetzt - letzteLage);
+      letzteLage = jetzt;
+      ruheGamma += (e.gamma - ruheGamma) * anteil;
+      ruheBeta += (e.beta - ruheBeta) * anteil;
       alle(
-        klemmen(e.gamma / EMPFINDLICHKEIT),
-        klemmen((e.beta - 45) / EMPFINDLICHKEIT)
+        klemmen((e.gamma - ruheGamma) / EMPFINDLICHKEIT),
+        klemmen((e.beta - ruheBeta) / EMPFINDLICHKEIT)
       );
     };
 
-    // Rueckfall ohne Sensor: Die Richtung wandert beim Scrollen. Zwei
-    // ueberlagerte Schwingungen mit unrundem Frequenzverhaeltnis treffen sich
-    // nie wieder im selben Punkt — dadurch wirkt es zufaellig statt zu
-    // pendeln.
+    // --- Rueckfall ohne Sensor -------------------------------------------
+    // Die Richtung wandert beim Scrollen. Zwei ueberlagerte Schwingungen mit
+    // unrundem Frequenzverhaeltnis treffen sich nie wieder im selben Punkt —
+    // dadurch wirkt es zufaellig statt zu pendeln.
+    //
+    // Hier braucht die Rueckkehr eine eigene Schleife: Scrollereignisse
+    // hoeren auf, sobald der Finger stillsteht, und ohne Schleife bliebe die
+    // Neigung genau dort stehen, wo das letzte Ereignis sie hinterlassen hat.
+    let zielX = 0;
+    let zielY = 0;
+    let letzterTakt = 0;
+    let schleifeLaeuft = false;
+
+    const takt = (jetzt) => {
+      if (sensorLaeuft) {
+        schleifeLaeuft = false;
+        return;
+      }
+      const anteil = wegAnteil(jetzt - letzterTakt);
+      letzterTakt = jetzt;
+      zielX -= zielX * anteil;
+      zielY -= zielY * anteil;
+      alle(zielX, zielY);
+      if (Math.abs(zielX) > 0.002 || Math.abs(zielY) > 0.002) {
+        requestAnimationFrame(takt);
+      } else {
+        alle(0, 0);
+        schleifeLaeuft = false;
+      }
+    };
+
+    const anstossen = () => {
+      if (schleifeLaeuft) return;
+      schleifeLaeuft = true;
+      letzterTakt = performance.now();
+      requestAnimationFrame(takt);
+    };
+
     const nachScroll = () => {
       const t = window.scrollY / 260;
-      alle(
-        klemmen(Math.sin(t) * 0.62 + Math.sin(t * 1.618 + 1.3) * 0.38),
-        klemmen(Math.cos(t * 0.77 + 2.1) * 0.62 + Math.sin(t * 2.13) * 0.38)
-      );
+      zielX = klemmen(Math.sin(t) * 0.62 + Math.sin(t * 1.618 + 1.3) * 0.38);
+      zielY = klemmen(Math.cos(t * 0.77 + 2.1) * 0.62 + Math.sin(t * 2.13) * 0.38);
+      anstossen();
     };
 
     // Der Scroll-Weg laeuft von Anfang an: So bewegt sich auf jeden Fall
