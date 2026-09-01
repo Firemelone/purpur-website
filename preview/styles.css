@@ -474,19 +474,19 @@ img.glitch {
   .hero__slide:nth-child(6) { animation-delay: 20s; }
   .hero__slide:nth-child(7) { animation-delay: 24s; }
   .hero__slide:nth-child(8) { animation-delay: 28s; }
-  .hero__media { animation: hero-negativ 4s step-end infinite; }
+  .hero__zap { animation: hero-zap 4s linear infinite; }
 }
 @keyframes hero-slideshow {
   0%              { opacity: 1; }
   12.5000%   { opacity: 0; }
   100%            { opacity: 0; }
 }
-/* Der Blitz braucht dieselbe Filterkette in beiden Zustaenden, sonst
-   rechnet der Browser zwischen den Schritten herum statt zu springen. */
-@keyframes hero-negativ {
-  0%              { filter: invert(1) hue-rotate(90deg) saturate(1.6); }
-  2.7500%    { filter: invert(0) hue-rotate(0deg) saturate(1); }
-  100%            { filter: invert(0) hue-rotate(0deg) saturate(1); }
+@keyframes hero-zap {
+  0%       { opacity: 1; transform: scaleY(1); }
+  1.1250%  { opacity: 1; transform: scaleY(.06); }
+  2.5000%  { opacity: .9; transform: scaleY(.014); }
+  4.2500%  { opacity: 0; transform: scaleY(.005); }
+  100%     { opacity: 0; transform: scaleY(.005); }
 }
 /* DIASHOW-ENDE */
   1%    { opacity: 1; }
@@ -1462,11 +1462,36 @@ body { font-weight: 300; font-size: 0.95rem; }
    selbst rosa, weil die untere Haelfte der Wortmarke magenta ist. */
 .hero__logo {
   mix-blend-mode: normal;
-  opacity: .87;
-  /* Die Deckkraft nimmt der Wortmarke ueber dunklem Grund Helligkeit — das
-     Creme sackte sichtbar ins Graue ab. Die Aufhellung gleicht genau das
-     wieder aus, ohne die Durchsicht zu verringern. */
-  filter: saturate(1.22) contrast(1.04) brightness(1.12);
+  opacity: .88;
+  /* Kein Farbfilter. Das fruehere saturate() hat das Lila #9d00ff Richtung
+     Magenta geschoben — daher wirkte die Wortmarke rosastichig. Ohne Filter
+     stehen beide Hausfarben so da, wie sie in der Datei liegen; die Deckkraft
+     allein sorgt fuer die Durchsicht. */
+  filter: none;
+}
+
+/* Kanalwechsel-Streifen. Liegt ueber der Bildebene und wird nur im Moment des
+   Bildwechsels sichtbar: erst ein kurzer lilafarbener Aufblitz ueber die volle
+   Hoehe, der dann in einen waagerechten Lichtstreifen zusammenfaellt und
+   erlischt — der Zap vom Roehrenfernseher.
+   mix-blend-mode: screen, damit der Streifen Licht hinzufuegt statt das Bild
+   zuzudecken. */
+.hero__zap {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: center;
+  mix-blend-mode: screen;
+  background: linear-gradient(
+    180deg,
+    rgba(157, 0, 255, 0) 0%,
+    rgba(157, 0, 255, .55) 34%,
+    rgba(214, 158, 255, .95) 50%,
+    rgba(157, 0, 255, .55) 66%,
+    rgba(157, 0, 255, 0) 100%
+  );
 }
 
 /* Hyperpop: Buttons greller, Ecken spielerischer, Ueberschriften mit dem
