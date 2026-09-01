@@ -35,11 +35,22 @@ ZIEL = REPO / "Media" / "Diashow"
 # bekommt ein hochkantes Bild mit mehr Flaeche automatisch weniger Qualitaet
 # als ein flaches — genau daran sind vorher zwei koernige Fotos auf die
 # schlechteste Stufe gerutscht.
+# Je Stufe: laengste Kante, Budget je Pixel, unterste Qualitaet, Pixeldeckel.
+#
+# Der Pixeldeckel ist wegen der Hochformate noetig. Ein hochkantes Bild muss
+# auf einem querformatigen Schirm ueber die Breite skaliert werden — die volle
+# Hoehe wird nie gezeigt, zaehlt aber voll bei Dateigroesse und Speicher. Ohne
+# Deckel wuerde ein Hochformat in der groessten Stufe ueber 12 Megapixel haben
+# und allein 1,7 MB wiegen.
+#
+# Die unterste Qualitaet sinkt mit der Groesse: Bei 3200 Pixeln liegen die
+# Kompressionsartefakte unter dem, was auf dem Schirm noch aufgeloest wird,
+# und die koernigen Aufnahmen brauchen sonst absurd viel Platz.
 GROESSEN = (
-    (1600, 0.130),   # Handys und einfache Bildschirme
-    (2200, 0.100),   # Retina-Rechner; grob koennen wir hier sparen, weil
-)                    # Artefakte auf mehr Pixeln weniger auffallen
-MINQ = 72          # darunter wird die Kompression sichtbar
+    (1600, 0.130, 72, None),        # Handys und einfache Bildschirme
+    (2400, 0.095, 68, 4_200_000),   # Mittelgrosse Schirme
+    (3200, 0.075, 60, 6_200_000),   # Retina-Rechner: ein 1440er Schirm
+)                                   # braucht 2880 echte Pixel Breite
 SEKUNDEN_PRO_BILD = 4
 # Ablauf des Zaps in Millisekunden: Aufblitzen ueber die volle Hoehe,
 # Zusammenfallen zur Linie, Erloeschen.
@@ -63,8 +74,8 @@ CSS_A = "/* DIASHOW-ANFANG (erzeugt von tools/build-diashow.py) */"
 CSS_E = "/* DIASHOW-ENDE */"
 
 
-def konvertiere(quelle: pathlib.Path, ziel: pathlib.Path,
-                maxdim: int, bpp: float) -> tuple[int, int, int]:
+def konvertiere(quelle: pathlib.Path, ziel: pathlib.Path, maxdim: int,
+                bpp: float, minq: int, deckel) -> tuple[int, int, int]:
     """Nach WebP wandeln. Gibt Qualitaet, Breite und Hoehe zurueck.
 
     Hochgerechnet wird nie: ist die Vorlage kleiner als maxdim, bleibt sie
@@ -74,6 +85,8 @@ def konvertiere(quelle: pathlib.Path, ziel: pathlib.Path,
     im = Image.open(quelle)
     w, h = im.size
     faktor = min(1.0, maxdim / max(w, h))
+    if deckel and w * h * faktor * faktor > deckel:
+        faktor = (deckel / (w * h)) ** 0.5
     breite, hoehe = round(w * faktor), round(h * faktor)
     eingabe = quelle
     temp = None
@@ -82,7 +95,8 @@ def konvertiere(quelle: pathlib.Path, ziel: pathlib.Path,
         im.convert("RGB").resize((breite, hoehe), Image.LANCZOS).save(temp)
         eingabe = temp
     budget = breite * hoehe * bpp
-    for q in (88, 84, 80, 76, MINQ):
+    stufen = [q for q in (88, 84, 80, 76, 72, 68, 64, minq) if q >= minq]
+    for q in stufen:
         subprocess.run(
             ["cwebp", "-q", str(q), "-m", "6", "-quiet", str(eingabe), "-o", str(ziel)],
             check=True,
@@ -179,12 +193,15 @@ def css_block(anzahl: int) -> str:
         f"  {anteil:.4f}%   {{ opacity: 0; }}",
         "  100%            { opacity: 0; }",
         "}",
+        "/* --zap-dreh setzt script.js bei jedem Durchlauf neu, damit der",
+        "   Streifen nicht jedes Mal gleich liegt. Die Drehung steht vor dem",
+        "   Stauchen, sonst kippt nicht der Streifen, sondern seine Achse. */",
         "@keyframes hero-zap {",
-        "  0%       { opacity: 1; transform: scaleY(1); }",
-        f"  {pz(ZAP_AUF_MS)}  {{ opacity: 1; transform: scaleY(.06); }}",
-        f"  {pz(ZAP_AUF_MS + ZAP_LINIE_MS)}  {{ opacity: .9; transform: scaleY(.014); }}",
-        f"  {pz(ZAP_GESAMT_MS)}  {{ opacity: 0; transform: scaleY(.005); }}",
-        "  100%     { opacity: 0; transform: scaleY(.005); }",
+        "  0%       { opacity: 1; transform: rotate(var(--zap-dreh, 0deg)) scaleY(1); }",
+        f"  {pz(ZAP_AUF_MS)}  {{ opacity: 1; transform: rotate(var(--zap-dreh, 0deg)) scaleY(.06); }}",
+        f"  {pz(ZAP_AUF_MS + ZAP_LINIE_MS)}  {{ opacity: .9; transform: rotate(var(--zap-dreh, 0deg)) scaleY(.014); }}",
+        f"  {pz(ZAP_GESAMT_MS)}  {{ opacity: 0; transform: rotate(var(--zap-dreh, 0deg)) scaleY(.005); }}",
+        "  100%     { opacity: 0; transform: rotate(var(--zap-dreh, 0deg)) scaleY(.005); }",
         "}",
         CSS_E,
     ]
@@ -220,10 +237,10 @@ def main() -> None:
     je_fassung = [0] * len(GROESSEN)
     for p in bilder:
         fassungen, zeile = [], f"  {p.name:<26}"
-        for stufe, (maxdim, bpp) in enumerate(GROESSEN):
+        for stufe, (maxdim, bpp, minq, deckel) in enumerate(GROESSEN):
             anhang = "" if stufe == 0 else f"@{maxdim}"
             ziel = ZIEL / f"{p.stem}{anhang}.webp"
-            q, b, h = konvertiere(p, ziel, maxdim, bpp)
+            q, b, h = konvertiere(p, ziel, maxdim, bpp, minq, deckel)
             groesse = ziel.stat().st_size
             je_fassung[stufe] += groesse
             fassungen.append((ziel.name, b))
@@ -244,7 +261,7 @@ def main() -> None:
     css.write_text(ersetze(css.read_text(), CSS_A, CSS_E, css_block(len(eintraege)), "styles.css"))
 
     print()
-    for (maxdim, _), summe in zip(GROESSEN, je_fassung):
+    for (maxdim, *_), summe in zip(GROESSEN, je_fassung):
         print(f"Fassung bis {maxdim}px: {summe / 1048576:.2f} MB "
               f"— so viel laedt ein Geraet, das diese Stufe waehlt.")
     print(f"Ein Durchlauf dauert {len(eintraege) * SEKUNDEN_PRO_BILD} Sekunden.")

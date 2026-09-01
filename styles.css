@@ -465,7 +465,7 @@ img.glitch {
 
 /* DIASHOW-ANFANG (erzeugt von tools/build-diashow.py) */
 @media (prefers-reduced-motion: no-preference) {
-  .hero__slide { animation: hero-slideshow 32s step-end infinite; }
+  .hero__slide { animation: hero-slideshow 28s step-end infinite; }
   .hero__slide:nth-child(1) { animation-delay: 0s; }
   .hero__slide:nth-child(2) { animation-delay: 4s; }
   .hero__slide:nth-child(3) { animation-delay: 8s; }
@@ -473,20 +473,22 @@ img.glitch {
   .hero__slide:nth-child(5) { animation-delay: 16s; }
   .hero__slide:nth-child(6) { animation-delay: 20s; }
   .hero__slide:nth-child(7) { animation-delay: 24s; }
-  .hero__slide:nth-child(8) { animation-delay: 28s; }
   .hero__zap { animation: hero-zap 4s linear infinite; }
 }
 @keyframes hero-slideshow {
   0%              { opacity: 1; }
-  12.5000%   { opacity: 0; }
+  14.2857%   { opacity: 0; }
   100%            { opacity: 0; }
 }
+/* --zap-dreh setzt script.js bei jedem Durchlauf neu, damit der
+   Streifen nicht jedes Mal gleich liegt. Die Drehung steht vor dem
+   Stauchen, sonst kippt nicht der Streifen, sondern seine Achse. */
 @keyframes hero-zap {
-  0%       { opacity: 1; transform: scaleY(1); }
-  1.1250%  { opacity: 1; transform: scaleY(.06); }
-  2.5000%  { opacity: .9; transform: scaleY(.014); }
-  4.2500%  { opacity: 0; transform: scaleY(.005); }
-  100%     { opacity: 0; transform: scaleY(.005); }
+  0%       { opacity: 1; transform: rotate(var(--zap-dreh, 0deg)) scaleY(1); }
+  1.1250%  { opacity: 1; transform: rotate(var(--zap-dreh, 0deg)) scaleY(.06); }
+  2.5000%  { opacity: .9; transform: rotate(var(--zap-dreh, 0deg)) scaleY(.014); }
+  4.2500%  { opacity: 0; transform: rotate(var(--zap-dreh, 0deg)) scaleY(.005); }
+  100%     { opacity: 0; transform: rotate(var(--zap-dreh, 0deg)) scaleY(.005); }
 }
 /* DIASHOW-ENDE */
   1%    { opacity: 1; }
@@ -509,8 +511,11 @@ img.glitch {
   position: absolute;
   inset: -10%;
   z-index: 1;
-  opacity: 0.1;
-  mix-blend-mode: overlay;
+  /* Deutlich sichtbarer als frueher (war 0.1 / overlay). soft-light statt
+     overlay, weil overlay den Kontrast hochzieht und die Farben kippt —
+     gewuenscht ist eine graue Koernung, die das Bild in Ruhe laesst. */
+  opacity: 0.22;
+  mix-blend-mode: soft-light;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
@@ -731,8 +736,21 @@ section {
   background: linear-gradient(180deg, rgba(10, 10, 10, 0) 0%, rgba(10, 10, 10, 0.45) 100%);
 }
 
+.visual__word {
+  /* Fluchtpunkt fuer die Neigung der Zeilen. Ohne perspective bliebe die
+     Drehung flach und wuerde nur gestaucht wirken. */
+  perspective: 900px;
+}
 .visual__word .fx-line {
   display: block;
+  transform-style: preserve-3d;
+  /* Das Nachziehen macht die Bewegung weich; das Skript setzt nur den
+     Zielwinkel, den Weg dorthin uebernimmt der Browser. */
+  transition: transform .4s cubic-bezier(.22, .61, .36, 1);
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .visual__word .fx-line { transition: none; transform: none !important; }
 }
 
 .visual__word span {
@@ -1440,7 +1458,7 @@ body { font-weight: 300; font-size: 0.95rem; }
 }
 .hero__media::after {
   background:
-    linear-gradient(180deg, rgba(10, 10, 10, 0.32) 0%, rgba(10, 10, 10, 0.12) 32%, rgba(10, 10, 10, 0.72) 100%) !important;
+    linear-gradient(180deg, rgba(10, 10, 10, 0.40) 0%, rgba(10, 10, 10, 0.24) 32%, rgba(10, 10, 10, 0.76) 100%) !important;
 }
 
 /* Kein eigener Stapelkontext auf dem Inhalt: Das Logo muss sich mit dem Foto
@@ -1463,11 +1481,19 @@ body { font-weight: 300; font-size: 0.95rem; }
 .hero__logo {
   mix-blend-mode: normal;
   opacity: .88;
-  /* Kein Farbfilter. Das fruehere saturate() hat das Lila #9d00ff Richtung
-     Magenta geschoben — daher wirkte die Wortmarke rosastichig. Ohne Filter
-     stehen beide Hausfarben so da, wie sie in der Datei liegen; die Deckkraft
-     allein sorgt fuer die Durchsicht. */
-  filter: none;
+  /* Kein Farbfilter: Das fruehere saturate() hat das Lila #9d00ff Richtung
+     Magenta geschoben, daher wirkte die Wortmarke rosastichig. drop-shadow
+     ruehrt die Farben dagegen nicht an, es legt nur die Silhouette noch
+     einmal versetzt darunter.
+     Ohne Weichzeichnung (0 Radius) bleibt der Schatten scharf und nimmt die
+     ausgefransten Kanten der Wortmarke mit. Drei leicht gegeneinander
+     versetzte Lagen statt einer einzigen: Das bricht den Rand auf, statt eine
+     saubere zweite Kontur zu ziehen. Gebraucht wird er nur ueber hellen
+     Motiven — auf dunklem Grund faellt er von selbst weg. */
+  filter:
+    drop-shadow(2px 3px 0 rgba(10, 10, 10, .30))
+    drop-shadow(-1px 2px 0 rgba(10, 10, 10, .16))
+    drop-shadow(3px 1px 0 rgba(10, 10, 10, .12));
 }
 
 /* Langsame Eigenbewegung der Bildebene. Die Diashow steht sonst voellig
@@ -1503,7 +1529,10 @@ body { font-weight: 300; font-size: 0.95rem; }
    zuzudecken. */
 .hero__zap {
   position: absolute;
-  inset: 0;
+  /* Ragt ueber den Rand hinaus: Der Streifen wird bei jedem Durchlauf leicht
+     gedreht, und ein randbuendiges Element wuerde dabei in den Ecken Luecken
+     lassen. */
+  inset: -12%;
   z-index: 2;
   opacity: 0;
   pointer-events: none;
@@ -1512,9 +1541,9 @@ body { font-weight: 300; font-size: 0.95rem; }
   background: linear-gradient(
     180deg,
     rgba(157, 0, 255, 0) 0%,
-    rgba(157, 0, 255, .32) 34%,
-    rgba(214, 158, 255, .58) 50%,
-    rgba(157, 0, 255, .32) 66%,
+    rgba(157, 0, 255, .16) 34%,
+    rgba(214, 158, 255, .30) 50%,
+    rgba(157, 0, 255, .16) 66%,
     rgba(157, 0, 255, 0) 100%
   );
 }
@@ -1828,7 +1857,7 @@ body { font-weight: 300; font-size: 0.95rem; }
 
 /* Luft zwischen Datum und Line-up, damit die beiden Bloecke nicht
    ineinanderlaufen. */
-.next__item:first-child { padding-right: clamp(.8rem, 2.4vw, 2.2rem); }
+.next__item:first-child { padding-right: clamp(1.8rem, 5.5vw, 5rem); }
 
 /* Zweites Beschriftungspaar in derselben Spalte (Times unter Location).
    Braucht Abstand nach oben, sonst klebt es am Wert darueber. */
