@@ -388,36 +388,60 @@ if (gruppen.length) {
       );
     };
 
+    // Der Scroll-Weg laeuft von Anfang an: So bewegt sich auf jeden Fall
+    // etwas, auch wenn kein Sensor kommt. Meldet sich spaeter doch einer,
+    // uebernimmt er und der Scroll-Zuhoerer wird abgemeldet.
+    const scrollZuhoerer = gedrosselt(nachScroll);
+    let sensorLaeuft = false;
+
+    const scrollAn = () => {
+      window.addEventListener("scroll", scrollZuhoerer, { passive: true });
+      nachScroll();
+    };
+    const scrollAus = () => window.removeEventListener("scroll", scrollZuhoerer);
+
+    // Der erste Messwert eines Lagesensors ist haeufig noch leer. Deshalb
+    // wird hier bei JEDEM Ereignis geprueft, ob brauchbare Zahlen dabei sind,
+    // statt nur beim ersten — daran ist die Erkennung vorher gescheitert.
+    const lageZuhoerer = gedrosselt((e) => {
+      if (e.gamma === null || e.beta === null) return;
+      if (!sensorLaeuft) {
+        sensorLaeuft = true;
+        scrollAus();
+      }
+      nachLage(e);
+    });
+
+    const sensorAn = () => {
+      // Manche Geraete liefern nur das eine oder nur das andere Ereignis.
+      window.addEventListener("deviceorientation", lageZuhoerer, { passive: true });
+      window.addEventListener("deviceorientationabsolute", lageZuhoerer, { passive: true });
+    };
+
+    scrollAn();
+
     // requestPermission gibt es nur auf iOS. Dort ist der Sensor ohne
-    // ausdrueckliche Erlaubnis gesperrt, und die Abfrage darf nur direkt aus
-    // einer Nutzerhandlung heraus kommen. Ungefragt einen Systemdialog
-    // aufzumachen waere aufdringlich, deshalb laeuft dort der Scroll-Weg.
+    // ausdrueckliche Erlaubnis gesperrt, und die Abfrage darf ausschliesslich
+    // direkt aus einer Nutzerhandlung heraus kommen — von sich aus kann die
+    // Seite sie nicht stellen. Deshalb haengt sie an der ersten Beruehrung.
+    // Wird sie abgelehnt, bleibt es beim Scroll-Weg; schlechter als vorher
+    // wird es also nie.
     const brauchtErlaubnis =
       typeof DeviceOrientationEvent !== "undefined" &&
       typeof DeviceOrientationEvent.requestPermission === "function";
 
-    if (window.DeviceOrientationEvent && !brauchtErlaubnis) {
-      // Kommt binnen einer Sekunde kein brauchbarer Messwert, hat das Geraet
-      // keinen Sensor — dann still auf Scrollen umschwenken.
-      let gemessen = false;
-      const ersteMessung = (e) => {
-        if (e.gamma !== null && e.beta !== null) gemessen = true;
+    if (brauchtErlaubnis) {
+      const fragen = () => {
+        DeviceOrientationEvent.requestPermission()
+          .then((antwort) => {
+            if (antwort === "granted") sensorAn();
+          })
+          .catch(() => {});
       };
-      // Die gedrosselte Fassung einmal festhalten: gedrosselt() liefert bei
-      // jedem Aufruf eine neue Funktion, und removeEventListener wuerde eine
-      // frisch erzeugte nicht wiederfinden.
-      const lageZuhoerer = gedrosselt(nachLage);
-      window.addEventListener("deviceorientation", ersteMessung, { once: true });
-      window.addEventListener("deviceorientation", lageZuhoerer, { passive: true });
-      setTimeout(() => {
-        if (gemessen) return;
-        window.removeEventListener("deviceorientation", lageZuhoerer);
-        window.addEventListener("scroll", gedrosselt(nachScroll), { passive: true });
-        nachScroll();
-      }, 1000);
-    } else {
-      window.addEventListener("scroll", gedrosselt(nachScroll), { passive: true });
-      nachScroll();
+      window.addEventListener("touchend", fragen, { once: true });
+      window.addEventListener("click", fragen, { once: true });
+    } else if (window.DeviceOrientationEvent) {
+      sensorAn();
     }
   }
 }

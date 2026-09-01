@@ -1869,6 +1869,10 @@ body { font-weight: 300; font-size: 0.95rem; }
   font-size: calc(var(--wert) * 1.18);
   line-height: var(--zeile);
 }
+/* Am Rechner steht das Datum dreizeilig, die Schraegstriche waeren dort
+   ueberfluessig. Auf dem Handy ist es umgekehrt: eine Zeile, dafuer mit
+   Trennern. Beides steckt im Markup, sichtbar ist je nach Breite nur eines. */
+.next__trenner { display: none; }
 .next__item--wide .next__value { line-height: var(--zeile); }
 
 /* Luft zwischen Datum und Line-up, damit die beiden Bloecke nicht
@@ -2154,4 +2158,42 @@ body {
   }
   .next__item:nth-child(3) .next__value { font-weight: 500; }
   .next__item--wide .next__value { font-weight: 300; font-style: italic; }
+
+  /* Die festen Umbrueche im Line-up gelten nur am Rechner, wo drei gleich
+     lange Zeilen neben dem Datum stehen sollen. Auf der schmalen Spalte am
+     Handy bricht der Text ohnehin um; die zusaetzlichen Umbrueche liessen
+     dort einen einzelnen Trennpunkt am Zeilenende stehen und darunter eine
+     Luecke. Deshalb hier ausblenden — das Leerzeichen davor bleibt stehen
+     und trennt die Namen sauber. */
+  .next__item--wide .next__value br { display: none; }
+
+  /* Datum auf dem Handy einzeilig als 03/10/26 statt dreizeilig — neben dem
+     ohnehin umbrechenden Line-up braucht es die Staffelung nicht mehr. */
+  .next__value--gestapelt br { display: none; }
+  .next__trenner { display: inline; }
+}
+
+/* ==========================================================================
+   Hero auf dem Handy: Wortmarke und Knoepfe groesser
+   Auf dem schmalen Schirm wirkte beides verloren. Die Wortmarke laeuft jetzt
+   fast ueber die volle Breite, die Knoepfe stehen untereinander statt
+   nebeneinander und nutzen dieselbe Breite — nebeneinander waeren sie bei
+   dieser Schriftgroesse zu schmal geworden und haetten umgebrochen.
+   ========================================================================== */
+
+@media (max-width: 620px) {
+  .hero__logo { width: min(88vw, 460px); }
+
+  .hero__actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin-top: 42px;
+  }
+  .hero__actions .btn {
+    width: min(78vw, 340px);
+    justify-content: center;
+    font-size: 1rem;
+    padding: 1.15em 1.4em;
+  }
 }
