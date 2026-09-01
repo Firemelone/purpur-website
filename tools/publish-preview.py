@@ -24,8 +24,32 @@ REPO = pathlib.Path(__file__).resolve().parent.parent
 ZWEIG = "preview"
 ORDNER = "preview"
 
+# Die Vorschau soll nicht in Suchmaschinen auftauchen. Die Bots, die
+# Linkvorschauen in Messengern bauen, lesen dieselbe Datei und halten sich
+# ebenfalls daran — ohne Ausnahme kaeme beim Teilen keine Karte an.
 ROBOTS = """User-agent: *
 Disallow: /preview/
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: TelegramBot
+Allow: /
+
+User-agent: Slackbot-LinkExpanding
+Allow: /
+
+User-agent: Discordbot
+Allow: /
+
+User-agent: SignalBot
+Allow: /
 """
 
 
