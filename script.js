@@ -283,7 +283,8 @@ if (loader) {
 // darum und das Durchscheinen waere weg.
 const klemmen = (v) => Math.max(-1, Math.min(1, v));
 
-function neigungsGruppe(bezug, ebenen, maxGrad = 11, stufe = 0.18, tiefe = 900) {
+function neigungsGruppe(bezug, ebenen, maxGrad = 11, stufe = 0.18, tiefe = 900,
+                       handyFaktor = 1) {
   if (!bezug || !ebenen.length) return null;
   return {
     bezug,
@@ -291,6 +292,10 @@ function neigungsGruppe(bezug, ebenen, maxGrad = 11, stufe = 0.18, tiefe = 900) 
     // Ausschlag angehoben, weil ein Wert, der mit der Maus stimmig wirkt,
     // beim Kippen des Geraets kaum auffaellt.
     maxGrad,
+    // Wie stark diese Gruppe am Handy zusaetzlich mitzieht. Die Wortmarke
+    // steht dort gross und mittig im Bild; derselbe Ausschlag wie bei den
+    // kleineren Bloecken wirkte an ihr uebertrieben.
+    handyFaktor,
     anwenden(x, y) {
       ebenen.forEach((el, i) => {
         const anteil = Math.max(0.2, 1 - i * stufe);
@@ -322,7 +327,8 @@ const gruppen = darfNeigen
         ].filter(Boolean),
         8,
         0.45,
-        1200
+        1200,
+        0.72
       ),
       // Insight: Plakat und Text als zwei Ebenen
       neigungsGruppe(
@@ -375,7 +381,7 @@ if (gruppen.length) {
     // Blick von selbst, das Kippen des Geraets nicht — dort muss der Effekt
     // ins Auge fallen, sonst haelt man ihn fuer eine Unsauberkeit.
     const HANDY_VERSTAERKUNG = 3.4;
-    gruppen.forEach((g) => (g.maxGrad *= HANDY_VERSTAERKUNG));
+    gruppen.forEach((g) => (g.maxGrad *= HANDY_VERSTAERKUNG * g.handyFaktor));
 
     // gamma ist die Neigung nach links und rechts, beta die nach vorn und
     // hinten. Der Bezugspunkt fuer beta liegt bei 45 Grad, also der Haltung,
@@ -450,15 +456,27 @@ if (gruppen.length) {
       typeof DeviceOrientationEvent.requestPermission === "function";
 
     if (brauchtErlaubnis) {
-      const fragen = () => {
+      const fragen = () =>
         DeviceOrientationEvent.requestPermission()
           .then((antwort) => {
-            if (antwort === "granted") sensorAn();
+            if (antwort !== "granted") return false;
+            sensorAn();
+            return true;
           })
-          .catch(() => {});
-      };
-      window.addEventListener("touchend", fragen, { once: true });
-      window.addEventListener("click", fragen, { once: true });
+          .catch(() => false);
+
+      // Erst ohne Umweg versuchen. Wurde die Erlaubnis frueher schon erteilt,
+      // antwortet iOS sofort mit "granted" und der Sensor laeuft ab der
+      // ersten Sekunde — vorher blieb er bis zur ersten Beruehrung tot, weil
+      // die Abfrage ausschliesslich an einem Antippen hing.
+      // Nur wenn das nicht durchgeht, bleibt der Umweg ueber die Beruehrung:
+      // Ohne vorher erteilte Erlaubnis verlangt iOS dafuer zwingend eine
+      // Nutzerhandlung.
+      fragen().then((geklappt) => {
+        if (geklappt) return;
+        window.addEventListener("touchend", fragen, { once: true });
+        window.addEventListener("click", fragen, { once: true });
+      });
     } else if (window.DeviceOrientationEvent) {
       sensorAn();
     }
