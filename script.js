@@ -265,12 +265,12 @@ if (loader) {
 }
 
 // ---------------------------------------------------------------------------
-// Elemente neigen sich zur Maus
+// Elemente neigen sich — am Rechner zur Maus, am Handy zur Lage des Geraets
 // ---------------------------------------------------------------------------
-// Mehrere Stellen der Seite wenden sich dem Zeiger zu, als wuerden sie ihn
-// ansehen. Der Ausschlag richtet sich danach, wie weit der Zeiger von der
-// Mitte des Bezugsrahmens entfernt ist — auf eine halbe Rahmenbreite
-// gerechnet und gedeckelt, damit nichts weiterkippt, je weiter man wegzieht.
+// Mehrere Stellen der Seite wenden sich zu, als wuerden sie etwas ansehen.
+// Der Ausschlag kommt aus zwei Zahlen zwischen -1 und 1 fuer waagerecht und
+// senkrecht. Woher die stammen, haengt vom Geraet ab — die Umrechnung in
+// Winkel ist ueberall dieselbe.
 //
 // Die uebergebenen Ebenen schwenken unterschiedlich stark: die erste am
 // meisten, jede weitere etwas weniger. Dieser Versatz laesst sie wie
@@ -281,79 +281,145 @@ if (loader) {
 // Stapelkontext aufmachen. Im Hero wuerde das die Wortmarke vom Foto
 // abschneiden, sie mischt sich dann nur noch mit dem durchsichtigen Kasten
 // darum und das Durchscheinen waere weg.
-const magNeigen =
-  window.matchMedia("(hover: hover)").matches &&
-  !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const klemmen = (v) => Math.max(-1, Math.min(1, v));
 
-function neigungAnhaengen(bezug, ebenen, maxGrad = 11, stufe = 0.18, tiefe = 900) {
-  if (!bezug || !ebenen.length) return;
-
-  let angefordert = false;
-  const klemmen = (v) => Math.max(-1, Math.min(1, v));
-
-  const setzen = (e) => {
-    angefordert = false;
-    const r = bezug.getBoundingClientRect();
-    if (!r.width || !r.height) return;
-    const x = klemmen((e.clientX - (r.left + r.width / 2)) / (r.width / 2));
-    const y = klemmen((e.clientY - (r.top + r.height / 2)) / (r.height / 2));
-    ebenen.forEach((el, i) => {
-      const anteil = Math.max(0.2, 1 - i * stufe);
-      const drehX = (-y * maxGrad * anteil).toFixed(2);
-      const drehY = (x * maxGrad * anteil).toFixed(2);
-      el.style.transform = `perspective(${tiefe}px) rotateX(${drehX}deg) rotateY(${drehY}deg)`;
-    });
-  };
-
-  const ruhen = () => {
-    ebenen.forEach((el) => {
-      el.style.transform = `perspective(${tiefe}px) rotateX(0deg) rotateY(0deg)`;
-    });
-  };
-
-  window.addEventListener(
-    "mousemove",
-    (e) => {
-      if (angefordert) return;
-      angefordert = true;
-      requestAnimationFrame(() => setzen(e));
+function neigungsGruppe(bezug, ebenen, maxGrad = 11, stufe = 0.18, tiefe = 900) {
+  if (!bezug || !ebenen.length) return null;
+  return {
+    bezug,
+    anwenden(x, y) {
+      ebenen.forEach((el, i) => {
+        const anteil = Math.max(0.2, 1 - i * stufe);
+        const drehX = (-y * maxGrad * anteil).toFixed(2);
+        const drehY = (x * maxGrad * anteil).toFixed(2);
+        el.style.transform = `perspective(${tiefe}px) rotateX(${drehX}deg) rotateY(${drehY}deg)`;
+      });
     },
-    { passive: true }
-  );
-
-  document.addEventListener("mouseleave", ruhen);
+    ruhen() {
+      this.anwenden(0, 0);
+    },
+  };
 }
 
-if (magNeigen) {
-  // Die drei Zeilen ueber dem Video
-  neigungAnhaengen(
-    document.querySelector(".visual__word"),
-    [...document.querySelectorAll(".visual__word .fx-line")]
-  );
+const darfNeigen = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // Hero: Wortmarke voran, Knoepfe schwenken merklich weniger mit
-  neigungAnhaengen(
-    document.querySelector(".hero__content"),
-    [
-      document.querySelector(".hero__logo"),
-      document.querySelector(".hero__actions"),
-    ].filter(Boolean),
-    8,
-    0.45,
-    1200
-  );
+const gruppen = darfNeigen
+  ? [
+      // Die drei Zeilen ueber dem Video
+      neigungsGruppe(document.querySelector(".visual__word"), [
+        ...document.querySelectorAll(".visual__word .fx-line"),
+      ]),
+      // Hero: Wortmarke voran, Knoepfe schwenken merklich weniger mit
+      neigungsGruppe(
+        document.querySelector(".hero__content"),
+        [
+          document.querySelector(".hero__logo"),
+          document.querySelector(".hero__actions"),
+        ].filter(Boolean),
+        8,
+        0.45,
+        1200
+      ),
+      // Insight: Plakat und Text als zwei Ebenen
+      neigungsGruppe(
+        document.querySelector(".insight__inner"),
+        [
+          document.querySelector(".insight__photo"),
+          document.querySelector(".insight__copy"),
+        ].filter(Boolean),
+        7,
+        0.5,
+        1100
+      ),
+    ].filter(Boolean)
+  : [];
 
-  // Insight: Plakat und Text als zwei Ebenen
-  neigungAnhaengen(
-    document.querySelector(".insight__inner"),
-    [
-      document.querySelector(".insight__photo"),
-      document.querySelector(".insight__copy"),
-    ].filter(Boolean),
-    7,
-    0.5,
-    1100
-  );
+if (gruppen.length) {
+  const zeigerDa = window.matchMedia("(hover: hover)").matches;
+  let angefordert = false;
+
+  const gedrosselt = (fn) => (arg) => {
+    if (angefordert) return;
+    angefordert = true;
+    requestAnimationFrame(() => {
+      angefordert = false;
+      fn(arg);
+    });
+  };
+
+  if (zeigerDa) {
+    // Am Rechner richtet sich jede Gruppe nach dem Abstand des Zeigers zu
+    // ihrer eigenen Mitte — auf eine halbe Rahmenbreite gerechnet und
+    // gedeckelt, damit nichts weiterkippt, je weiter man wegzieht.
+    const nachMaus = (e) => {
+      gruppen.forEach((g) => {
+        const r = g.bezug.getBoundingClientRect();
+        if (!r.width || !r.height) return;
+        g.anwenden(
+          klemmen((e.clientX - (r.left + r.width / 2)) / (r.width / 2)),
+          klemmen((e.clientY - (r.top + r.height / 2)) / (r.height / 2))
+        );
+      });
+    };
+    window.addEventListener("mousemove", gedrosselt(nachMaus), { passive: true });
+    document.addEventListener("mouseleave", () => gruppen.forEach((g) => g.ruhen()));
+  } else {
+    // Am Handy gilt fuer alle Gruppen dieselbe Lage.
+    const alle = (x, y) => gruppen.forEach((g) => g.anwenden(x, y));
+
+    // gamma ist die Neigung nach links und rechts, beta die nach vorn und
+    // hinten. Der Bezugspunkt fuer beta liegt bei 45 Grad, also der Haltung,
+    // in der ein Handy ueblicherweise vor einem liegt — sonst staende die
+    // Ruhelage bei flach auf dem Tisch.
+    const nachLage = (e) => {
+      if (e.gamma === null || e.beta === null) return;
+      alle(klemmen(e.gamma / 30), klemmen((e.beta - 45) / 30));
+    };
+
+    // Rueckfall ohne Sensor: Die Richtung wandert beim Scrollen. Zwei
+    // ueberlagerte Schwingungen mit unrundem Frequenzverhaeltnis treffen sich
+    // nie wieder im selben Punkt — dadurch wirkt es zufaellig statt zu
+    // pendeln.
+    const nachScroll = () => {
+      const t = window.scrollY / 260;
+      alle(
+        klemmen(Math.sin(t) * 0.62 + Math.sin(t * 1.618 + 1.3) * 0.38),
+        klemmen(Math.cos(t * 0.77 + 2.1) * 0.62 + Math.sin(t * 2.13) * 0.38)
+      );
+    };
+
+    // requestPermission gibt es nur auf iOS. Dort ist der Sensor ohne
+    // ausdrueckliche Erlaubnis gesperrt, und die Abfrage darf nur direkt aus
+    // einer Nutzerhandlung heraus kommen. Ungefragt einen Systemdialog
+    // aufzumachen waere aufdringlich, deshalb laeuft dort der Scroll-Weg.
+    const brauchtErlaubnis =
+      typeof DeviceOrientationEvent !== "undefined" &&
+      typeof DeviceOrientationEvent.requestPermission === "function";
+
+    if (window.DeviceOrientationEvent && !brauchtErlaubnis) {
+      // Kommt binnen einer Sekunde kein brauchbarer Messwert, hat das Geraet
+      // keinen Sensor — dann still auf Scrollen umschwenken.
+      let gemessen = false;
+      const ersteMessung = (e) => {
+        if (e.gamma !== null && e.beta !== null) gemessen = true;
+      };
+      // Die gedrosselte Fassung einmal festhalten: gedrosselt() liefert bei
+      // jedem Aufruf eine neue Funktion, und removeEventListener wuerde eine
+      // frisch erzeugte nicht wiederfinden.
+      const lageZuhoerer = gedrosselt(nachLage);
+      window.addEventListener("deviceorientation", ersteMessung, { once: true });
+      window.addEventListener("deviceorientation", lageZuhoerer, { passive: true });
+      setTimeout(() => {
+        if (gemessen) return;
+        window.removeEventListener("deviceorientation", lageZuhoerer);
+        window.addEventListener("scroll", gedrosselt(nachScroll), { passive: true });
+        nachScroll();
+      }, 1000);
+    } else {
+      window.addEventListener("scroll", gedrosselt(nachScroll), { passive: true });
+      nachScroll();
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------
