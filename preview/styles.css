@@ -465,7 +465,7 @@ img.glitch {
 
 /* DIASHOW-ANFANG (erzeugt von tools/build-diashow.py) */
 @media (prefers-reduced-motion: no-preference) {
-  .hero__slide { animation: hero-slideshow 36s linear infinite; }
+  .hero__slide { animation: hero-slideshow 32s linear infinite; }
   .hero__slide:nth-child(1) { animation-delay: 0s; }
   .hero__slide:nth-child(2) { animation-delay: 4s; }
   .hero__slide:nth-child(3) { animation-delay: 8s; }
@@ -474,13 +474,12 @@ img.glitch {
   .hero__slide:nth-child(6) { animation-delay: 20s; }
   .hero__slide:nth-child(7) { animation-delay: 24s; }
   .hero__slide:nth-child(8) { animation-delay: 28s; }
-  .hero__slide:nth-child(9) { animation-delay: 32s; }
 }
 @keyframes hero-slideshow {
   0%              { opacity: 0; }
   2.000%   { opacity: 1; }
-  11.111%   { opacity: 1; }
-  13.111%   { opacity: 0; }
+  12.500%   { opacity: 1; }
+  14.500%   { opacity: 0; }
   100%            { opacity: 0; }
 }
 /* DIASHOW-ENDE */
@@ -1747,6 +1746,14 @@ body { font-weight: 300; font-size: 0.95rem; }
   line-height: 1.05;
 }
 
+
+/* Das Datum steht dreizeilig untereinander. Enge Zeilen, damit die drei
+   Zahlen als ein Block wirken und nicht als drei Angaben. */
+.next__value--gestapelt { line-height: .92; }
+
+/* Zweites Beschriftungspaar in derselben Spalte (Times unter Location).
+   Braucht Abstand nach oben, sonst klebt es am Wert darueber. */
+.next__label--zweit { margin-top: .7em; }
 
 /* Das Line-up steht in derselben Groesse wie die uebrigen Werte — kleiner
    gesetzt wirkte es wie ein Fehler. Wenn es doch umbrechen muss, verteilt
