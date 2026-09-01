@@ -374,17 +374,19 @@ if (gruppen.length) {
     // Am Handy deutlich kraeftiger als mit der Maus. Der Zeiger fuehrt den
     // Blick von selbst, das Kippen des Geraets nicht — dort muss der Effekt
     // ins Auge fallen, sonst haelt man ihn fuer eine Unsauberkeit.
-    const HANDY_VERSTAERKUNG = 2.6;
+    const HANDY_VERSTAERKUNG = 3.4;
     gruppen.forEach((g) => (g.maxGrad *= HANDY_VERSTAERKUNG));
 
     // gamma ist die Neigung nach links und rechts, beta die nach vorn und
     // hinten. Der Bezugspunkt fuer beta liegt bei 45 Grad, also der Haltung,
     // in der ein Handy ueblicherweise vor einem liegt — sonst staende die
     // Ruhelage bei flach auf dem Tisch.
-    // Geteilt wird durch 16 statt durch 30: Schon eine Handbewegung von rund
-    // sechzehn Grad reicht damit fuer den vollen Ausschlag. Bei 30 musste man
-    // das Geraet weit kippen, bevor ueberhaupt etwas sichtbar wurde.
-    const EMPFINDLICHKEIT = 16;
+    // Sieben Grad Handbewegung reichen fuer den vollen Ausschlag — ein
+    // Handgelenk-Kippen genuegt also. Viel weiter runter sollte der Wert
+    // nicht: Wer ein Handy haelt, bewegt es ohnehin um ein paar Grad, und
+    // unterhalb davon staende der Effekt dauernd am Anschlag und wirkte
+    // dadurch wieder unbeweglich.
+    const EMPFINDLICHKEIT = 7;
     const nachLage = (e) => {
       if (e.gamma === null || e.beta === null) return;
       alle(

@@ -2201,4 +2201,15 @@ body {
     font-size: 1rem;
     padding: 1.15em 1.4em;
   }
+
+  /* Kuerzeres Nachziehen als am Rechner: Die Neigung folgt hier dem Geraet in
+     der Hand. Bei 0.4s haette sie sichtbar hinterhergehinkt und die Bewegung
+     traege wirken lassen. */
+  .visual__word .fx-line,
+  .hero__logo,
+  .hero__actions,
+  .insight__photo,
+  .insight__copy {
+    transition-duration: .18s;
+  }
 }
