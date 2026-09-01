@@ -287,11 +287,15 @@ function neigungsGruppe(bezug, ebenen, maxGrad = 11, stufe = 0.18, tiefe = 900) 
   if (!bezug || !ebenen.length) return null;
   return {
     bezug,
+    // maxGrad liegt als Feld vor und nicht fest im Code: Am Handy wird der
+    // Ausschlag angehoben, weil ein Wert, der mit der Maus stimmig wirkt,
+    // beim Kippen des Geraets kaum auffaellt.
+    maxGrad,
     anwenden(x, y) {
       ebenen.forEach((el, i) => {
         const anteil = Math.max(0.2, 1 - i * stufe);
-        const drehX = (-y * maxGrad * anteil).toFixed(2);
-        const drehY = (x * maxGrad * anteil).toFixed(2);
+        const drehX = (-y * this.maxGrad * anteil).toFixed(2);
+        const drehY = (x * this.maxGrad * anteil).toFixed(2);
         el.style.transform = `perspective(${tiefe}px) rotateX(${drehX}deg) rotateY(${drehY}deg)`;
       });
     },
@@ -367,13 +371,26 @@ if (gruppen.length) {
     // Am Handy gilt fuer alle Gruppen dieselbe Lage.
     const alle = (x, y) => gruppen.forEach((g) => g.anwenden(x, y));
 
+    // Am Handy deutlich kraeftiger als mit der Maus. Der Zeiger fuehrt den
+    // Blick von selbst, das Kippen des Geraets nicht — dort muss der Effekt
+    // ins Auge fallen, sonst haelt man ihn fuer eine Unsauberkeit.
+    const HANDY_VERSTAERKUNG = 2.6;
+    gruppen.forEach((g) => (g.maxGrad *= HANDY_VERSTAERKUNG));
+
     // gamma ist die Neigung nach links und rechts, beta die nach vorn und
     // hinten. Der Bezugspunkt fuer beta liegt bei 45 Grad, also der Haltung,
     // in der ein Handy ueblicherweise vor einem liegt — sonst staende die
     // Ruhelage bei flach auf dem Tisch.
+    // Geteilt wird durch 16 statt durch 30: Schon eine Handbewegung von rund
+    // sechzehn Grad reicht damit fuer den vollen Ausschlag. Bei 30 musste man
+    // das Geraet weit kippen, bevor ueberhaupt etwas sichtbar wurde.
+    const EMPFINDLICHKEIT = 16;
     const nachLage = (e) => {
       if (e.gamma === null || e.beta === null) return;
-      alle(klemmen(e.gamma / 30), klemmen((e.beta - 45) / 30));
+      alle(
+        klemmen(e.gamma / EMPFINDLICHKEIT),
+        klemmen((e.beta - 45) / EMPFINDLICHKEIT)
+      );
     };
 
     // Rueckfall ohne Sensor: Die Richtung wandert beim Scrollen. Zwei
