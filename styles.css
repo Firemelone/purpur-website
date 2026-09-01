@@ -2182,7 +2182,12 @@ body {
    ========================================================================== */
 
 @media (max-width: 620px) {
-  .hero__logo { width: min(88vw, 460px); }
+  /* Wortmarke und Knoepfe teilen sich dieselbe Breite, damit ihre Kanten
+     uebereinander stehen. Eine gemeinsame Variable statt zweier gleicher
+     Werte — sonst laufen sie beim naechsten Nachjustieren auseinander. */
+  .hero__content { --hero-spalte: min(78vw, 340px); }
+
+  .hero__logo { width: var(--hero-spalte); }
 
   .hero__actions {
     flex-direction: column;
@@ -2191,7 +2196,7 @@ body {
     margin-top: 42px;
   }
   .hero__actions .btn {
-    width: min(78vw, 340px);
+    width: var(--hero-spalte);
     justify-content: center;
     font-size: 1rem;
     padding: 1.15em 1.4em;
