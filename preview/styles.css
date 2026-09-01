@@ -465,7 +465,7 @@ img.glitch {
 
 /* DIASHOW-ANFANG (erzeugt von tools/build-diashow.py) */
 @media (prefers-reduced-motion: no-preference) {
-  .hero__slide { animation: hero-slideshow 32s linear infinite; }
+  .hero__slide { animation: hero-slideshow 32s step-end infinite; }
   .hero__slide:nth-child(1) { animation-delay: 0s; }
   .hero__slide:nth-child(2) { animation-delay: 4s; }
   .hero__slide:nth-child(3) { animation-delay: 8s; }
@@ -474,13 +474,19 @@ img.glitch {
   .hero__slide:nth-child(6) { animation-delay: 20s; }
   .hero__slide:nth-child(7) { animation-delay: 24s; }
   .hero__slide:nth-child(8) { animation-delay: 28s; }
+  .hero__media { animation: hero-negativ 4s step-end infinite; }
 }
 @keyframes hero-slideshow {
-  0%              { opacity: 0; }
-  2.000%   { opacity: 1; }
-  12.500%   { opacity: 1; }
-  14.500%   { opacity: 0; }
+  0%              { opacity: 1; }
+  12.5000%   { opacity: 0; }
   100%            { opacity: 0; }
+}
+/* Der Blitz braucht dieselbe Filterkette in beiden Zustaenden, sonst
+   rechnet der Browser zwischen den Schritten herum statt zu springen. */
+@keyframes hero-negativ {
+  0%              { filter: invert(1) hue-rotate(90deg) saturate(1.6); }
+  2.7500%    { filter: invert(0) hue-rotate(0deg) saturate(1); }
+  100%            { filter: invert(0) hue-rotate(0deg) saturate(1); }
 }
 /* DIASHOW-ENDE */
   1%    { opacity: 1; }
@@ -1451,9 +1457,19 @@ body { font-weight: 300; font-size: 0.95rem; }
    und hat den Blend zunichte gemacht: Das Logo mischte sich mit dem Schleier
    statt mit dem Foto und wirkte deckend. Seit die Diashow beim Bauen je Bild
    auf eine einheitliche Helligkeit gebracht wird, braucht es ihn nicht mehr. */
+/* Das Logo soll wirken wie eine Scheibe aus eingefaerbtem Acrylglas: das
+   Bild dahinter scheint gedaempft durch, rosa getoent, aber die Farbtoene
+   bleiben richtig. Frueher stand hier mix-blend-mode: hard-light — das
+   verrechnet die Kanaele und hat gerade das Lila verfaelscht.
+   Echte Transparenz trifft es besser: Was durchscheint, faerbt sich von
+   selbst rosa, weil die untere Haelfte der Wortmarke magenta ist. */
 .hero__logo {
-  mix-blend-mode: hard-light;
-  filter: saturate(1.35) contrast(1.12) brightness(1.06);
+  mix-blend-mode: normal;
+  opacity: .87;
+  /* Die Deckkraft nimmt der Wortmarke ueber dunklem Grund Helligkeit — das
+     Creme sackte sichtbar ins Graue ab. Die Aufhellung gleicht genau das
+     wieder aus, ohne die Durchsicht zu verringern. */
+  filter: saturate(1.22) contrast(1.04) brightness(1.12);
 }
 
 /* Hyperpop: Buttons greller, Ecken spielerischer, Ueberschriften mit dem
@@ -1747,9 +1763,25 @@ body { font-weight: 300; font-size: 0.95rem; }
 }
 
 
-/* Das Datum steht dreizeilig untereinander. Enge Zeilen, damit die drei
-   Zahlen als ein Block wirken und nicht als drei Angaben. */
-.next__value--gestapelt { line-height: .92; }
+/* Datum und Line-up stehen beide dreizeilig nebeneinander und sollen Zeile
+   fuer Zeile auf einer Hoehe liegen. Dafuer teilen sie sich dieselbe absolute
+   Zeilenhoehe — nur so trifft die dritte Datumszeile die dritte Line-up-Zeile.
+   Das Datum darf dabei groesser sein, solange die Zahlen in die gemeinsame
+   Zeile passen: Mosher ist rund 0.86em hoch, bei Faktor 1.18 bleibt es knapp
+   darunter und stoesst nicht an die Zeile darueber. */
+.next__grid {
+  --wert: clamp(1.1rem, 2.4vw, 1.9rem);
+  --zeile: calc(var(--wert) * 1.05);
+}
+.next__value--gestapelt {
+  font-size: calc(var(--wert) * 1.18);
+  line-height: var(--zeile);
+}
+.next__item--wide .next__value { line-height: var(--zeile); }
+
+/* Luft zwischen Datum und Line-up, damit die beiden Bloecke nicht
+   ineinanderlaufen. */
+.next__item:first-child { padding-right: clamp(.8rem, 2.4vw, 2.2rem); }
 
 /* Zweites Beschriftungspaar in derselben Spalte (Times unter Location).
    Braucht Abstand nach oben, sonst klebt es am Wert darueber. */
@@ -1759,9 +1791,8 @@ body { font-weight: 300; font-size: 0.95rem; }
    gesetzt wirkte es wie ein Fehler. Wenn es doch umbrechen muss, verteilt
    text-wrap: balance die Namen gleichmaessig auf beide Zeilen, statt einen
    einzelnen unten allein stehen zu lassen. */
-.next__item--wide .next__value {
-  text-wrap: balance;
-}
+/* Die Umbrueche stehen jetzt fest im Markup, damit die drei Zeilen genau so
+   fallen wie gewuenscht. text-wrap: balance wuerde dagegen arbeiten. */
 
 /* Laufende Nummer der Ausgabe, gross und fett links neben den Angaben */
 .next__no {
