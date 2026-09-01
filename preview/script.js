@@ -253,9 +253,9 @@ function tapeGroup() {
     <span class="tape__group">
       <span class="tape__item">03-10-26</span>
       <img class="tape__icon" src="Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span class="tape__item">22-06h</span>
+      <span class="tape__item">PURPUR #1</span>
       <img class="tape__icon" src="Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span class="tape__item">Nollendorfplatz</span>
+      <span class="tape__item">BERLIN</span>
       <img class="tape__icon" src="Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
     </span>`;
 }
