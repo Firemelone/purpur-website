@@ -92,11 +92,14 @@ def nicht_indexieren(ordner: pathlib.Path) -> int:
         text = p.read_text()
         if 'name="robots"' in text:
             continue
-        # Direkt hinter das erste <meta>, damit es weit oben im Kopf steht:
-        # Manche Scraper lesen nur die ersten Kilobytes.
-        marke = '<meta charset="UTF-8" />'
-        if marke not in text:
+        # Direkt hinter das erste <meta charset>, damit es weit oben im Kopf
+        # steht: Manche Scraper lesen nur die ersten Kilobytes.
+        # Gross- und Kleinschreibung sind im Bestand gemischt (UTF-8 und
+        # utf-8), deshalb per Suchmuster statt per festem Text.
+        treffer = re.search(r'<meta charset="[^"]*"\s*/?>', text)
+        if not treffer:
             sys.exit(f"Kein <meta charset> in {p.name} gefunden — abgebrochen.")
+        marke = treffer.group(0)
         p.write_text(text.replace(marke, f"{marke}\n{NOINDEX}", 1))
         gesetzt += 1
     return gesetzt
