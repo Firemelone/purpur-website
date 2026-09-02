@@ -24,33 +24,23 @@ REPO = pathlib.Path(__file__).resolve().parent.parent
 ZWEIG = "preview"
 ORDNER = "preview"
 
-# Die Vorschau soll nicht in Suchmaschinen auftauchen. Die Bots, die
-# Linkvorschauen in Messengern bauen, lesen dieselbe Datei und halten sich
-# ebenfalls daran — ohne Ausnahme kaeme beim Teilen keine Karte an.
+# Die Vorschau soll nicht in Suchmaschinen auftauchen — aber sehr wohl
+# abrufbar bleiben. Frueher stand hier ein "Disallow: /preview/", und genau
+# das war falsch: Disallow verbietet nicht das Indexieren, sondern das
+# Abrufen. Damit blieben auch alle Linkvorschauen leer, denn Messenger holen
+# sich die Seite ueber dieselben Regeln. Nur eine Handvoll namentlich
+# freigegebener Dienste kam durch; iMessage, Signal, Instagram, LinkedIn und
+# Teams sahen weder Text noch Bild.
+#
+# Herausgehalten wird die Vorschau jetzt ueber "noindex" in den Seiten selbst
+# (siehe nicht_indexieren). Das erlaubt das Abrufen und verbietet nur die
+# Aufnahme in den Index — also genau das, was gemeint war.
 ROBOTS = """User-agent: *
-Disallow: /preview/
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
-User-agent: WhatsApp
-Allow: /
-
-User-agent: TelegramBot
-Allow: /
-
-User-agent: Slackbot-LinkExpanding
-Allow: /
-
-User-agent: Discordbot
-Allow: /
-
-User-agent: SignalBot
 Allow: /
 """
+
+# Wird in jede Vorschauseite eingesetzt.
+NOINDEX = '<meta name="robots" content="noindex, nofollow" />'
 
 
 def lauf(*args, cwd=None, still=False):
@@ -88,6 +78,31 @@ def relativ(ordner: pathlib.Path) -> int:
             p.write_text(neu)
             geaendert += 1
     return geaendert
+
+
+def nicht_indexieren(ordner: pathlib.Path) -> int:
+    """noindex in jede Vorschauseite setzen.
+
+    Haelt die Vorschau aus Suchergebnissen heraus, laesst sie aber abrufbar —
+    anders als eine Sperre in der robots.txt, die auch Linkvorschauen
+    verhungern liesse.
+    """
+    gesetzt = 0
+    for p in sorted(ordner.rglob("*.html")):
+        text = p.read_text()
+        if 'name="robots"' in text:
+            continue
+        # Direkt hinter das erste <meta charset>, damit es weit oben im Kopf
+        # steht: Manche Scraper lesen nur die ersten Kilobytes.
+        # Gross- und Kleinschreibung sind im Bestand gemischt (UTF-8 und
+        # utf-8), deshalb per Suchmuster statt per festem Text.
+        treffer = re.search(r'<meta charset="[^"]*"\s*/?>', text)
+        if not treffer:
+            sys.exit(f"Kein <meta charset> in {p.name} gefunden — abgebrochen.")
+        marke = treffer.group(0)
+        p.write_text(text.replace(marke, f"{marke}\n{NOINDEX}", 1))
+        gesetzt += 1
+    return gesetzt
 
 
 def pruefe(ordner: pathlib.Path) -> None:
@@ -130,8 +145,10 @@ def main() -> None:
                 ziel.unlink()
 
         n = relativ(inhalt)
+        m = nicht_indexieren(inhalt)
         pruefe(inhalt)
         print(f"{n} Dateien auf relative Pfade umgeschrieben, keine Wurzelpfade uebrig.")
+        print(f"{m} Seiten auf noindex gesetzt.")
 
         # main in einem eigenen Arbeitsbaum, damit der preview-Zweig
         # hier ausgecheckt bleiben kann
