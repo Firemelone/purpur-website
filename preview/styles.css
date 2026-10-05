@@ -89,6 +89,7 @@
   --mint: #00ff9d;
   --orange: #ff9d00;
 
+  --grau: #312b39;
   --bone: #f3ece4;
   --black: #0a0a0a;
   --deep: #1b0026;
@@ -1592,17 +1593,17 @@ body { font-weight: 300; font-size: 0.95rem; }
    Steht bewusst nach den Hyperpop-Regeln darueber: .btn:hover hat dieselbe
    Spezifitaet, bei Gleichstand gewinnt die spaetere Regel. */
 .btn--statisch {
-  background: var(--purpur-dim);
-  color: var(--bone);
+  background: var(--grau);
+  color: rgba(243, 236, 228, .5);
   cursor: default;
   font-weight: 700;
 }
 .btn--statisch:hover,
 .btn--statisch:focus-visible {
-  background: var(--purpur-dim);
+  background: var(--grau);
   background-image: none;
   clip-path: var(--btn-wiggle);
-  color: var(--bone);
+  color: rgba(243, 236, 228, .5);
   transform: none;
   filter: none;
 }
@@ -1619,36 +1620,89 @@ body { font-weight: 300; font-size: 0.95rem; }
 
 .ticket-feld__notiz {
   position: absolute;
-  /* Ueber der oberen Kante, nicht auf dem Knopf: der Aufkleber ist breiter
-     als der kleine Knopf in der Kopfzeile und haette das Wort "Tickets"
-     sonst vollstaendig verdeckt. Er haengt nur mit der unteren Kante ueber
-     dem Knopf und ragt nach links darueber hinaus — die Flaeche daneben ist
-     in Kopfzeile wie Hero frei. */
-  bottom: calc(100% - .3em);
-  right: -.9em;
+  /* Ueber dem Wort "Tickets", leicht in den Knopf hinein. Ohne Flaeche darf
+     der Text den Knopf beruehren: der Knopf ist ausgegraut, der Hinweis
+     traegt die Aufmerksamkeit. */
+  bottom: calc(100% - 1.1em);
+  right: -.4em;
   z-index: 2;
-  background: var(--acid);
-  color: var(--black);
+  color: var(--acid);
   font-family: var(--font-body);
   font-weight: 800;
-  font-size: .58rem;
-  letter-spacing: .1em;
+  font-size: .62rem;
+  letter-spacing: .12em;
   text-transform: uppercase;
-  padding: .4em .65em;
   white-space: nowrap;
   transform: rotate(-7deg);
   transform-origin: 100% 100%;
-  box-shadow: 2px 2px 0 var(--magenta);
+  /* Haelt den Text ueber dem Knopf und dem Hero-Bild lesbar, ohne eine
+     sichtbare Flaeche zu setzen. */
+  text-shadow: 0 1px 4px rgba(10, 10, 10, .95), 0 0 2px rgba(10, 10, 10, .9);
   pointer-events: none;
+}
+
+/* Glitch in der Haussprache: zwei versetzte Kopien in Magenta und Blau.
+   Anders als .glitch laeuft er dauerhaft statt beim Hover und legt keine
+   Flaeche unter die Kopien — sie muessen ueber dem Knopf schweben. Dafuer
+   sind die Kopien die meiste Zeit auf null geklappt und blitzen nur kurz
+   auf, wie der Streifen im Bildabschnitt. */
+.ticket-feld__notiz::before,
+.ticket-feld__notiz::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  text-shadow: none;
+  pointer-events: none;
+  /* Ruhezustand, auch wenn keine Animation laeuft: wer im Betriebssystem
+     weniger Bewegung eingestellt hat, bekommt sonst zwei ungeklappte Kopien
+     ueber dem Text. */
+  clip-path: inset(50% 0 50% 0);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ticket-feld__notiz { animation: notiz-flackern 2.6s steps(1, end) infinite; }
+  .ticket-feld__notiz::before {
+    color: var(--magenta);
+    animation: notiz-glitch-1 2.6s steps(1, end) infinite;
+  }
+  .ticket-feld__notiz::after {
+    color: var(--blue);
+    animation: notiz-glitch-2 2.6s steps(1, end) infinite;
+  }
+}
+
+/* inset(50% 0 50% 0) klappt die Kopie auf null — das ist der Ruhezustand. */
+@keyframes notiz-glitch-1 {
+  0%, 57%, 100% { clip-path: inset(50% 0 50% 0); transform: translate(0, 0); }
+  58% { clip-path: inset(6% 0 64% 0); transform: translate(-2px, -1px); }
+  61% { clip-path: inset(58% 0 10% 0); transform: translate(2px, 1px); }
+  63% { clip-path: inset(50% 0 50% 0); transform: translate(0, 0); }
+  85% { clip-path: inset(28% 0 42% 0); transform: translate(-3px, 1px); }
+  87% { clip-path: inset(50% 0 50% 0); transform: translate(0, 0); }
+}
+@keyframes notiz-glitch-2 {
+  0%, 58%, 100% { clip-path: inset(50% 0 50% 0); transform: translate(0, 0); }
+  59% { clip-path: inset(62% 0 8% 0); transform: translate(3px, 1px); }
+  62% { clip-path: inset(10% 0 70% 0); transform: translate(-2px, -1px); }
+  64% { clip-path: inset(50% 0 50% 0); transform: translate(0, 0); }
+  86% { clip-path: inset(44% 0 28% 0); transform: translate(2px, -1px); }
+  88% { clip-path: inset(50% 0 50% 0); transform: translate(0, 0); }
+}
+@keyframes notiz-flackern {
+  0%, 57%, 100% { opacity: 1; }
+  58% { opacity: .45; }
+  60% { opacity: 1; }
+  85% { opacity: .6; }
+  86% { opacity: 1; }
 }
 
 /* In der Kopfzeile ist der Knopf kleiner, der Aufkleber geht mit. Er sitzt
    dort auch tiefer: die Kopfzeile klebt oben am Fenster, und mit demselben
    Ueberstand wie im Hero waere er an deren Oberkante angestossen. */
 .nav .ticket-feld__notiz {
-  font-size: .5rem;
-  letter-spacing: .08em;
-  bottom: calc(100% - .9em);
+  font-size: .52rem;
+  letter-spacing: .1em;
+  bottom: calc(100% - 1em);
 }
 @media (max-width: 720px) {
   /* Auf dem Handy ist der Knopf in der Kopfzeile groesser, zwischen seiner
@@ -1656,9 +1710,8 @@ body { font-weight: 300; font-size: 0.95rem; }
      wird deshalb kleiner, statt tiefer zu rutschen — tiefer hiesse auf dem
      Wort "Tickets". */
   .nav .ticket-feld__notiz {
-    font-size: .44rem;
-    padding: .35em .55em;
-    bottom: calc(100% - .55em);
+    font-size: .46rem;
+    bottom: calc(100% - .9em);
   }
 }
 
