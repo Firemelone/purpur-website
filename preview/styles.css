@@ -1620,11 +1620,13 @@ body { font-weight: 300; font-size: 0.95rem; }
 
 .ticket-feld__notiz {
   position: absolute;
-  /* Ueber dem Wort "Tickets", leicht in den Knopf hinein. Ohne Flaeche darf
-     der Text den Knopf beruehren: der Knopf ist ausgegraut, der Hinweis
-     traegt die Aufmerksamkeit. */
-  bottom: calc(100% - 1.1em);
-  right: -.4em;
+  /* Mittig auf dem Knopf, quer ueber das Wort "Tickets". Ohne Flaeche darf
+     der Text den Knopf decken: der Knopf ist ausgegraut, der Hinweis traegt
+     die Aufmerksamkeit.
+     Die Drehung steckt mit im transform, also muss die Zentrierung ebenfalls
+     dort stehen — top/left allein verschoeben nur die obere linke Ecke. */
+  top: 50%;
+  left: 50%;
   z-index: 2;
   color: var(--acid);
   font-family: var(--font-body);
@@ -1633,8 +1635,7 @@ body { font-weight: 300; font-size: 0.95rem; }
   letter-spacing: .12em;
   text-transform: uppercase;
   white-space: nowrap;
-  transform: rotate(-7deg);
-  transform-origin: 100% 100%;
+  transform: translate(-50%, -50%) rotate(-7deg);
   /* Haelt den Text ueber dem Knopf und dem Hero-Bild lesbar, ohne eine
      sichtbare Flaeche zu setzen. */
   text-shadow: 0 1px 4px rgba(10, 10, 10, .95), 0 0 2px rgba(10, 10, 10, .9);
@@ -1700,9 +1701,11 @@ body { font-weight: 300; font-size: 0.95rem; }
    dort auch tiefer: die Kopfzeile klebt oben am Fenster, und mit demselben
    Ueberstand wie im Hero waere er an deren Oberkante angestossen. */
 .nav .ticket-feld__notiz {
-  font-size: .52rem;
-  letter-spacing: .1em;
-  bottom: calc(100% - 1em);
+  /* Deutlich kleiner als im Hero: der Knopf in der Kopfzeile ist nur rund
+     100 px breit, in gleicher Groesse haette der Hinweis das Wort "Tickets"
+     vollstaendig zugedeckt statt darueberzuliegen. */
+  font-size: .42rem;
+  letter-spacing: .08em;
 }
 @media (max-width: 720px) {
   /* Auf dem Handy ist der Knopf in der Kopfzeile groesser, zwischen seiner
@@ -1710,8 +1713,7 @@ body { font-weight: 300; font-size: 0.95rem; }
      wird deshalb kleiner, statt tiefer zu rutschen — tiefer hiesse auf dem
      Wort "Tickets". */
   .nav .ticket-feld__notiz {
-    font-size: .46rem;
-    bottom: calc(100% - .9em);
+    font-size: .44rem;
   }
 }
 
