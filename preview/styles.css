@@ -722,16 +722,26 @@ section {
   }
 }
 
+/* Der Schriftzug stand absolut im Abschnitt und war damit auf dessen 78vh
+   festgenagelt: passten die drei Zeilen nicht hinein, schnitt das
+   overflow: hidden sie einfach ab — auf breiten, aber flachen Laptop-Schirmen
+   genau das, was passiert ist. Jetzt laeuft er im normalen Fluss, 78vh sind
+   nur noch die Mindesthoehe. Reicht die nicht, waechst der Abschnitt mit,
+   statt den Text zu kappen. Das Video und die Stoerebenen liegen ohnehin
+   absolut darunter, der Platz bleibt also frei.
+   Der Innenabstand haengt an der Hoehe, nicht mehr an 8 % der Breite: in
+   Prozent rechnet der Browser auch oben und unten gegen die Breite, auf
+   einem 1440er Schirm waren das ueber 100 px Polster pro Seite. */
 .visual__word {
-  position: absolute;
-  inset: 0;
+  position: relative;
   z-index: 3;
+  min-height: 78vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 8%;
+  padding: clamp(2rem, 7vh, 5rem) 8%;
   color: var(--bone);
   background: linear-gradient(180deg, rgba(10, 10, 10, 0) 0%, rgba(10, 10, 10, 0.45) 100%);
 }
@@ -769,9 +779,13 @@ section {
   }
 }
 
+/* Die Groesse hing allein an der Breite (10vw). Auf einem flachen Schirm
+   wuchs die Schrift damit weiter, obwohl in der Hoehe kein Platz mehr war.
+   min() nimmt jetzt den kleineren der beiden Werte: 11.5vh mal drei Zeilen
+   plus Innenabstand bleibt immer innerhalb der Flaeche. */
 .visual__word span {
   text-transform: uppercase;
-  font-size: clamp(3rem, 10vw, 8rem);
+  font-size: clamp(2.6rem, min(10vw, 15.5vh), 8rem);
   line-height: 0.86;
 }
 
@@ -1899,6 +1913,46 @@ body { font-weight: 300; font-size: 0.95rem; }
   line-height: .85;
   letter-spacing: -.02em;
   align-self: center;
+  /* Die Ziffern sind unterschiedlich breit — ohne Mindestbreite begaennen die
+     Angaben der beiden Abrisse auf verschiedenen Hoehen. */
+  min-width: 1.4em;
+}
+
+/* Kleiner Stempel unter der Ausgabennummer: "Past" bzw. "Next". Traegt die
+   Einordnung in einem Wort, damit die Abdunklung allein nicht die ganze
+   Aussage tragen muss. */
+.next__stempel {
+  display: block;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  opacity: .7;
+  margin-top: .5em;
+}
+
+/* Gelaufene Ausgabe: dunkler Grund statt vollem Lila, heller Text darauf.
+   Nur die Deckkraft zu senken hat nicht gereicht — Schwarz auf abgedunkeltem
+   Lila verliert zu viel Kontrast. Der Abriss bleibt anklickbar, der
+   Hover-Wechsel faellt aber deutlich leiser aus als bei der kommenden
+   Ausgabe. */
+.next--past {
+  background: var(--deep);
+  color: var(--bone);
+}
+.next--past .next__grid {
+  border-color: rgba(243, 236, 228, .28);
+}
+.next--past .next__value,
+.next--past .next__no {
+  opacity: .78;
+}
+.next--past .next__arrow {
+  color: var(--bone);
+  opacity: .6;
+}
+.next--past .next__link:hover {
+  background: var(--purpur-dim);
 }
 
 .next__arrow {

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>PURPUR / Berlin</title>
+<title>PURPUR</title>
 <meta name="description" content="PURPUR. A queer fetish subculture night in Berlin. 16.01.27, 22 to 06h, Nollendorfplatz. Transform into the purest version of yourself." />
 <meta property="og:type" content="website" />
   <meta property="og:url" content="https://purpur.berlin/" />
@@ -25,7 +25,7 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
 <link rel="preload" href="/assets/fonts/Mosher-Regular.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/fonts/GCFurion-Light.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="/styles.css?v=100" />
+<link rel="stylesheet" href="/styles.css?v=101" />
 </head>
 <body>
 
@@ -147,13 +147,16 @@
   </div>
 </section>
 
-<!-- Naechstes Event, im Stil von Ellies urspruenglichem Ticketabriss:
-     lila Flaeche, gestrichelte Kanten, kleines Label ueber grossem Wert.
-     Die ganze Flaeche ist ein Link zur RA-Seite. -->
-<section class="next" id="next">
+<!-- Ticketabrisse im Stil von Ellies urspruenglichem Entwurf: lila Flaeche,
+     gestrichelte Kanten, kleines Label ueber grossem Wert. Die ganze Flaeche
+     ist ein Link.
+     Zwei Abrisse untereinander: oben die gelaufene Ausgabe #1, abgedunkelt
+     und mit Stempel, damit auf den ersten Blick klar ist, dass sie vorbei
+     ist. Darunter die kommende #2 in vollem Lila. -->
+<section class="next next--past" id="past" aria-label="Past edition">
   <a class="next__link" href="https://ra.co/events/2518411" target="_blank" rel="noopener">
     <div class="wrap next__inner">
-      <span class="next__no" aria-hidden="true">#1</span>
+      <span class="next__no" aria-hidden="true">#1<span class="next__stempel">Past</span></span>
       <div class="next__grid">
         <div class="next__item">
           <span class="next__label">Date</span>
@@ -165,7 +168,7 @@
         </div>
         <div class="next__item">
           <span class="next__label">Location</span>
-          <span class="next__value mosher">Berlin</span>
+          <span class="next__value mosher">Mikropol<br />Berlin</span>
           <span class="next__label next__label--zweit">Doors</span>
           <span class="next__value mosher">22-06h</span>
         </div>
@@ -175,7 +178,37 @@
           <path d="M2 12 H42 M32 3 L43 12 L32 21" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter"/>
         </svg>
       </span>
-      <span class="visually-hidden">Tickets and full line-up on Resident Advisor</span>
+      <span class="visually-hidden">Past edition — line-up and recap on Resident Advisor</span>
+    </div>
+  </a>
+</section>
+
+<section class="next" id="next" aria-label="Next edition">
+  <a class="next__link" href="https://t.me/purpurberlin" target="_blank" rel="noopener">
+    <div class="wrap next__inner">
+      <span class="next__no" aria-hidden="true">#2<span class="next__stempel">Next</span></span>
+      <div class="next__grid">
+        <div class="next__item">
+          <span class="next__label">Date</span>
+          <span class="next__value mosher next__value--gestapelt">16<span class="next__trenner">/</span><br />01<span class="next__trenner">/</span><br />27</span>
+        </div>
+        <div class="next__item next__item--wide">
+          <span class="next__label">Line-up</span>
+          <span class="next__value mosher">TBA</span>
+        </div>
+        <div class="next__item">
+          <span class="next__label">Location</span>
+          <span class="next__value mosher">Mikropol<br />Berlin</span>
+          <span class="next__label next__label--zweit">Doors</span>
+          <span class="next__value mosher">22-06h</span>
+        </div>
+      </div>
+      <span class="next__arrow" aria-hidden="true">
+        <svg viewBox="0 0 48 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 12 H42 M32 3 L43 12 L32 21" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter"/>
+        </svg>
+      </span>
+      <span class="visually-hidden">Next edition — join the PURPUR Telegram group for the line-up</span>
     </div>
   </a>
 </section>
@@ -192,7 +225,7 @@
           <span class="decode fx-black">&ldquo;PURPUR, the new experience born from diverse fetish communities of Berlin,</span><span class="insight__rest"> brings their signature queer, safe-space-first events to the scenes. A raw focus on unique analogue experiences, fetish and subculture expression creates a new space for everyone who wants to transform into the most unhinged version of themself.&rdquo;</span>
         </p>
         <p>PURPUR resembles not only a safe space for queer subcultures, but also a clear statement against the rising fascist, racist, misogynist &amp; kink-shaming society. Simply said: <span class="fx-purpur">we are anti-fuckface*</span>, but big supporters on consensual face fuck!</p>
-        <p class="insight__credit">Boothbunny &amp; Kili, creators of PURPUR</p>
+        <p class="insight__credit">Boothbunny, creator of PURPUR</p>
       </div>
     </div>
   </div>
