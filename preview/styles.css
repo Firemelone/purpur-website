@@ -1584,6 +1584,29 @@ body { font-weight: 300; font-size: 0.95rem; }
 .btn:hover { background: var(--acid); color: var(--black); }
 .btn--ghost:hover { background: var(--mint); color: var(--black); }
 
+/* Platzhalter an der Stelle des Ticket-Knopfs, solange kein Vorverkauf laeuft.
+   Kein Link, also auch kein Hover, kein Zeigefinger und kein Tab-Stopp — der
+   Knopf soll nicht anbieten, was es noch nicht gibt. Die Wackelform bleibt,
+   damit die Stelle als Ticket-Platz erkennbar ist; die Farbe nimmt sich
+   gegenueber dem vollen Lila zurueck.
+   Steht bewusst nach den Hyperpop-Regeln darueber: .btn:hover hat dieselbe
+   Spezifitaet, bei Gleichstand gewinnt die spaetere Regel. */
+.btn--statisch {
+  background: var(--purpur-dim);
+  color: var(--bone);
+  cursor: default;
+  font-weight: 700;
+}
+.btn--statisch:hover,
+.btn--statisch:focus-visible {
+  background: var(--purpur-dim);
+  background-image: none;
+  clip-path: var(--btn-wiggle);
+  color: var(--bone);
+  transform: none;
+  filter: none;
+}
+
 /* Farbversatz wie auf den Flyern ("NOLLENDORFPLATZ") */
 .fx-split {
   text-shadow:

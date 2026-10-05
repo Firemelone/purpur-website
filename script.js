@@ -184,7 +184,7 @@ if (cursor && supportsFineCursor) {
   }, { passive: true });
 
   const interactiveSelector =
-    'a, button, .btn, input, textarea, select, [role="button"], .nav__toggle, .card, .stampframe';
+    'a, button, .btn:not(.btn--statisch), input, textarea, select, [role="button"], .nav__toggle, .card, .stampframe';
 
   document.addEventListener("mouseover", (e) => {
     if (e.target.closest(interactiveSelector)) cursor.classList.add("is-hover");
