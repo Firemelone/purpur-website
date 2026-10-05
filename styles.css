@@ -1607,6 +1607,61 @@ body { font-weight: 300; font-size: 0.95rem; }
   filter: none;
 }
 
+/* Auf dem Knopf steht nur "Tickets", der Stand haengt als schraeger
+   Aufkleber rechts oben darueber.
+   Der Aufkleber sitzt am Rahmen, nicht am Knopf: .btn traegt ein clip-path,
+   und das schneidet auch Kindelemente an der Wackelkante ab — im Knopf waere
+   vom Aufkleber nur der Teil zu sehen, der innerhalb der Form liegt. */
+.ticket-feld {
+  position: relative;
+  display: inline-flex;
+}
+
+.ticket-feld__notiz {
+  position: absolute;
+  /* Ueber der oberen Kante, nicht auf dem Knopf: der Aufkleber ist breiter
+     als der kleine Knopf in der Kopfzeile und haette das Wort "Tickets"
+     sonst vollstaendig verdeckt. Er haengt nur mit der unteren Kante ueber
+     dem Knopf und ragt nach links darueber hinaus — die Flaeche daneben ist
+     in Kopfzeile wie Hero frei. */
+  bottom: calc(100% - .3em);
+  right: -.9em;
+  z-index: 2;
+  background: var(--acid);
+  color: var(--black);
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: .58rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .4em .65em;
+  white-space: nowrap;
+  transform: rotate(-7deg);
+  transform-origin: 100% 100%;
+  box-shadow: 2px 2px 0 var(--magenta);
+  pointer-events: none;
+}
+
+/* In der Kopfzeile ist der Knopf kleiner, der Aufkleber geht mit. Er sitzt
+   dort auch tiefer: die Kopfzeile klebt oben am Fenster, und mit demselben
+   Ueberstand wie im Hero waere er an deren Oberkante angestossen. */
+.nav .ticket-feld__notiz {
+  font-size: .5rem;
+  letter-spacing: .08em;
+  bottom: calc(100% - .9em);
+}
+@media (max-width: 720px) {
+  /* Auf dem Handy ist der Knopf in der Kopfzeile groesser, zwischen seiner
+     Oberkante und dem Fensterrand bleiben aber nur rund 19 px. Der Aufkleber
+     wird deshalb kleiner, statt tiefer zu rutschen — tiefer hiesse auf dem
+     Wort "Tickets". */
+  .nav .ticket-feld__notiz {
+    font-size: .44rem;
+    padding: .35em .55em;
+    bottom: calc(100% - .55em);
+  }
+}
+
 /* Farbversatz wie auf den Flyern ("NOLLENDORFPLATZ") */
 .fx-split {
   text-shadow:
