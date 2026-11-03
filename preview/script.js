@@ -331,6 +331,7 @@ const gruppen = darfNeigen
         [
           document.querySelector(".hero__logo"),
           document.querySelector(".hero__actions"),
+          document.querySelector(".hero__social"),
         ].filter(Boolean),
         8,
         0.45,
