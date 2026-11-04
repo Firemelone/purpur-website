@@ -439,6 +439,10 @@ img.glitch {
 
 .hero {
   position: relative;
+  /* svh ist die Hoehe bei ausgefahrener Adressleiste und aendert sich beim
+     Scrollen nicht. Davor der Rueckfall fuer Browser ohne svh: ohne ihn
+     faellt die ganze Angabe weg und der Hero richtet sich nach dem Inhalt. */
+  min-height: 100vh;
   min-height: 100svh;
   /* single-cell grid instead of flex: a background layer and the content
      both stack in the same cell, and the (auto-height) row is guaranteed
@@ -482,7 +486,12 @@ img.glitch {
   .hero__slide:nth-child(4) { animation-delay: 12s; }
   .hero__slide:nth-child(5) { animation-delay: 16s; }
   .hero__slide:nth-child(6) { animation-delay: 20s; }
-  .hero__zap { animation: hero-zap 4s linear infinite; }
+  .hero__zap {
+    animation: hero-zap 4s linear infinite;
+    /* Gleiche Ueberlegung wie bei der Drift: laeuft dauerhaft und soll das
+       Scrollen nicht mitbezahlen. */
+    will-change: transform, opacity;
+  }
 }
 @keyframes hero-slideshow {
   0%              { opacity: 1; }
@@ -1585,7 +1594,16 @@ body { font-weight: 300; font-size: 0.95rem; }
    Die Vergroesserung auf 105 % schafft den Rand, in den hinein verschoben
    wird; ohne sie kaeme an den Kanten der Hintergrund durch. */
 @media (prefers-reduced-motion: no-preference) {
-  .hero__slideshow { animation: hero-drift 52s ease-in-out infinite; }
+  .hero__slideshow {
+    animation: hero-drift 52s ease-in-out infinite;
+    /* Ohne eigene Ebene laeuft dieses transform im Hauptstrang, und weil die
+       Bilder darunter einen filter tragen, muss der Browser sie dafuer in
+       jedem Bild neu rastern. Beim Scrollen ist der Hauptstrang belegt, die
+       Drift bleibt stehen und springt danach nach — auf dem Handy sichtbar
+       als Ruckeln des Hintergrunds. will-change schiebt die Ebene auf die
+       Grafikeinheit, dort laeuft sie unabhaengig vom Scrollen. */
+    will-change: transform;
+  }
 }
 .hero__slideshow { transform: scale(1.05); }
 
