@@ -181,31 +181,23 @@ a {
    ========================================================================== */
 
 .btn {
-  --btn-wiggle: polygon(
-    0.0% 3.4px, 7.1% 3.9px, 14.3% 4.2px, 21.4% 4.9px, 28.6% 3.9px, 35.7% 4.8px, 42.9% 0.4px, 50.0% 2.6px, 57.1% 4.9px, 64.3% 3.5px, 71.4% 4.7px, 78.6% 0.9px, 85.7% 2.6px, 92.9% 1.5px, calc(100% - 2.5px) 0.0%, calc(100% - 2.7px) 25.0%, calc(100% - 0.4px) 50.0%, calc(100% - 1.2px) 75.0%, 100.0% calc(100% - 1.7px), 92.9% calc(100% - 4.8px), 85.7% calc(100% - 4.1px), 78.6% calc(100% - 1.1px), 71.4% calc(100% - 4.2px), 64.3% calc(100% - 1.0px), 57.1% calc(100% - 3.3px), 50.0% calc(100% - 0.9px), 42.9% calc(100% - 0.3px), 35.7% calc(100% - 4.6px), 28.6% calc(100% - 1.3px), 21.4% calc(100% - 1.4px), 14.3% calc(100% - 5.1px), 7.1% calc(100% - 4.6px), 1.5px 100.0%, 4.2px 75.0%, 2.5px 50.0%, 3.1px 25.0%
-  );
-  /* same wobble path, 0-100 space, as a stroke-only SVG for outline states */
-  --btn-stroke-purpur: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0.0,5.1 L7.1,5.8 L14.3,6.3 L21.4,7.4 L28.6,5.8 L35.7,7.2 L42.9,0.6 L50.0,3.9 L57.1,7.4 L64.3,5.2 L71.4,7.1 L78.6,1.4 L85.7,3.9 L92.9,2.2 L96.2,0.0 L96.0,25.0 L99.4,50.0 L98.2,75.0 L100.0,97.5 L92.9,92.8 L85.7,93.8 L78.6,98.3 L71.4,93.7 L64.3,98.5 L57.1,95.0 L50.0,98.7 L42.9,99.5 L35.7,93.1 L28.6,98.0 L21.4,97.9 L14.3,92.3 L7.1,93.1 L2.2,100.0 L6.3,75.0 L3.8,50.0 L4.7,25.0 Z' fill='none' stroke='%239d00ff' stroke-width='2.4' stroke-linejoin='round'/%3E%3C/svg%3E");
-  --btn-stroke-bone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0.0,5.1 L7.1,5.8 L14.3,6.3 L21.4,7.4 L28.6,5.8 L35.7,7.2 L42.9,0.6 L50.0,3.9 L57.1,7.4 L64.3,5.2 L71.4,7.1 L78.6,1.4 L85.7,3.9 L92.9,2.2 L96.2,0.0 L96.0,25.0 L99.4,50.0 L98.2,75.0 L100.0,97.5 L92.9,92.8 L85.7,93.8 L78.6,98.3 L71.4,93.7 L64.3,98.5 L57.1,95.0 L50.0,98.7 L42.9,99.5 L35.7,93.1 L28.6,98.0 L21.4,97.9 L14.3,92.3 L7.1,93.1 L2.2,100.0 L6.3,75.0 L3.8,50.0 L4.7,25.0 Z' fill='none' stroke='%23f3ece4' stroke-width='2.4' stroke-linejoin='round'/%3E%3C/svg%3E");
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5em;
-  border: none;
+  border: 2px solid var(--purpur);
   background: var(--purpur);
-  background-image: none;
-  background-size: 100% 100%;
-  clip-path: var(--btn-wiggle);
   color: var(--black);
   font-family: var(--font-body);
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  font-size: 0.95rem;
-  padding: 0.95em 1.7em;
+  font-size: 1.05rem;
+  padding: 1.05em 2.1em;
   text-decoration: none;
   cursor: pointer;
   position: relative;
-  transition: transform 0.15s ease, filter 0.15s ease;
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease,
+    box-shadow .15s ease, transform .15s ease;
 }
 
 .btn > span {
@@ -215,8 +207,8 @@ a {
 
 /* Druckkorn auf der Knopffarbe — dieselbe Koernung wie im Bildabschnitt und
    auf dem gelaufenen Ticket, damit die Knoepfe gedruckt wirken statt flach
-   gefuellt. Liegt ueber dem Grund und unter der Beschriftung. Beim Hover
-   faellt die Flaeche weg und nur der Umriss bleibt, dann auch das Korn. */
+   gefuellt. Liegt ueber dem Grund und unter der Beschriftung, und bleibt
+   beim Hover liegen, weil der Knopf dort nur die Farbe wechselt. */
 .btn::before {
   content: "";
   position: absolute;
@@ -231,8 +223,6 @@ a {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   transition: opacity .15s ease;
 }
-.btn:hover::before,
-.btn:focus-visible::before { opacity: 0; }
 /* Der Ghost-Knopf hat keine Flaeche, die das Korn tragen koennte — erst im
    Hover, wenn er gefuellt wird. */
 .btn--ghost::before { opacity: 0; }
@@ -241,27 +231,24 @@ a {
 
 .btn:hover,
 .btn:focus-visible {
-  background: transparent;
-  background-image: var(--btn-stroke-purpur);
-  clip-path: none;
-  color: var(--bone);
-  transform: translate(-2px, -2px);
-  filter: drop-shadow(4px 4px 0 var(--magenta));
+  border-color: var(--acid);
+  color: var(--black);
+  /* Versatz und harter Schlagschatten statt Umriss: dieselbe Sprache wie die
+     Plakate, und ohne Formwechsel springt beim Hover nichts. */
+  transform: translate(-3px, -3px);
+  box-shadow: 5px 5px 0 var(--magenta);
 }
 
 .btn--ghost {
   background: transparent;
-  background-image: var(--btn-stroke-bone);
-  clip-path: none;
+  border-color: var(--bone);
   color: var(--bone);
 }
 .btn--ghost:hover,
 .btn--ghost:focus-visible {
-  background: var(--bone);
-  background-image: none;
-  clip-path: var(--btn-wiggle);
+  border-color: var(--mint);
   color: var(--black);
-  filter: drop-shadow(4px 4px 0 var(--purpur));
+  box-shadow: 5px 5px 0 var(--purpur);
 }
 
 /* ==========================================================================
@@ -409,8 +396,8 @@ img.glitch {
 }
 
 .nav__links .btn {
-  padding: 0.85em 1.6em;
-  font-size: 0.9rem;
+  padding: 0.9em 1.7em;
+  font-size: 0.95rem;
 }
 
 .nav__toggle {
@@ -2030,9 +2017,17 @@ body { font-weight: 300; font-size: 0.95rem; }
   /* Leichte Drehung — mehr als rund ein Grad und die Zeilen wirken schief
      statt liegengelassen. */
   transform: rotate(-1.1deg);
-  /* Rechts abgerissen. Die Bisse stehen in px, damit der Riss auf jeder
-     Breite gleich tief bleibt; in Prozent waere er am Rechner handbreit. */
-  clip-path: polygon(0 0, calc(100% - 9px) 0.0%, calc(100% - 10px) 3.6%, calc(100% - 9px) 7.1%, calc(100% - 28px) 10.7%, calc(100% - 9px) 14.3%, calc(100% - 30px) 17.9%, calc(100% - 10px) 21.4%, calc(100% - 19px) 25.0%, calc(100% - 13px) 28.6%, calc(100% - 14px) 32.1%, calc(100% - 34px) 35.7%, calc(100% - 16px) 39.3%, calc(100% - 12px) 42.9%, calc(100% - 9px) 46.4%, calc(100% - 11px) 50.0%, calc(100% - 10px) 53.6%, calc(100% - 12px) 57.1%, calc(100% - 9px) 60.7%, calc(100% - 26px) 64.3%, calc(100% - 10px) 67.9%, calc(100% - 9px) 71.4%, calc(100% - 30px) 75.0%, calc(100% - 9px) 78.6%, calc(100% - 19px) 82.1%, calc(100% - 15px) 85.7%, calc(100% - 30px) 89.3%, calc(100% - 13px) 92.9%, calc(100% - 12px) 96.4%, calc(100% - 34px) 100.0%, 0 100%);
+  /* Perforation wie bei einer Konzertkarte: halbe Kreise, in gleichem
+     Abstand die rechte Kante herunter. Als Maske statt clip-path, weil ein
+     Polygon keine Boegen kennt. Die Kreisgroesse steht in px, damit die
+     Zaehnung auf jeder Breite gleich aussieht. */
+  --perfo: radial-gradient(circle 9px at 100% 50%, transparent 8.6px, #000 9.1px);
+  -webkit-mask-image: var(--perfo);
+  mask-image: var(--perfo);
+  -webkit-mask-size: 100% 30px;
+  mask-size: 100% 30px;
+  -webkit-mask-repeat: repeat-y;
+  mask-repeat: repeat-y;
 }
 
 /* Papier: feine Koernung ueber dem Grund, dazu ein flacher Lichtverlauf,
@@ -2062,12 +2057,10 @@ body { font-weight: 300; font-size: 0.95rem; }
   opacity: .5;
 }
 .next--past .next__label { opacity: .4; }
-/* Der Pfeil wich dem Stempel — der Platz bleibt aber derselbe, sonst
-   zoege sich das Raster der vergangenen Ausgabe ueber die frei gewordene
-   Breite und Location stuende nicht mehr auf Hoehe der kommenden. */
-.next__arrow--stempel {
-  position: relative;
-  color: transparent;
+/* Der Pfeil wird nur unsichtbar, nicht entfernt: sein Platz haelt die
+   Spalten auf derselben Breite wie bei der kommenden Ausgabe. */
+.next--past .next__arrow {
+  visibility: hidden;
 }
 .next--past .next__link:hover {
   background: var(--purpur-dim);
@@ -2076,20 +2069,21 @@ body { font-weight: 300; font-size: 0.95rem; }
 /* Entwertungsstempel: Zackenkranz mit einem Wort darin, quer auf die linke
    Haelfte geknallt. Der Kranz ist nur eine Kontur, deshalb bleibt die
    Ausgabennummer darunter lesbar. */
+/* Entwertungsstempel: Zackenkranz quer ueber die Location-Spalte, das Wort
+   in der Display-Schrift und breiter als der Kranz, damit es an beiden
+   Seiten darueber hinausschaut. */
+.next--past .next__item:nth-child(3) { position: relative; }
 .entwertet {
   position: absolute;
   top: 50%;
-  /* Etwas nach links aus dem Pfeilplatz heraus, sonst liefe der Kranz in
-     die abgerissene Kante. */
-  right: 14%;
-  width: clamp(74px, 7.6vw, 98px);
+  left: 50%;
+  width: clamp(88px, 9vw, 128px);
   aspect-ratio: 1;
   display: grid;
   place-items: center;
-  transform: translate(50%, -50%) rotate(-13deg);
+  transform: translate(-50%, -50%) rotate(-11deg);
   color: var(--magenta);
-  /* Zurueckhaltend: der Stempel ist eine Randnotiz, kein zweiter Knopf. */
-  opacity: .42;
+  opacity: .55;
   pointer-events: none;
 }
 .entwertet__kranz {
@@ -2101,15 +2095,13 @@ body { font-weight: 300; font-size: 0.95rem; }
   stroke-width: 3;
   stroke-linejoin: round;
 }
-/* Das Wort muss in den Kranz passen: bei gut 110 px Aussenmass bleiben
-   innen rund 75 px, mehr als knapp 1 rem traegt "Slayed" dort nicht. */
 .entwertet__wort {
   grid-area: 1 / 1;
-  font-family: var(--font-body);
-  font-weight: 900;
-  font-size: clamp(.58rem, 1vw, .78rem);
+  font-family: var(--font-display);
+  font-size: clamp(1.95rem, 3.7vw, 3.5rem);
+  line-height: 1;
   letter-spacing: .02em;
-  text-transform: uppercase;
+  white-space: nowrap;
   color: currentColor;
 }
 
@@ -2118,10 +2110,7 @@ body { font-weight: 300; font-size: 0.95rem; }
      lag dort mitten im Text. Er haengt sich deshalb an den ganzen Abriss
      statt an das Line-up-Feld und sitzt oben rechts neben der Nummer, wo
      die Flaeche frei ist. */
-  .entwertet {
-    width: 84px;
-    right: 50%;
-  }
+  .entwertet { width: 96px; }
 }
 
 
@@ -2424,8 +2413,8 @@ body {
   .hero__actions .btn {
     width: var(--hero-spalte);
     justify-content: center;
-    font-size: 1rem;
-    padding: 1.15em 1.4em;
+    font-size: 1.05rem;
+    padding: 1.2em 1.4em;
   }
   .hero__social { margin-top: 20px; }
 
