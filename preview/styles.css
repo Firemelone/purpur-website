@@ -196,14 +196,6 @@ a {
   text-decoration: none;
   cursor: pointer;
   position: relative;
-  /* Leichte Drehung um die Hochachse: der linke Rand weicht nach hinten, der
-     rechte kommt nach vorn. Die Perspektive steht im transform selbst, nicht
-     als perspective-Eigenschaft am Elternelement — dort machte sie einen
-     Stapelkontext auf und zerstoerte im Hero das Durchscheinen der Wortmarke.
-     Eine Drehung aendert nur das Bild, nicht den Platz im Fluss, die Nachbarn
-     ruecken also nicht. */
-  --btn-dreh: perspective(520px) rotateY(-21deg);
-  transform: var(--btn-dreh);
   transition: background-color .15s ease, border-color .15s ease, color .15s ease,
     box-shadow .15s ease, transform .15s ease;
 }
@@ -243,14 +235,9 @@ a {
   color: var(--black);
   /* Versatz und harter Schlagschatten statt Umriss: dieselbe Sprache wie die
      Plakate, und ohne Formwechsel springt beim Hover nichts. */
-  transform: var(--btn-dreh) translate(-3px, -3px);
+  transform: translate(-3px, -3px);
   box-shadow: 5px 5px 0 var(--magenta);
 }
-
-/* Die beiden Knoepfe schauen einander an: der linke dreht sich nach rechts,
-   der rechte nach links. Gesteuert ueber .btn--ghost, weil das Supporter
-   Bundle in Kopfzeile wie Hero links steht und Tickets rechts. */
-.btn--ghost { --btn-dreh: perspective(520px) rotateY(21deg); }
 
 .btn--ghost {
   background: transparent;
@@ -2430,8 +2417,6 @@ body {
   /* Die Perspektive wirkt umso staerker, je breiter das Element im
      Verhaeltnis zum Fluchtpunkt ist. Die Knoepfe laufen hier ueber die volle
      Spaltenbreite — mit den Werten vom Rechner kippten sie regelrecht weg. */
-  .btn { --btn-dreh: perspective(820px) rotateY(-14deg); }
-  .btn--ghost { --btn-dreh: perspective(820px) rotateY(14deg); }
   .hero__actions .btn {
     width: var(--hero-spalte);
     justify-content: center;
