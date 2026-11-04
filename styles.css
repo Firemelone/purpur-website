@@ -182,15 +182,11 @@ a {
 
 .btn {
   --btn-wiggle: polygon(
-    3% 6px, 22% 1px, 40% 5px, 60% 1px, 79% 5px, 97% 2px,
-    100% 22%, calc(100% - 4px) 45%, 100% 68%, calc(100% - 3px) 90%,
-    80% calc(100% - 2px), 61% calc(100% - 6px), 41% calc(100% - 1px),
-    21% calc(100% - 5px), 4% calc(100% - 1px),
-    1px 80%, 5px 55%, 0px 30%, 4px 14%
+    0.0% 3.4px, 7.1% 3.9px, 14.3% 4.2px, 21.4% 4.9px, 28.6% 3.9px, 35.7% 4.8px, 42.9% 0.4px, 50.0% 2.6px, 57.1% 4.9px, 64.3% 3.5px, 71.4% 4.7px, 78.6% 0.9px, 85.7% 2.6px, 92.9% 1.5px, calc(100% - 2.5px) 0.0%, calc(100% - 2.7px) 25.0%, calc(100% - 0.4px) 50.0%, calc(100% - 1.2px) 75.0%, 100.0% calc(100% - 1.7px), 92.9% calc(100% - 4.8px), 85.7% calc(100% - 4.1px), 78.6% calc(100% - 1.1px), 71.4% calc(100% - 4.2px), 64.3% calc(100% - 1.0px), 57.1% calc(100% - 3.3px), 50.0% calc(100% - 0.9px), 42.9% calc(100% - 0.3px), 35.7% calc(100% - 4.6px), 28.6% calc(100% - 1.3px), 21.4% calc(100% - 1.4px), 14.3% calc(100% - 5.1px), 7.1% calc(100% - 4.6px), 1.5px 100.0%, 4.2px 75.0%, 2.5px 50.0%, 3.1px 25.0%
   );
   /* same wobble path, 0-100 space, as a stroke-only SVG for outline states */
-  --btn-stroke-purpur: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M3,6 L22,1 L40,5 L60,1 L79,5 L97,2 L100,22 L96,45 L100,68 L97,90 L80,98 L61,94 L41,99 L21,95 L4,99 L1,80 L5,55 L0,30 L4,14 Z' fill='none' stroke='%239d00ff' stroke-width='2.5'/%3E%3C/svg%3E");
-  --btn-stroke-bone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M3,6 L22,1 L40,5 L60,1 L79,5 L97,2 L100,22 L96,45 L100,68 L97,90 L80,98 L61,94 L41,99 L21,95 L4,99 L1,80 L5,55 L0,30 L4,14 Z' fill='none' stroke='%23f3ece4' stroke-width='2.5'/%3E%3C/svg%3E");
+  --btn-stroke-purpur: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0.0,5.1 L7.1,5.8 L14.3,6.3 L21.4,7.4 L28.6,5.8 L35.7,7.2 L42.9,0.6 L50.0,3.9 L57.1,7.4 L64.3,5.2 L71.4,7.1 L78.6,1.4 L85.7,3.9 L92.9,2.2 L96.2,0.0 L96.0,25.0 L99.4,50.0 L98.2,75.0 L100.0,97.5 L92.9,92.8 L85.7,93.8 L78.6,98.3 L71.4,93.7 L64.3,98.5 L57.1,95.0 L50.0,98.7 L42.9,99.5 L35.7,93.1 L28.6,98.0 L21.4,97.9 L14.3,92.3 L7.1,93.1 L2.2,100.0 L6.3,75.0 L3.8,50.0 L4.7,25.0 Z' fill='none' stroke='%239d00ff' stroke-width='2.4' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --btn-stroke-bone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0.0,5.1 L7.1,5.8 L14.3,6.3 L21.4,7.4 L28.6,5.8 L35.7,7.2 L42.9,0.6 L50.0,3.9 L57.1,7.4 L64.3,5.2 L71.4,7.1 L78.6,1.4 L85.7,3.9 L92.9,2.2 L96.2,0.0 L96.0,25.0 L99.4,50.0 L98.2,75.0 L100.0,97.5 L92.9,92.8 L85.7,93.8 L78.6,98.3 L71.4,93.7 L64.3,98.5 L57.1,95.0 L50.0,98.7 L42.9,99.5 L35.7,93.1 L28.6,98.0 L21.4,97.9 L14.3,92.3 L7.1,93.1 L2.2,100.0 L6.3,75.0 L3.8,50.0 L4.7,25.0 Z' fill='none' stroke='%23f3ece4' stroke-width='2.4' stroke-linejoin='round'/%3E%3C/svg%3E");
   display: inline-flex;
   align-items: center;
   gap: 0.5em;
@@ -216,6 +212,32 @@ a {
   position: relative;
   z-index: 1;
 }
+
+/* Druckkorn auf der Knopffarbe — dieselbe Koernung wie im Bildabschnitt und
+   auf dem gelaufenen Ticket, damit die Knoepfe gedruckt wirken statt flach
+   gefuellt. Liegt ueber dem Grund und unter der Beschriftung. Beim Hover
+   faellt die Flaeche weg und nur der Umriss bleibt, dann auch das Korn. */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* multiply statt overlay: overlay laesst eine satte Flaeche wie das Lila
+     fast unveraendert, weil mittleres Grau dort nichts bewirkt. Das Korn ist
+     ausserdem entsaettigt, sonst faerbte es die Flaeche bunt ein. */
+  opacity: .42;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  transition: opacity .15s ease;
+}
+.btn:hover::before,
+.btn:focus-visible::before { opacity: 0; }
+/* Der Ghost-Knopf hat keine Flaeche, die das Korn tragen koennte — erst im
+   Hover, wenn er gefuellt wird. */
+.btn--ghost::before { opacity: 0; }
+.btn--ghost:hover::before,
+.btn--ghost:focus-visible::before { opacity: .42; }
 
 .btn:hover,
 .btn:focus-visible {
@@ -387,8 +409,8 @@ img.glitch {
 }
 
 .nav__links .btn {
-  padding: 0.7em 1.3em;
-  font-size: 0.78rem;
+  padding: 0.85em 1.6em;
+  font-size: 0.9rem;
 }
 
 .nav__toggle {
@@ -1984,13 +2006,22 @@ body { font-weight: 300; font-size: 0.95rem; }
    und unten schiebt, sonst ragte das Ticket in die Nachbarabschnitte.
    z-index 0 statt 1: so schiebt sich die kommende Ausgabe darueber und das
    gelaufene Ticket liegt wirklich darunter. */
-.next--past {
+/* Zwei Klassen, damit die spaetere Sammelregel fuer .next den z-index nicht
+   wieder auf 1 zieht — sonst legt sich der schwarze Grund der vergangenen
+   Ausgabe ueber die kommende und zwischen beiden steht ein schwarzer Keil. */
+.next.next--past {
   background: var(--black);
   color: var(--bone);
   overflow: visible;
   z-index: 0;
-  padding-block: clamp(1.4rem, 3vw, 2.6rem);
-  margin-top: clamp(-2.4rem, -2.6vw, -1.2rem);
+  /* Die Drehung hebt das eine Ende um die halbe Breite mal tan(1.1 Grad),
+     also rund ein Prozent der Fensterbreite. Die Polsterung faengt das auf,
+     der gleich grosse negative Aussenabstand zieht das Ticket wieder hoch,
+     bis seine Oberkante an der kommenden Ausgabe klebt — sonst bliebe
+     dazwischen ein schwarzer Streifen. */
+  --luft: clamp(1.4rem, 3vw, 2.6rem);
+  padding-block: var(--luft);
+  margin-top: calc(-1 * (var(--luft) + 1.05vw));
 }
 
 .next--past .next__link {
@@ -2001,7 +2032,7 @@ body { font-weight: 300; font-size: 0.95rem; }
   transform: rotate(-1.1deg);
   /* Rechts abgerissen. Die Bisse stehen in px, damit der Riss auf jeder
      Breite gleich tief bleibt; in Prozent waere er am Rechner handbreit. */
-  clip-path: polygon(0 0, calc(100% - 4px) 0%, calc(100% - 2px) 3.6%, calc(100% - 11px) 7.1%, calc(100% - 4px) 10.7%, calc(100% - 11px) 14.3%, calc(100% - 19px) 17.9%, calc(100% - 5px) 21.4%, calc(100% - 2px) 25%, calc(100% - 11px) 28.6%, calc(100% - 9px) 32.1%, calc(100% - 7px) 35.7%, calc(100% - 2px) 39.3%, calc(100% - 17px) 42.9%, calc(100% - 1px) 46.4%, calc(100% - 4px) 50%, calc(100% - 1px) 53.6%, calc(100% - 14px) 57.1%, calc(100% - 22px) 60.7%, calc(100% - 1px) 64.3%, calc(100% - 4px) 67.9%, calc(100% - 22px) 71.4%, calc(100% - 9px) 75%, calc(100% - 1px) 78.6%, calc(100% - 7px) 82.1%, calc(100% - 17px) 85.7%, calc(100% - 19px) 89.3%, calc(100% - 3px) 92.9%, calc(100% - 19px) 96.4%, calc(100% - 4px) 100%, 0 100%);
+  clip-path: polygon(0 0, calc(100% - 9px) 0.0%, calc(100% - 10px) 3.6%, calc(100% - 9px) 7.1%, calc(100% - 28px) 10.7%, calc(100% - 9px) 14.3%, calc(100% - 30px) 17.9%, calc(100% - 10px) 21.4%, calc(100% - 19px) 25.0%, calc(100% - 13px) 28.6%, calc(100% - 14px) 32.1%, calc(100% - 34px) 35.7%, calc(100% - 16px) 39.3%, calc(100% - 12px) 42.9%, calc(100% - 9px) 46.4%, calc(100% - 11px) 50.0%, calc(100% - 10px) 53.6%, calc(100% - 12px) 57.1%, calc(100% - 9px) 60.7%, calc(100% - 26px) 64.3%, calc(100% - 10px) 67.9%, calc(100% - 9px) 71.4%, calc(100% - 30px) 75.0%, calc(100% - 9px) 78.6%, calc(100% - 19px) 82.1%, calc(100% - 15px) 85.7%, calc(100% - 30px) 89.3%, calc(100% - 13px) 92.9%, calc(100% - 12px) 96.4%, calc(100% - 34px) 100.0%, 0 100%);
 }
 
 /* Papier: feine Koernung ueber dem Grund, dazu ein flacher Lichtverlauf,
@@ -2031,8 +2062,13 @@ body { font-weight: 300; font-size: 0.95rem; }
   opacity: .5;
 }
 .next--past .next__label { opacity: .4; }
-/* Der Pfeil wich dem Stempel. */
-.next--past .next__arrow { display: none; }
+/* Der Pfeil wich dem Stempel — der Platz bleibt aber derselbe, sonst
+   zoege sich das Raster der vergangenen Ausgabe ueber die frei gewordene
+   Breite und Location stuende nicht mehr auf Hoehe der kommenden. */
+.next__arrow--stempel {
+  position: relative;
+  color: transparent;
+}
 .next--past .next__link:hover {
   background: var(--purpur-dim);
 }
@@ -2040,18 +2076,20 @@ body { font-weight: 300; font-size: 0.95rem; }
 /* Entwertungsstempel: Zackenkranz mit einem Wort darin, quer auf die linke
    Haelfte geknallt. Der Kranz ist nur eine Kontur, deshalb bleibt die
    Ausgabennummer darunter lesbar. */
-.next--past .next__item--wide { position: relative; }
 .entwertet {
   position: absolute;
   top: 50%;
-  right: clamp(.5rem, 3vw, 3rem);
-  width: clamp(84px, 9vw, 116px);
+  /* Etwas nach links aus dem Pfeilplatz heraus, sonst liefe der Kranz in
+     die abgerissene Kante. */
+  right: 14%;
+  width: clamp(74px, 7.6vw, 98px);
   aspect-ratio: 1;
   display: grid;
   place-items: center;
-  transform: translateY(-50%) rotate(-13deg);
+  transform: translate(50%, -50%) rotate(-13deg);
   color: var(--magenta);
-  opacity: .85;
+  /* Zurueckhaltend: der Stempel ist eine Randnotiz, kein zweiter Knopf. */
+  opacity: .42;
   pointer-events: none;
 }
 .entwertet__kranz {
@@ -2060,7 +2098,7 @@ body { font-weight: 300; font-size: 0.95rem; }
   height: 100%;
   fill: none;
   stroke: currentColor;
-  stroke-width: 3.4;
+  stroke-width: 3;
   stroke-linejoin: round;
 }
 /* Das Wort muss in den Kranz passen: bei gut 110 px Aussenmass bleiben
@@ -2069,7 +2107,7 @@ body { font-weight: 300; font-size: 0.95rem; }
   grid-area: 1 / 1;
   font-family: var(--font-body);
   font-weight: 900;
-  font-size: clamp(.66rem, 1.15vw, .92rem);
+  font-size: clamp(.58rem, 1vw, .78rem);
   letter-spacing: .02em;
   text-transform: uppercase;
   color: currentColor;
@@ -2080,12 +2118,9 @@ body { font-weight: 300; font-size: 0.95rem; }
      lag dort mitten im Text. Er haengt sich deshalb an den ganzen Abriss
      statt an das Line-up-Feld und sitzt oben rechts neben der Nummer, wo
      die Flaeche frei ist. */
-  .next--past .next__item--wide { position: static; }
   .entwertet {
-    top: 1rem;
-    right: .2rem;
-    width: 92px;
-    transform: rotate(-13deg);
+    width: 84px;
+    right: 50%;
   }
 }
 
