@@ -239,8 +239,13 @@ if (loader) {
 
   ausrichten();
   window.addEventListener("resize", ausrichten, { passive: true });
-  const SPIN_MS = 700;    // Symbol dreht sich
-  const GLITCH_MS = 500;  // Uebergang zum vollen Logo
+  // Ein voller Umlauf des Symbols dauert seit dem Umschreiben der
+  // Frame-Zeiten 480 ms statt 2000 — die Drehung ist damit gut viermal so
+  // schnell und wird einmal ganz gezeigt statt zu einem Drittel
+  // angeschnitten. Beide Werte zusammen sind zwei Drittel der frueheren
+  // Gesamtdauer von 1200 ms.
+  const SPIN_MS = 480;    // Symbol dreht sich genau einmal
+  const GLITCH_MS = 320;  // Uebergang zum vollen Logo
   const FALLBACK_MS = 5000;
 
   const fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
