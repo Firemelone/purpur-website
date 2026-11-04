@@ -617,27 +617,44 @@ img.glitch {
 }
 
 
-/* Zweite Knopfreihe im Hero: Kanaele. Etwas enger an der ersten Reihe als
-   diese am Logo, damit die vier Knoepfe als ein Block lesen. */
+/* Zweite Reihe im Hero: die Kanaele als runde Knoepfe, nur Symbol.
+   Mittig unter den beiden Hauptknoepfen und mit etwas mehr Luft nach oben
+   als zwischen den Knoepfen selbst — so liest die Reihe als eigene Ebene
+   und nicht als abgerutschter Teil der ersten. */
 .hero__social {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: 16px;
-  margin-top: 14px;
+  gap: 14px;
+  margin-top: 20px;
 }
 
-/* Das Icon braucht denselben Stapelkontext wie der Text: .btn setzt beim
-   Hover ein clip-path und tauscht den Grund, ohne z-index verschwaende das
-   Icon dahinter. Groesse in em, damit es mit der Knopfschrift mitwaechst. */
-.btn__icon {
-  position: relative;
-  z-index: 1;
-  width: 1.2em;
-  height: 1.2em;
+/* Kein .btn: dessen Wackelform und Polsterung passen nicht zum Kreis. Die
+   Umrandung nimmt die Sprache der Ghost-Knoepfe auf, der Hover ebenso.
+   48 px, damit der Knopf auf dem Handy sicher zu treffen ist. */
+.kanal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
   flex: 0 0 auto;
+  border: 2px solid var(--bone);
+  border-radius: 50%;
+  color: var(--bone);
+  text-decoration: none;
+  transition: background-color .2s ease, color .2s ease, transform .2s ease;
 }
-.btn--mit-icon { padding-left: 1.4em; }
+.kanal svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+.kanal:hover,
+.kanal:focus-visible {
+  background: var(--mint);
+  color: var(--black);
+  transform: translateY(-2px);
+}
 
 
 /* ==========================================================================
@@ -2414,19 +2431,15 @@ body {
     gap: 14px;
     margin-top: 42px;
   }
-  .hero__social {
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
-    margin-top: 14px;
-  }
-  .hero__actions .btn,
-  .hero__social .btn {
+  /* Die Hauptknoepfe stehen hier untereinander in der Spaltenbreite, die
+     runden Kanalknoepfe bleiben nebeneinander und mittig darunter. */
+  .hero__actions .btn {
     width: var(--hero-spalte);
     justify-content: center;
     font-size: 1rem;
     padding: 1.15em 1.4em;
   }
+  .hero__social { margin-top: 20px; }
 
   /* Kuerzeres Nachziehen als am Rechner: Die Neigung folgt hier dem Geraet in
      der Hand. Bei 0.4s haette sie sichtbar hinterhergehinkt und die Bewegung
