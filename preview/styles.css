@@ -414,8 +414,9 @@ img.glitch {
     gap: 10px;
   }
 
-  /* Neben dem Logo ist nur fuer einen Knopf Platz */
-  .nav__links li:nth-child(n + 2) { display: none; }
+  /* Neben dem Logo ist nur fuer einen Knopf Platz — und das muss der
+     Ticket-Knopf sein, der steht seit dem Tausch an letzter Stelle. */
+  .nav__links li:not(:last-child) { display: none; }
 
   .nav__links .btn {
     font-size: .8rem;
@@ -1973,29 +1974,121 @@ body { font-weight: 300; font-size: 0.95rem; }
   margin-top: .5em;
 }
 
-/* Gelaufene Ausgabe: dunkler Grund statt vollem Lila, heller Text darauf.
-   Nur die Deckkraft zu senken hat nicht gereicht — Schwarz auf abgedunkeltem
-   Lila verliert zu viel Kontrast. Der Abriss bleibt anklickbar, der
-   Hover-Wechsel faellt aber deutlich leiser aus als bei der kommenden
-   Ausgabe. */
+/* Gelaufene Ausgabe: ein entwertetes Ticket, das leicht verdreht unter der
+   kommenden Ausgabe liegt — abgerissene rechte Kante, Papierkoernung,
+   Stempel quer darueber.
+
+   Der Abschnitt selbst wird dafuer durchsichtig und gibt nur noch den Platz
+   vor; der sichtbare Grund wandert auf den Abriss, weil nur der sich drehen
+   darf. Die Polsterung faengt auf, was die Drehung an den Enden nach oben
+   und unten schiebt, sonst ragte das Ticket in die Nachbarabschnitte.
+   z-index 0 statt 1: so schiebt sich die kommende Ausgabe darueber und das
+   gelaufene Ticket liegt wirklich darunter. */
 .next--past {
-  background: var(--deep);
+  background: var(--black);
   color: var(--bone);
+  overflow: visible;
+  z-index: 0;
+  padding-block: clamp(1.4rem, 3vw, 2.6rem);
+  margin-top: clamp(-2.4rem, -2.6vw, -1.2rem);
 }
+
+.next--past .next__link {
+  position: relative;
+  background: var(--deep);
+  /* Leichte Drehung — mehr als rund ein Grad und die Zeilen wirken schief
+     statt liegengelassen. */
+  transform: rotate(-1.1deg);
+  /* Rechts abgerissen. Die Bisse stehen in px, damit der Riss auf jeder
+     Breite gleich tief bleibt; in Prozent waere er am Rechner handbreit. */
+  clip-path: polygon(0 0, calc(100% - 4px) 0%, calc(100% - 2px) 3.6%, calc(100% - 11px) 7.1%, calc(100% - 4px) 10.7%, calc(100% - 11px) 14.3%, calc(100% - 19px) 17.9%, calc(100% - 5px) 21.4%, calc(100% - 2px) 25%, calc(100% - 11px) 28.6%, calc(100% - 9px) 32.1%, calc(100% - 7px) 35.7%, calc(100% - 2px) 39.3%, calc(100% - 17px) 42.9%, calc(100% - 1px) 46.4%, calc(100% - 4px) 50%, calc(100% - 1px) 53.6%, calc(100% - 14px) 57.1%, calc(100% - 22px) 60.7%, calc(100% - 1px) 64.3%, calc(100% - 4px) 67.9%, calc(100% - 22px) 71.4%, calc(100% - 9px) 75%, calc(100% - 1px) 78.6%, calc(100% - 7px) 82.1%, calc(100% - 17px) 85.7%, calc(100% - 19px) 89.3%, calc(100% - 3px) 92.9%, calc(100% - 19px) 96.4%, calc(100% - 4px) 100%, 0 100%);
+}
+
+/* Papier: feine Koernung ueber dem Grund, dazu ein flacher Lichtverlauf,
+   damit die Flaeche nicht wie bedruckter Bildschirm aussieht. Das Rauschen
+   ist dasselbe wie im Bildabschnitt. */
+.next--past .next__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .22;
+  mix-blend-mode: overlay;
+  background-image:
+    linear-gradient(104deg, rgba(243, 236, 228, .10) 0%, rgba(10, 10, 10, .18) 48%, rgba(243, 236, 228, .07) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.next--past .next__inner { position: relative; z-index: 1; }
+
 .next--past .next__grid {
-  border-color: rgba(243, 236, 228, .28);
+  border-color: rgba(243, 236, 228, .2);
 }
+/* Deutlich blasser als die kommende Ausgabe: das Ticket ist abgelaufen, es
+   soll noch lesbar sein, aber nicht mehr um Aufmerksamkeit bitten. */
 .next--past .next__value,
 .next--past .next__no {
-  opacity: .78;
+  opacity: .5;
 }
-.next--past .next__arrow {
-  color: var(--bone);
-  opacity: .6;
-}
+.next--past .next__label { opacity: .4; }
+/* Der Pfeil wich dem Stempel. */
+.next--past .next__arrow { display: none; }
 .next--past .next__link:hover {
   background: var(--purpur-dim);
 }
+
+/* Entwertungsstempel: Zackenkranz mit einem Wort darin, quer auf die linke
+   Haelfte geknallt. Der Kranz ist nur eine Kontur, deshalb bleibt die
+   Ausgabennummer darunter lesbar. */
+.next--past .next__item--wide { position: relative; }
+.entwertet {
+  position: absolute;
+  top: 50%;
+  right: clamp(.5rem, 3vw, 3rem);
+  width: clamp(84px, 9vw, 116px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  transform: translateY(-50%) rotate(-13deg);
+  color: var(--magenta);
+  opacity: .85;
+  pointer-events: none;
+}
+.entwertet__kranz {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3.4;
+  stroke-linejoin: round;
+}
+/* Das Wort muss in den Kranz passen: bei gut 110 px Aussenmass bleiben
+   innen rund 75 px, mehr als knapp 1 rem traegt "Slayed" dort nicht. */
+.entwertet__wort {
+  grid-area: 1 / 1;
+  font-family: var(--font-body);
+  font-weight: 900;
+  font-size: clamp(.66rem, 1.15vw, .92rem);
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: currentColor;
+}
+
+@media (max-width: 620px) {
+  /* Auf dem Handy laeuft das Line-up ueber die volle Breite — der Stempel
+     lag dort mitten im Text. Er haengt sich deshalb an den ganzen Abriss
+     statt an das Line-up-Feld und sitzt oben rechts neben der Nummer, wo
+     die Flaeche frei ist. */
+  .next--past .next__item--wide { position: static; }
+  .entwertet {
+    top: 1rem;
+    right: .2rem;
+    width: 92px;
+    transform: rotate(-13deg);
+  }
+}
+
 
 .next__arrow {
   flex: 0 0 auto;
