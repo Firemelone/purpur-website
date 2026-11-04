@@ -579,6 +579,19 @@ if (zap) {
 }
 
 // ---------------------------------------------------------------------------
+// Hero-Video bei "weniger Bewegung" anhalten
+// ---------------------------------------------------------------------------
+// CSS kann ein Video nicht pausieren. Wer im Betriebssystem weniger Bewegung
+// eingestellt hat, sieht deshalb hier das Standbild statt des Schnitts.
+const heroClip = document.querySelector(".hero__clip");
+
+if (heroClip && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  heroClip.removeAttribute("autoplay");
+  heroClip.pause();
+  heroClip.currentTime = 0;
+}
+
+// ---------------------------------------------------------------------------
 // Absperrband mit Countdown
 // ---------------------------------------------------------------------------
 // Das Band laeuft endlos von rechts nach links. Damit dabei keine Luecke
