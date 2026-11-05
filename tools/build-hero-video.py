@@ -7,8 +7,9 @@ Der Schnitt selbst entsteht nicht hier, sondern auf Luas Rechner:
     "/Volumes/Silver T7/PURPUR/Posts/0-Announcement Reel #2/web_cut.py"
     shots_web.txt   — Schnittliste, 160 BPM, mit Farbkorrektur und Effekten
 
-Dieses Skript schneidet daraus einen Ausschnitt, zieht ihn auf
-anderthalbfaches Tempo und kodiert ihn fuer das Netz. Farbkorrektur und Effekte stecken bereits in der
+Dieses Skript schneidet daraus nur noch einen Ausschnitt heraus. Tempo und
+Bilddaten bleiben unangetastet: bei Sekunde 12 sitzt ein Keyframe, deshalb
+laesst sich der Abschnitt ohne Neukodierung herauskopieren. Farbkorrektur und Effekte stecken bereits in der
 Vorlage — deshalb liegt auf dem Videoelement im Hero auch kein CSS-Filter.
 
 Aufruf:  python3 tools/build-hero-video.py /pfad/zu/purpur1-loop-1080.mp4
@@ -21,18 +22,13 @@ import sys
 REPO = pathlib.Path(__file__).resolve().parent.parent
 ZIEL = REPO / "Media" / "Hero"
 
-# Ausschnitt und Tempo. Der ganze Loop waere bei diesem Tempo 24 Sekunden
-# lang und entsprechend schwer; 18 Sekunden Vorlage ergeben 12 Sekunden Hero.
-# Die Grenzen liegen auf Taktschlaegen (160 BPM, ein Schlag = 0,375 s), damit
-# der Sprung am Ende der Schleife nicht auffaellt. 12 bis 30 Sekunden sind
-# erster Druck, Atempause, zweiter Aufbau und Hoehepunkt.
-AB, DAUER = 12.0, 18.0
-TEMPO = 1.5
+# Ausschnitt: 12 bis 30 Sekunden sind erster Druck, Atempause, zweiter
+# Aufbau und Hoehepunkt. Die Grenzen liegen auf Taktschlaegen (160 BPM, ein
+# Schlag = 0,375 s), damit der Sprung am Ende der Schleife nicht auffaellt.
+# In Frames statt Sekunden, weil -t auf die naechste ganze Gruppe aufrundet
+# und die Schleife dann zwei Bilder zu lang waere.
+AB, FRAMES = 12.0, 540
 BILDRATE = 30
-# CRF 26 trifft bei dieser Vorlage knapp 4 Mbit/s und liegt damit ueber der
-# Rate des Masters (3,24). Mehr Rate verbessert nichts, was nicht schon in der
-# Vorlage fehlt. tune=film, damit der Encoder die Koernung nicht glattbuegelt.
-CRF = 26
 
 
 def main():
@@ -46,12 +42,9 @@ def main():
 
     subprocess.run([
         "ffmpeg", "-nostdin", "-v", "error",
-        "-ss", str(AB), "-t", str(DAUER), "-i", str(quelle), "-an",
-        "-vf", f"setpts=PTS/{TEMPO},fps={BILDRATE}",
-        "-c:v", "libx264", "-crf", str(CRF), "-preset", "veryslow",
-        "-tune", "film", "-pix_fmt", "yuv420p", "-profile:v", "high",
-        "-level", "4.1", "-g", str(BILDRATE * 2), "-movflags", "+faststart",
-        "-y", str(film),
+        "-ss", str(AB), "-i", str(quelle), "-an",
+        "-frames:v", str(FRAMES), "-c:v", "copy",
+        "-movflags", "+faststart", "-y", str(film),
     ], check=True)
 
     # Plakatbild: steht, bis das Video laeuft, und bleibt bei reduzierter
