@@ -89,6 +89,11 @@
   --mint: #00ff9d;
   --orange: #ff9d00;
 
+  /* Breite der Wortmarke. Ladebildschirm und Hero teilen sie sich, sonst
+     springt das Logo beim Uebergang in der Groesse — bei 900 px Fensterbreite
+     waren es 46 px Unterschied. */
+  --wortmarke: clamp(220px, 46vw, 460px);
+
   --bone: #f3ece4;
   --black: #0a0a0a;
   --deep: #1b0026;
@@ -596,7 +601,7 @@ img.glitch {
 
 .hero__logo {
   display: inline-block;
-  width: clamp(220px, 46vw, 460px);
+  width: var(--wortmarke);
   height: auto;
   transition: filter 0.15s ease;
 }
@@ -1369,7 +1374,7 @@ html.has-custom-cursor .cursor {
   transition: opacity .12s steps(2, end);
 }
 .loader__symbol { width: 68%; }
-.loader__full   { width: 100%; opacity: 0; }
+.loader__full   { width: var(--wortmarke); opacity: 0; }
 
 .loader.is-glitching .loader__symbol { opacity: 0; }
 .loader.is-glitching .loader__full {
@@ -1530,13 +1535,10 @@ body { font-weight: 300; font-size: 0.95rem; }
 
 /* Hintergrundbilder deutlich sichtbarer: weniger Entsaettigung, heller, und
    der Verdunkelungsverlauf zieht nicht mehr so stark zu. */
-.hero__clip {
-  /* Leichte Entsaettigung und mehr Kontrast, damit die Aufnahmen unter dem
-     Verdunkelungsverlauf tragen. Anders als bei den Bildern braucht es keine
-     Helligkeit je Aufnahme mehr — die Clips sind beim Schnitt schon
-     aufeinander abgestimmt. */
-  filter: grayscale(0.12) contrast(1.12) saturate(1.25) brightness(0.88);
-}
+/* Kein CSS-Filter auf dem Video: ein filter zwingt den Browser, jedes
+   dekodierte Bild noch einmal durchzurechnen, und genau daran hat die
+   Wiedergabe geruckelt. Entsaettigung, Kontrast und Helligkeit stecken
+   deshalb fest in der Datei, gesetzt beim Schnitt. */
 .hero__media::after {
   background:
     linear-gradient(180deg, rgba(10, 10, 10, 0.40) 0%, rgba(10, 10, 10, 0.24) 32%, rgba(10, 10, 10, 0.76) 100%) !important;
@@ -1577,39 +1579,10 @@ body { font-weight: 300; font-size: 0.95rem; }
     drop-shadow(3px 1px 0 rgba(10, 10, 10, .12));
 }
 
-/* Langsame Eigenbewegung der Bildebene. Die Diashow steht sonst voellig
-   still, was neben dem harten Schnitt tot wirkt. Die Bilder driften deshalb
-   dauerhaft ganz langsam hin und her.
-   Die Stuetzpunkte liegen bewusst unregelmaessig — gleichmaessige Abstaende
-   ergaeben ein sichtbares Pendeln, so wirkt es wie ein leichtes Treiben.
-   Die Vergroesserung auf 105 % schafft den Rand, in den hinein verschoben
-   wird; ohne sie kaeme an den Kanten der Hintergrund durch. */
-@media (prefers-reduced-motion: no-preference) {
-  .hero__laufbild {
-    animation: hero-drift 52s ease-in-out infinite;
-    /* Ohne eigene Ebene laeuft dieses transform im Hauptstrang, und weil die
-       Bilder darunter einen filter tragen, muss der Browser sie dafuer in
-       jedem Bild neu rastern. Beim Scrollen ist der Hauptstrang belegt, die
-       Drift bleibt stehen und springt danach nach — auf dem Handy sichtbar
-       als Ruckeln des Hintergrunds. will-change schiebt die Ebene auf die
-       Grafikeinheit, dort laeuft sie unabhaengig vom Scrollen. */
-    will-change: transform;
-  }
-}
-.hero__laufbild { transform: scale(1.05); }
-
-@keyframes hero-drift {
-  0%   { transform: scale(1.05) translate(0, 0); }
-  9%   { transform: scale(1.05) translate(-.55%, .35%); }
-  21%  { transform: scale(1.05) translate(.42%, .62%); }
-  30%  { transform: scale(1.05) translate(-.28%, -.48%); }
-  44%  { transform: scale(1.05) translate(.68%, -.22%); }
-  55%  { transform: scale(1.05) translate(-.72%, .18%); }
-  63%  { transform: scale(1.05) translate(.24%, .55%); }
-  77%  { transform: scale(1.05) translate(-.44%, -.6%); }
-  88%  { transform: scale(1.05) translate(.58%, .28%); }
-  100% { transform: scale(1.05) translate(0, 0); }
-}
+/* Die Bildebene hatte frueher eine langsame Eigendrift, weil ein Standbild
+   sonst voellig still stand. Das Video bewegt sich selbst — die Drift ist
+   damit ueberfluessig, und mit ihr faellt die Vergroesserung auf 105 Prozent
+   weg, die zusaetzlich Schaerfe gekostet hat. */
 
 /* Kanalwechsel-Streifen. Liegt ueber der Bildebene und wird nur im Moment des
    Bildwechsels sichtbar: erst ein kurzer lilafarbener Aufblitz ueber die volle

@@ -232,13 +232,24 @@ if (loader) {
 
     const geneigt = heldenLogo.style.transform;
     heldenLogo.style.transform = "none";
-    const versatz = heldenLogo.getBoundingClientRect().top - kasten.top;
+    const ziel = heldenLogo.getBoundingClientRect();
     heldenLogo.style.transform = geneigt;
-    if (Number.isFinite(versatz)) buehne.style.transform = `translateY(${versatz}px)`;
+    // Auch waagerecht: der Ladebildschirm liegt fest am Fenster, der Hero im
+    // Textfluss. Sobald die Bildlaufleiste dazukommt, stehen beide Mitten ein
+    // paar Pixel auseinander.
+    const versatzY = ziel.top - kasten.top;
+    const versatzX = ziel.left - kasten.left;
+    if (Number.isFinite(versatzY) && Number.isFinite(versatzX)) {
+      buehne.style.transform = `translate(${versatzX}px, ${versatzY}px)`;
+    }
   };
 
   ausrichten();
   window.addEventListener("resize", ausrichten, { passive: true });
+  // Noch einmal, sobald die Schriften stehen: beim ersten Lauf ist das
+  // Seitenlayout noch nicht endgueltig, und eine zu frueh gemessene
+  // Verschiebung zieht das Logo anschliessend in die falsche Richtung.
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(ausrichten);
   // Ein voller Umlauf des Symbols dauert seit dem Umschreiben der
   // Frame-Zeiten 480 ms statt 2000 — die Drehung ist damit gut viermal so
   // schnell und wird einmal ganz gezeigt statt zu einem Drittel
@@ -268,6 +279,10 @@ if (loader) {
     Promise.all([fontsReady, windowLoaded, choreography]),
     fallback,
   ]).then(() => {
+    // Letzter Abgleich unmittelbar vor dem Uebergang — jetzt steht das
+    // Layout, und nur dieser Moment entscheidet, ob die beiden Logos
+    // aufeinanderliegen.
+    ausrichten();
     loader.classList.add("is-hidden");
     document.body.classList.remove("is-loading");
     if (typeof cursor !== "undefined" && cursor) cursor.classList.remove("is-loading");

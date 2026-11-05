@@ -23,7 +23,7 @@ ZIEL = REPO / "Media" / "Hero"
 # object-fit: cover nimmt am Rechner den mittleren Streifen und am Handy die
 # Mitte in der Breite. Volles Hochformat waere am Rechner zu stark
 # beschnitten, Querformat auf dem Handy.
-BREITE, HOEHE = 960, 1200
+BREITE, HOEHE = 1080, 1350
 TAKT = 2.0          # Sekunden je Schnitt, im Ausgabetempo
 BILDRATE = 30
 
@@ -33,13 +33,23 @@ BILDRATE = 30
 # Bei 30-Bilder-Quellen wuerde 2.0 auf 15 Bilder fallen und ruckeln, deshalb
 # dort 1.7 und Zwischenbilder von minterpolate.
 SCHNITT = [
-    ("FLOSS_Performance.mp4",                    2.0, 1.7),
-    ("Boothbunny_original_song_performance.mp4", 3.6, 2.0),
-    ("Alexander_Performance.mp4",                1.6, 2.0),
-    ("Bene_Piggy_Performance.mp4",               4.2, 1.7),
-    ("Boothbunny_original_song_performance.mp4", 10.5, 2.0),
-    ("FLOSS_Performance.mp4",                    8.0, 1.7),
+    ("Alexander_Performance.mp4",   0.70, 2.0),
+    ("Bene_Piggy_Performance.mp4",  5.25, 1.7),
+    ("Alexander_Performance.mp4",   1.45, 2.0),
+    ("FLOSS_Performance.mp4",       2.00, 1.7),
+    ("Bene_Piggy_Performance.mp4",  4.05, 1.7),
+    ("Alexander_Performance.mp4",   4.10, 2.0),
 ]
+
+# Farbkorrektur fest ins Bild statt als CSS-Filter: ein filter auf einem
+# laufenden Video zwingt den Browser, jedes dekodierte Bild noch einmal
+# durchzurechnen. Entspricht grayscale(.12) contrast(1.12) saturate(1.25)
+# brightness(.88) aus dem frueheren Stylesheet.
+GRADE = ("eq=saturation=1.10:contrast=1.12,"
+         "colorlevels=romax=0.88:gomax=0.88:bomax=0.88")
+# Gegen die Weichheit des Aufnahmematerials, das durchweg aus dunklen
+# Handyaufnahmen besteht.
+SCHAERFE = "unsharp=5:5:0.7:5:5:0.0"
 
 
 def lauf(*args):
@@ -73,7 +83,7 @@ def main():
         quelle = QUELLE / name
         if not quelle.exists():
             sys.exit(f"fehlt: {quelle}")
-        zuschnitt = (f"scale={BREITE}:-2,crop={BREITE}:{HOEHE}" if hochkant(quelle)
+        zuschnitt = ("crop=in_w:in_w*5/4" if hochkant(quelle)
                      else f"scale=-2:{HOEHE},crop={BREITE}:{HOEHE}")
         zeit = (f"setpts={tempo}*PTS,fps={BILDRATE}" if tempo == 2.0 else
                 f"setpts={tempo}*PTS,minterpolate=fps={BILDRATE}:mi_mode=mci:"
@@ -81,7 +91,7 @@ def main():
         ziel = arbeit / f"clip-{n}.mp4"
         lauf("ffmpeg", "-nostdin", "-v", "error", "-ss", str(start),
              "-t", f"{TAKT / tempo:.3f}", "-i", str(quelle), "-an",
-             "-vf", f"{zuschnitt},{zeit}", "-c:v", "libx264", "-crf", "28",
+             "-vf", f"{zuschnitt},scale={BREITE}:{HOEHE},{GRADE},{SCHAERFE},{zeit}", "-c:v", "libx264", "-crf", "23",
              "-preset", "slow", "-pix_fmt", "yuv420p", "-y", str(ziel))
         zeilen.append(f"file '{ziel.name}'")
         print(f"Clip {n}: {ziel.stat().st_size // 1024} KB")
@@ -90,9 +100,9 @@ def main():
 
     film = ZIEL / "hero-montage.mp4"
     lauf("ffmpeg", "-nostdin", "-v", "error", "-f", "concat", "-safe", "0",
-         "-i", str(liste), "-an", "-c:v", "libx264", "-crf", "29",
-         "-preset", "veryslow", "-pix_fmt", "yuv420p", "-profile:v", "high",
-         "-level", "4.0", "-g", str(BILDRATE * 2), "-movflags", "+faststart",
+         "-i", str(liste), "-an", "-c:v", "libx264", "-crf", "22",
+         "-preset", "veryslow", "-tune", "film", "-pix_fmt", "yuv420p", "-profile:v", "high",
+         "-level", "4.1", "-g", str(BILDRATE * 2), "-movflags", "+faststart",
          "-y", str(film))
 
     # Plakatbild: steht, bis das Video laeuft, und bleibt bei reduzierter
