@@ -7,8 +7,8 @@ Der Schnitt selbst entsteht nicht hier, sondern auf Luas Rechner:
     "/Volumes/Silver T7/PURPUR/Posts/0-Announcement Reel #2/web_cut.py"
     shots_web.txt   — Schnittliste, 160 BPM, mit Farbkorrektur und Effekten
 
-Dieses Skript nimmt nur dessen Ergebnis, zieht es auf dreifaches Tempo und
-kodiert es fuer das Netz. Farbkorrektur und Effekte stecken bereits in der
+Dieses Skript schneidet daraus einen Ausschnitt, zieht ihn auf
+anderthalbfaches Tempo und kodiert ihn fuer das Netz. Farbkorrektur und Effekte stecken bereits in der
 Vorlage — deshalb liegt auf dem Videoelement im Hero auch kein CSS-Filter.
 
 Aufruf:  python3 tools/build-hero-video.py /pfad/zu/purpur1-loop-1080.mp4
@@ -21,9 +21,13 @@ import sys
 REPO = pathlib.Path(__file__).resolve().parent.parent
 ZIEL = REPO / "Media" / "Hero"
 
-# Dreifaches Tempo: aus 36 Sekunden werden 12. Bei zweifachem Tempo waere die
-# Datei rund 8 MB schwer — fuer einen Hintergrund, der sofort laedt, zu viel.
-TEMPO = 3.0
+# Ausschnitt und Tempo. Der ganze Loop waere bei diesem Tempo 24 Sekunden
+# lang und entsprechend schwer; 18 Sekunden Vorlage ergeben 12 Sekunden Hero.
+# Die Grenzen liegen auf Taktschlaegen (160 BPM, ein Schlag = 0,375 s), damit
+# der Sprung am Ende der Schleife nicht auffaellt. 12 bis 30 Sekunden sind
+# erster Druck, Atempause, zweiter Aufbau und Hoehepunkt.
+AB, DAUER = 12.0, 18.0
+TEMPO = 1.5
 BILDRATE = 30
 # CRF 26 trifft bei dieser Vorlage knapp 4 Mbit/s und liegt damit ueber der
 # Rate des Masters (3,24). Mehr Rate verbessert nichts, was nicht schon in der
@@ -41,8 +45,9 @@ def main():
     film = ZIEL / "hero-montage.mp4"
 
     subprocess.run([
-        "ffmpeg", "-nostdin", "-v", "error", "-i", str(quelle), "-an",
-        "-vf", f"setpts={1 / TEMPO:.4f}*PTS,fps={BILDRATE}",
+        "ffmpeg", "-nostdin", "-v", "error",
+        "-ss", str(AB), "-t", str(DAUER), "-i", str(quelle), "-an",
+        "-vf", f"setpts=PTS/{TEMPO},fps={BILDRATE}",
         "-c:v", "libx264", "-crf", str(CRF), "-preset", "veryslow",
         "-tune", "film", "-pix_fmt", "yuv420p", "-profile:v", "high",
         "-level", "4.1", "-g", str(BILDRATE * 2), "-movflags", "+faststart",
