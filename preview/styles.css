@@ -484,24 +484,6 @@ img.glitch {
   display: block;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .hero__zap {
-    animation: hero-zap 4s linear infinite;
-    /* Gleiche Ueberlegung wie bei der Drift: laeuft dauerhaft und soll das
-       Scrollen nicht mitbezahlen. */
-    will-change: transform, opacity;
-  }
-}
-/* --zap-dreh setzt script.js bei jedem Durchlauf neu, damit der
-   Streifen nicht jedes Mal gleich liegt. Die Drehung steht vor dem
-   Stauchen, sonst kippt nicht der Streifen, sondern seine Achse. */
-@keyframes hero-zap {
-  0%       { opacity: 1; transform: rotate(var(--zap-dreh, 0deg)) scaleY(1); }
-  1.1250%  { opacity: 1; transform: rotate(var(--zap-dreh, 0deg)) scaleY(.06); }
-  2.5000%  { opacity: .9; transform: rotate(var(--zap-dreh, 0deg)) scaleY(.014); }
-  4.2500%  { opacity: 0; transform: rotate(var(--zap-dreh, 0deg)) scaleY(.005); }
-  100%     { opacity: 0; transform: rotate(var(--zap-dreh, 0deg)) scaleY(.005); }
-}
 /* DIASHOW-ENDE */
   1%    { opacity: 1; }
   5%    { opacity: 1; }
@@ -1583,33 +1565,6 @@ body { font-weight: 300; font-size: 0.95rem; }
    sonst voellig still stand. Das Video bewegt sich selbst — die Drift ist
    damit ueberfluessig, und mit ihr faellt die Vergroesserung auf 105 Prozent
    weg, die zusaetzlich Schaerfe gekostet hat. */
-
-/* Kanalwechsel-Streifen. Liegt ueber der Bildebene und wird nur im Moment des
-   Bildwechsels sichtbar: erst ein kurzer lilafarbener Aufblitz ueber die volle
-   Hoehe, der dann in einen waagerechten Lichtstreifen zusammenfaellt und
-   erlischt — der Zap vom Roehrenfernseher.
-   mix-blend-mode: screen, damit der Streifen Licht hinzufuegt statt das Bild
-   zuzudecken. */
-.hero__zap {
-  position: absolute;
-  /* Ragt ueber den Rand hinaus: Der Streifen wird bei jedem Durchlauf leicht
-     gedreht, und ein randbuendiges Element wuerde dabei in den Ecken Luecken
-     lassen. */
-  inset: -12%;
-  z-index: 2;
-  opacity: 0;
-  pointer-events: none;
-  transform-origin: center;
-  mix-blend-mode: screen;
-  background: linear-gradient(
-    180deg,
-    rgba(157, 0, 255, 0) 0%,
-    rgba(157, 0, 255, .16) 34%,
-    rgba(214, 158, 255, .30) 50%,
-    rgba(157, 0, 255, .16) 66%,
-    rgba(157, 0, 255, 0) 100%
-  );
-}
 
 /* Hyperpop: Buttons greller, Ecken spielerischer, Ueberschriften mit dem
    Farbversatz aus den Plakaten. */

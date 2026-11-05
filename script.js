@@ -576,24 +576,6 @@ if (gruppen.length) {
 }
 
 // ---------------------------------------------------------------------------
-// Kanalwechsel-Streifen: Neigung wuerfeln
-// ---------------------------------------------------------------------------
-// CSS kann nicht zufaellig. Damit der Streifen nicht bei jedem Bildwechsel
-// identisch liegt, bekommt er hier vor jedem Durchlauf eine neue leichte
-// Neigung. animationiteration feuert genau am Rundenwechsel, also unmittelbar
-// bevor der naechste Zap aufblitzt.
-const zap = document.querySelector(".hero__zap");
-
-if (zap) {
-  const neigen = () => {
-    const grad = (Math.random() * 5 - 2.5).toFixed(2);
-    zap.style.setProperty("--zap-dreh", `${grad}deg`);
-  };
-  neigen();
-  zap.addEventListener("animationiteration", neigen);
-}
-
-// ---------------------------------------------------------------------------
 // Hero-Video bei "weniger Bewegung" anhalten
 // ---------------------------------------------------------------------------
 // CSS kann ein Video nicht pausieren. Wer im Betriebssystem weniger Bewegung
