@@ -472,9 +472,9 @@ img.glitch {
   inset: 0;
 }
 
-/* Das Video ist 4:5 geschnitten — ein Kompromiss, weil drei der vier
-   Aufnahmen hochkant sind. object-fit: cover nimmt am Rechner den mittleren
-   Streifen und am Handy die Mitte in der Breite. */
+/* Die Vorlage ist 16:9, also am Rechner bildfuellend ohne Hochrechnen.
+   Auf dem Handy nimmt object-fit: cover den mittleren Streifen — geprueft,
+   die Motive im Schnitt sitzen durchweg mittig. */
 .hero__clip {
   position: absolute;
   inset: 0;
