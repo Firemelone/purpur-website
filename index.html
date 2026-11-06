@@ -2,27 +2,25 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <!-- Bestaetigung fuer die Google Search Console. Muss dauerhaft stehen
      bleiben, sonst verfaellt sie. Kein Geheimnis: der Wert ist dazu da,
      oeffentlich ausgeliefert zu werden. -->
 <meta name="google-site-verification" content="QpMsPzyW_aeI2hhLV32euioIwnleOBwLdpFrVbeVzvk" />
-<title>PURPUR</title>
-<meta name="description" content="PURPUR. A queer fetish subculture night in Berlin. 16.01.27, 22 to 06h, Nollendorfplatz. Transform into the purest version of yourself." />
+<meta name="theme-color" content="#5b12ff" />
+<title>PURPUR / 16.01.27 / Berlin</title>
+<meta name="description" content="PURPUR. A queer fetish subculture night in Berlin. 16.01.27, 22 to 06h, Mikropol at Nollendorfplatz. Transform into the purest version of yourself." />
 <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://purpur.berlin/" />
-  <meta property="og:site_name" content="PURPUR" />
+<meta property="og:url" content="https://purpur.berlin/" />
+<meta property="og:site_name" content="PURPUR" />
 <meta property="og:title" content="PURPUR. Expressing queer subculture. 16-01-27 | Berlin" />
 <meta property="og:description" content="Transform into the purest version of yourself." />
 <meta property="og:image" content="https://purpur.berlin/assets/share-card.jpg" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="1200" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:alt" content="PURPUR wordmark over a fetish-scene photograph" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:alt" content="PURPUR wordmark over a fetish-scene photograph" />
 <meta property="og:locale" content="en_GB" />
-<!-- Der Name der Seite fuer Suchmaschinen und Vorschaukarten. Ohne diese
-     Angabe leiten manche Dienste den Namen aus der Adresse ab und zeigen
-     purpur.berlin statt PURPUR. -->
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebSite","name":"PURPUR","alternateName":"PURPUR Berlin","url":"https://purpur.berlin/"}
 </script>
@@ -34,402 +32,249 @@
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" />
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
 <link rel="preload" href="/assets/fonts/Mosher-Regular.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="preload" href="/assets/fonts/GCFurion-Light.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="/styles.css?v=144" />
+<link rel="preload" href="/assets/fonts/GCFurion-Thin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/assets/fonts/GCFurion-Black.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="/tape.css?v=1" />
 </head>
 <body>
+<div class="page" style="background: var(--ground); color: #ffffff; font-family: var(--font-text); font-weight: 400; min-height: 100vh; overflow: hidden">
+  <div class="cursor" id="cursor" aria-hidden="true"><svg viewBox="0 0 40 40"><polygon class="cursor__sticker" points="20.00,1.00 22.16,4.95 25.35,1.77 26.31,6.17 30.27,4.02 29.95,8.51 34.36,7.56 32.79,11.78 37.28,12.11 34.58,15.72 38.81,17.30 35.20,20.00 38.81,22.70 34.58,24.28 37.28,27.89 32.79,28.22 34.36,32.44 29.95,31.49 30.27,35.98 26.31,33.83 25.35,38.23 22.16,35.05 20.00,39.00 17.84,35.05 14.65,38.23 13.69,33.83 9.73,35.98 10.05,31.49 5.64,32.44 7.21,28.22 2.72,27.89 5.42,24.28 1.19,22.70 4.80,20.00 1.19,17.30 5.42,15.72 2.72,12.11 7.21,11.78 5.64,7.56 10.05,8.51 9.73,4.02 13.69,6.17 14.65,1.77 17.84,4.95"/></svg></div>
 
-<!-- Ladesequenz: erst dreht sich das Symbol einmal, dann glitcht es zum vollen Logo -->
-<div class="loader" id="loader" aria-hidden="true">
-  <div class="loader__stage">
-    <img class="loader__symbol" id="loaderSymbol" src="/Media/Logo_Animated/PURPUR-Turntable_pitch-0.webp" alt="" />
-    <img class="loader__full glitch" id="loaderFull" src="/Media/Logo_SVG/PURPUR-Logo-PurpleWhite.svg" alt="" />
-  </div>
-</div>
 
-<div class="cursor" id="cursor" aria-hidden="true">
-  <svg class="cursor__svg" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-    <polygon class="cursor__sticker" points="20.00,1.00 22.16,4.95 25.35,1.77 26.31,6.17 30.27,4.02 29.95,8.51 34.36,7.56 32.79,11.78 37.28,12.11 34.58,15.72 38.81,17.30 35.20,20.00 38.81,22.70 34.58,24.28 37.28,27.89 32.79,28.22 34.36,32.44 29.95,31.49 30.27,35.98 26.31,33.83 25.35,38.23 22.16,35.05 20.00,39.00 17.84,35.05 14.65,38.23 13.69,33.83 9.73,35.98 10.05,31.49 5.64,32.44 7.21,28.22 2.72,27.89 5.42,24.28 1.19,22.70 4.80,20.00 1.19,17.30 5.42,15.72 2.72,12.11 7.21,11.78 5.64,7.56 10.05,8.51 9.73,4.02 13.69,6.17 14.65,1.77 17.84,4.95" />
-  </svg>
-</div>
+  <div class="loader" id="loader" aria-hidden="true"><div class="loader__stage"><img class="loader__symbol" src="/Media/Logo_Animated/PURPUR-Turntable_pitch-0.webp" alt="" width="160" height="160" /><img class="loader__full" src="/Media/Logo_SVG/PURPUR-Logo-PurpleWhite.svg" alt="" width="240" height="258" /></div></div>
 
-<nav class="nav">
-  <a class="nav__brand" href="#top">
-    <img src="/Media/Logo_Animated/PURPUR-Turntable_pitch-minus30.webp" width="800" height="800" alt="PURPUR spinning symbol" />
-  </a>
-  <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
-  <ul class="nav__links" id="navLinks">
-    <li><a class="btn btn--ghost" href="https://boothbunny.net/products/supporter-bundle" target="_blank" rel="noopener"><span>Supporter Bundle</span></a></li>
-    <li><a class="btn" href="https://ra.co/events/2568513" target="_blank" rel="noopener"><span>Tickets</span></a></li>
-  </ul>
-</nav>
+  <header class="nav" id="nav" style="position: fixed; z-index: 60; top: 0; left: 0; right: 0; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px; padding: 10px clamp(16px, 4vw, 48px); background: rgba(10, 10, 10, 0.82); backdrop-filter: blur(12px); font-size: 12px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase">
+    <a href="#top" aria-label="PURPUR home" style="display: block; line-height: 0"><img src="/Media/Logo_Animated/PURPUR-Turntable_pitch-minus30.webp" alt="PURPUR symbol" style="height: 48px; width: 48px"></a>
+    <nav style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px" aria-label="Main">
+      <a href="#lineup" style="text-decoration: none; color: #ffffff">Line-up</a>
+      <a href="#manifesto" style="text-decoration: none; color: #ffffff">Manifesto</a>
+      <a href="#entry" style="text-decoration: none; color: #ffffff">Entry</a>
+      <a href="https://ra.co/events/2568513" style="text-decoration: none; background: var(--hot); color: #0a0a0a; padding: 13px 18px; font-weight: 700">Tickets ↗</a>
+    </nav>
+  </header>
 
-<header class="hero" id="top">
-  <div class="hero__media">
-  <!-- Hero-Hintergrund: der Website-Loop der ersten Ausgabe, auf 160 BPM
-       geschnitten (shots_web.txt / web_cut.py auf Luas Rechner). Daraus der
-       Ausschnitt von 12 bis 30 Sekunden — erster Druck, Atempause, zweiter
-       Aufbau, Hoehepunkt — in Originalgeschwindigkeit, also 18 Sekunden.
-       Beide Schnittkanten liegen auf einem Takt, der Sprung am Ende der
-       Schleife faellt deshalb nicht auf. Die Bilddaten sind unveraendert
-       aus der Vorlage kopiert, nicht neu kodiert. Farbkorrektur und Effekte stecken
-       bereits in der Vorlage, deshalb liegt hier kein CSS-Filter darueber. -->
-  <div class="hero__laufbild" aria-hidden="true">
-    <video class="hero__clip" width="1920" height="1080" autoplay muted loop playsinline
-           preload="auto" poster="/Media/Hero/hero-still.webp">
-      <source src="/Media/Hero/hero-montage.mp4" type="video/mp4" />
-    </video>
-  </div>
-    <div class="hero__grain"></div>
-  </div>
-  <div class="hero__content">
-    <h1 class="hero__title">
-      <img class="hero__logo" id="titleMain" src="/Media/Logo_SVG/PURPUR-Logo-PurpleWhite.svg" alt="PURPUR" />
-    </h1>
-    <div class="hero__actions">
-      <a class="btn btn--ghost" href="https://boothbunny.net/products/supporter-bundle" target="_blank" rel="noopener"><span>Supporter Bundle</span></a>
-      <a class="btn" href="https://ra.co/events/2568513" target="_blank" rel="noopener"><span>Tickets</span></a>
+  <section id="top" data-hero="1" style="position: relative; background-color: #1c1b1f; background-image: radial-gradient(ellipse at 70% 40%, #2c2a30 0%, #141316 70%); background-size: cover; overflow: hidden; padding: 84px clamp(16px, 4vw, 48px) 160px; display: flex; flex-wrap: wrap; gap: 48px; align-items: center">
+    <div class="pp-grain" aria-hidden="true"></div>
+    <div data-tilt="hero" style="position: relative; flex: 1 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 28px">
+      <div class="tl" style="transform: var(--t-hero-l0, translate(0)); display: flex; flex-wrap: wrap; align-items: center; gap: 24px">
+        <div style="line-height: 0">
+          <img src="/Media/Logo_SVG/PURPUR-Logo-PurpleWhite.svg" alt="PURPUR" style="width: clamp(160px, 16vw, 240px); height: auto;">
+        </div>
+        <p style="margin: 0; flex: 1 1 220px; font-size: clamp(22px, 2.2vw, 32px); line-height: 1.12; text-transform: uppercase"><span style="font-weight: 100">feel queer</span> <span style="font-weight: 900">subculture.</span> <span style="font-weight: 100">transform into the</span> <span style="font-family: var(--font-titel)">purest.</span></p>
+      </div>
+      <nav class="tl" aria-label="Tickets and links" style="transform: var(--t-hero-l1, translate(0)); display: flex; flex-direction: column; gap: 10px; max-width: 600px">
+        <a class="pill" href="https://ra.co/events/2568513" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; min-height: 76px; padding: 12px 28px; box-sizing: border-box; border-radius: 999px; background: #0a0a0a; color: #ffffff; text-decoration: none">
+          <span style="font-family: var(--font-titel); font-size: 32px; line-height: 1">Tickets</span>
+          <span style="font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--hot)">Resident Advisor ↗</span>
+        </a>
+        <a class="pill" href="https://boothbunny.net/products/supporter-bundle" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; min-height: 58px; padding: 10px 28px; box-sizing: border-box; border-radius: 999px; background: #f3ece4; color: #0a0a0a; text-decoration: none">
+          <span style="font-size: 17px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em">Supporter bundle</span>
+          <span style="font-size: 13px; font-weight: 400">support us &amp; get exclusive items ↗</span>
+        </a>
+        <a class="pill" href="https://t.me/purpurberlin" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; min-height: 58px; padding: 10px 28px; box-sizing: border-box; border-radius: 999px; background: var(--hot); color: #0a0a0a; text-decoration: none">
+          <span style="font-size: 17px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em">Telegram</span>
+          <span style="font-size: 13px; font-weight: 500">join our community ↗</span>
+        </a>
+        <a class="pill" href="https://instagram.com/purpur.berlin" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; min-height: 58px; padding: 10px 28px; box-sizing: border-box; border-radius: 999px; border: 2px solid #ffffff; color: #ffffff; text-decoration: none">
+          <span style="font-size: 17px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em">Instagram</span>
+          <span style="font-size: 13px; font-weight: 400">@purpur.berlin ↗</span>
+        </a>
+      </nav>
     </div>
-    <!-- Zweite Reihe: die Kanaele als runde Knoepfe, nur Symbol. Ohne
-         Beschriftung brauchen sie ein aria-label, sonst liest ein
-         Screenreader nur die Adresse vor. -->
-    <div class="hero__social">
-      <a class="kanal" href="https://t.me/purpurberlin" target="_blank" rel="noopener" aria-label="PURPUR on Telegram">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M21.6 3.6 2.9 10.9l7.3 2.8 11.4-10.1z" /><path d="M10.2 13.7l2.9 7 8.5-17.1" /><path d="M10.2 13.7v4.4l2.3-2.3" /></svg>
+    <div data-tilt="photo" style="flex: 1 1 420px; min-width: 0; position: relative; height: 700px">
+      <svg aria-hidden="true" width="0" height="0" style="position: absolute"><filter id="ppca-f" x="-5%" y="0%" width="110%" height="100%"><feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="r"></feColorMatrix><feOffset in="r" dx="-10" dy="0" result="r2"></feOffset><feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="g"></feColorMatrix><feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="b"></feColorMatrix><feOffset in="b" dx="10" dy="2" result="b2"></feOffset><feBlend in="r2" in2="g" mode="screen" result="rg"></feBlend><feBlend in="rg" in2="b2" mode="screen"></feBlend></filter></svg>
+      <div class="tl slides" id="slides" role="img" aria-label="PURPUR photo slideshow" style="transform: rotate(2deg) var(--t-photo-l0, translate(0)); position: absolute; top: 0; left: 8%; width: 92%; height: 100%; overflow: hidden">
+        <img class="slide is-active" src="/Media/Tape/fursuit-purp.webp" alt="Fursuiter in inverted violet light" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%">
+        <img class="slide" src="/Media/Tape/tactical-purp.webp" alt="Person in tactical gear and goggles holding a fan, violet duotone" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 55% 35%">
+        <img class="slide" src="/Media/Tape/puppies-purp.webp" alt="Two pups in hoods, infrared violet" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 62% 40%">
+        <img class="slide" src="/Media/Tape/leawonki-purp.webp" alt="Lea and Wonki: person in boots and tie leaning over a pup, violet duotone" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 45% 40%">
+        <img class="slide" src="/Media/Tape/latex-pinkpurp.webp" alt="Latex hood in pink and violet infrared" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 40% 40%">
+      </div>
+      <div style="position: absolute; left: -6%; right: -10%; top: 40%; transform: rotate(-7deg); background: #0a0a0a; color: #f3ece4; padding: 12px 0; display: flex; align-items: center; gap: 18px; white-space: nowrap; overflow: hidden; font-family: var(--font-titel); font-size: 26px">
+        <span>16-01-27</span><img src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" style="height: 26px; width: auto"><span>PURPUR #2</span><img src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" style="height: 26px; width: auto"><span>BERLIN</span><img src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" style="height: 26px; width: auto"><span>16-01-27</span><img src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" style="height: 26px; width: auto"><span>PURPUR #2</span>
+      </div>
+      <div style="position: absolute; right: -8px; bottom: -40px; width: 210px; height: 210px; border-radius: 50%; background: var(--hot); color: #0a0a0a; transform: rotate(12deg); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center"><span style="font-size: 14px; font-weight: 300; text-transform: uppercase; letter-spacing: 0.1em">vol. 2</span>
+        <span style="font-family: var(--font-titel); font-size: 52px; line-height: 0.95">16.01</span>
+        <span style="font-size: 14px; font-weight: 300">22 - 06h</span>
+        <span style="font-size: 12px; font-weight: 800; margin-top: 4px; letter-spacing: 0.1em">MIKROPOL</span>
+      </div>
+    </div>
+  </section>
+
+  <div style="position: relative; z-index: 3; background: #0a0a0a; color: #f3ece4; padding: 16px 0; transform: rotate(-1.5deg); margin: -56px -40px -36px; white-space: nowrap; overflow: hidden; font-size: 24px; text-transform: uppercase">
+    <span style="font-family: var(--font-titel)">Fetish</span> <span style="font-weight: 100">× gear ×</span> <span style="font-family: var(--font-titel)">Rubber</span> <span style="font-weight: 100">× femboy ×</span> <span style="font-family: var(--font-titel)">Tomboy</span> <span style="font-weight: 100">× drag ×</span> <span style="font-family: var(--font-titel)">Furry</span> <span style="font-weight: 100">× puppy ×</span> <span style="font-family: var(--font-titel)">FLINTA</span> <span style="font-weight: 100">× workwear ×</span> <span style="font-family: var(--font-titel)">Biker</span> <span style="font-weight: 100">× skin ×</span> <span style="font-family: var(--font-titel)">Gimps</span> <span style="font-weight: 100">× inbetweens ×</span>
+  </div>
+
+  <section id="who" style="position: relative; overflow: hidden; padding: clamp(80px, 10vw, 140px) clamp(16px, 4vw, 48px)">
+    <video data-bg="1" src="/Media/Tape/loop-reel.mp4" autoplay muted loop playsinline preload="metadata" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.8; filter: blur(5px); transform: scale(1.08)"></video>
+    <div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(91, 18, 255, 0.85) 0%, rgba(91, 18, 255, 0.35) 30%, rgba(91, 18, 255, 0.35) 70%, rgba(91, 18, 255, 0.85) 100%)"></div>
+    <div style="position: relative">
+    <h2 data-tilt="who" style="margin: 0 0 48px; font-size: clamp(48px, 7vw, 110px); line-height: 0.95; text-transform: uppercase"><span class="tl" style="display: inline-block; transform: var(--t-who-l0, translate(0)); font-weight: 100; color: #ffd2f4" data-decode="who1">who we _ really</span><br><span class="tl" style="display: inline-block; transform: var(--t-who-l1, translate(0)); font-family: var(--font-titel); font-size: 110px" data-decode="who2">are.</span></h2>
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; max-width: 1240px">
+      <span style="font-family: var(--font-titel); font-size: 32px; padding: 10px 24px; background: #f3ece4; color: #0a0a0a; border-radius: 999px">Gearheads</span>
+      <span style="font-weight: 900; font-style: oblique 12deg; font-size: 28px; text-transform: uppercase; padding: 10px 22px; background: #e2ff00; color: #0a0a0a; border-radius: 999px; transform: rotate(-2deg)">Furballs</span>
+      <span style="font-family: var(--font-titel); font-size: 32px; padding: 10px 24px; background: #0a0a0a; color: #ffffff; border-radius: 999px; transform: rotate(-3deg)">Mascgirls</span>
+      <span style="font-weight: 100; font-size: 28px; text-transform: uppercase; padding: 10px 22px; border: 2px solid #00ff9d; color: #00ff9d; border-radius: 999px">Inbetweens</span>
+      <span style="font-family: var(--font-titel); font-size: 32px; padding: 10px 24px; background: var(--hot); color: #0a0a0a; border-radius: 999px; transform: rotate(2deg)">Slutbuns</span>
+      <span style="font-weight: 600; font-size: 26px; letter-spacing: 0.08em; text-transform: uppercase; padding: 12px 22px; background: #00ff9d; color: #0a0a0a; border-radius: 6px">Outstanders</span>
+      <span style="font-weight: 100; font-style: oblique 12deg; font-size: 30px; text-transform: lowercase; padding: 10px 22px; border: 2px solid #ffffff; border-radius: 999px">hounds</span>
+      <span style="font-family: var(--font-titel); font-size: 32px; padding: 10px 24px; background: #e2ff00; color: #0a0a0a; border-radius: 999px; transform: rotate(3deg)">Queens</span>
+      <span style="font-weight: 900; font-size: 28px; text-transform: uppercase; padding: 10px 22px; background: #0a0a0a; color: #e2ff00; border-radius: 999px">Cosplay</span>
+      <span style="font-family: var(--font-titel); font-size: 32px; padding: 10px 24px; border: 2px solid #ffffff; color: #ffffff; border-radius: 999px; transform: rotate(-2deg)">Fags</span>
+      <span style="font-weight: 300; font-size: 28px; text-transform: uppercase; padding: 10px 22px; background: #f3ece4; color: #5b12ff; border-radius: 999px">Self-Made</span>
+      <span style="font-weight: 900; font-style: oblique 12deg; font-size: 28px; text-transform: uppercase; padding: 10px 22px; background: #0a0a0a; color: #00ff9d; border-radius: 999px; transform: rotate(1deg)">Colorful</span>
+      <span style="font-family: var(--font-titel); font-size: 32px; padding: 10px 24px; background: #0a0a0a; color: #ffffff; border-radius: 999px">Dark</span>
+      <span style="font-weight: 100; font-size: 28px; text-transform: uppercase; padding: 10px 22px; border: 2px dashed #e2ff00; color: #e2ff00; border-radius: 999px">+ you</span>
+    </div>
+    <div style="margin-top: 56px; display: flex; flex-wrap: wrap; gap: 32px 64px; max-width: 1240px">
+      <p style="margin: 0; flex: 1 1 340px; font-size: clamp(22px, 2.2vw, 30px); font-weight: 300; line-height: 1.25">The core is you, in the most pure form that exists. As a queer culture we unfold an immersive nightlife where music, expression, performance and play converge.</p>
+      <p style="margin: 0; flex: 1 1 340px; font-size: 17px; font-weight: 300; line-height: 1.6">PURPUR exists to make the sub in culture. Make it creative, present local artists, and open spaces where pleasure, identity and experimentation can thrive.</p>
+    </div>
+  </div>
+  </section>
+
+  <div style="position: relative; height: 560px; overflow: hidden">
+    <img src="/Media/Tape/tactical-purp.webp" alt="Person in tactical gear and goggles holding a fan, violet duotone" style="width: 100%; height: 100%; object-fit: cover; object-position: 50% 35%; display: block">
+    <div style="position: absolute; left: -40px; right: -40px; top: 46%; transform: rotate(4deg); background: #f3ece4; color: #0a0a0a; padding: 14px 0; text-align: center; font-size: clamp(20px, 2.4vw, 34px); white-space: nowrap; overflow: hidden; text-transform: uppercase; font-weight: 400"><span style="font-weight: 100">from fetish</span> <span style="font-family: var(--font-titel)">to fuckers.</span> <span style="font-weight: 100">×</span> <span style="font-weight: 100">from hounds</span> <span style="font-family: var(--font-titel)">to hoes.</span> <span style="font-weight: 100">×</span> <span style="font-weight: 100">from purpur</span> <span style="font-family: var(--font-titel)">to you.</span></div>
+  </div>
+
+  <section id="lineup" style="padding: clamp(80px, 10vw, 140px) clamp(16px, 4vw, 48px)">
+    <h2 style="margin: 0 0 40px; font-size: clamp(48px, 7vw, 110px); line-height: 0.95; text-transform: uppercase"><span style="font-weight: 100">line</span><span style="font-weight: 900">up</span> <span style="font-family: var(--font-titel); color: var(--hot)">#2</span></h2>
+    <div data-tilt="lineup" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px">
+      <div class="tl reveal" style="transform: var(--t-lineup-l0, translate(0)); position: relative; height: 380px; overflow: hidden">
+        <img src="/Media/Tape/lineup-gasmask.webp" alt="Person in rope collar and kitten paw gloves" style="width: 100%; height: 100%; object-fit: cover; display: block; filter: blur(9px) grayscale(1) contrast(1.05)">
+        <div style="position: absolute; left: -20px; right: -20px; top: 44%; transform: rotate(-8deg); background: #9d00ff; color: #ffffff; text-align: center; padding: 10px 0; font-family: var(--font-titel); font-size: 20px">coming soon</div>
+        <span style="position: absolute; left: 14px; bottom: 14px; font-weight: 800; font-size: 18px; text-shadow: none; background: #f3ece4; color: #0a0a0a; padding: 4px 8px; font-size: 14px">[ACT 01]</span>
+      </div>
+      <div class="tl reveal" style="transform: var(--t-lineup-l1, translate(0)); position: relative; height: 380px; margin-top: 48px; overflow: hidden">
+        <img src="/Media/Tape/lineup-pupmask.webp" alt="Person in a leather pup mask" style="width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%; display: block; filter: blur(9px) grayscale(1) contrast(1.05)">
+        <div style="position: absolute; left: -20px; right: -20px; top: 38%; transform: rotate(6deg); background: #9d00ff; color: #ffffff; text-align: center; padding: 10px 0; font-family: var(--font-titel); font-size: 20px">coming soon</div>
+        <span style="position: absolute; left: 14px; bottom: 14px; font-weight: 800; font-size: 18px; text-shadow: none; background: #f3ece4; color: #0a0a0a; padding: 4px 8px; font-size: 14px">[ACT 02]</span>
+      </div>
+      <div class="tl reveal" style="transform: var(--t-lineup-l2, translate(0)); position: relative; height: 380px; overflow: hidden">
+        <img src="/Media/Tape/lineup-bikers.webp" alt="Two bikers in helmets leaning together" style="width: 100%; height: 100%; object-fit: cover; object-position: 50% 35%; display: block; filter: blur(9px) grayscale(1) contrast(1.05)">
+        <div style="position: absolute; left: -20px; right: -20px; top: 50%; transform: rotate(-4deg); background: #9d00ff; color: #ffffff; text-align: center; padding: 10px 0; font-family: var(--font-titel); font-size: 20px">coming soon</div>
+        <span style="position: absolute; left: 14px; bottom: 14px; font-weight: 800; font-size: 18px; text-shadow: none; background: #f3ece4; color: #0a0a0a; padding: 4px 8px; font-size: 14px">[ACT 03]</span>
+      </div>
+      <div class="tl reveal" style="transform: var(--t-lineup-l3, translate(0)); position: relative; height: 380px; margin-top: 48px; overflow: hidden">
+        <img src="/Media/Tape/lineup-spike.webp" alt="Latex pup in rubber dress and white shirt" style="width: 100%; height: 100%; object-fit: cover; display: block; filter: blur(9px) grayscale(1) contrast(1.05)">
+        <div style="position: absolute; left: -20px; right: -20px; top: 42%; transform: rotate(9deg); background: #9d00ff; color: #ffffff; text-align: center; padding: 10px 0; font-family: var(--font-titel); font-size: 20px">coming soon</div>
+        <span style="position: absolute; left: 14px; bottom: 14px; font-weight: 800; font-size: 18px; text-shadow: none; background: #f3ece4; color: #0a0a0a; padding: 4px 8px; font-size: 14px">[ACT 04]</span>
+      </div>
+      <a class="tl bb-card" href="https://boothbunny.net/" aria-label="Boothbunny" style="transform: var(--t-lineup-l4, translate(0)); position: relative; height: 380px; border: 1px solid #9d00ff; box-sizing: border-box; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; color: inherit; text-decoration: none"><span style="mix-blend-mode: difference; font-size: 12px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: rgb(197, 139, 255)">RESIDENT</span>
+        <span style="mix-blend-mode: difference; font-family: var(--font-titel); font-size: 40px; line-height: 1; margin-top: 8px; color: rgb(255, 255, 255)">Boothbunny</span>
+        <span style="mix-blend-mode: difference; margin-top: 8px; font-size: 14px; color: rgb(230, 220, 255)">Creator of PURPUR</span>
       </a>
-      <a class="kanal" href="https://instagram.com/purpur.berlin" target="_blank" rel="noopener" aria-label="PURPUR on Instagram">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><rect x="2.8" y="2.8" width="18.4" height="18.4" rx="5.4" /><circle cx="12" cy="12" r="4.4" /><circle cx="17.5" cy="6.5" r="1.3" fill="currentColor" stroke="none" /></svg>
+    </div>
+  </section>
+
+  <section data-tilt="insight" style="padding: 0 clamp(16px, 4vw, 48px) clamp(80px, 10vw, 140px); display: flex; flex-wrap: wrap; gap: 48px; align-items: center">
+    <img class="tl" src="/Media/Tape/lea-purp.webp" alt="Person in shirt and tie on violet, raised hand" style="transform: var(--t-insight-l0, translate(0)); flex: 1 1 320px; min-width: 0; max-width: 460px; height: 560px; object-fit: cover; object-position: 50% 25%">
+    <div class="tl" style="transform: var(--t-insight-l1, translate(0)); flex: 2 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+      <span style="font-size: 13px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: #ffd2f4" data-decode="ins">Insight</span>
+      <p style="margin: 0; font-size: clamp(26px, 2.8vw, 42px); font-weight: 900; line-height: 1.1; text-transform: uppercase">“PURPUR, the new experience born from diverse fetish communities of Berlin, brings their signature queer, safe-space-first events to the scenes.”</p>
+      <p style="margin: 0; font-size: 18px; font-weight: 300; line-height: 1.6; max-width: 640px">PURPUR resembles not only a safe space for queer subcultures, but also a clear statement against the rising fascist, racist, misogynist and kink-shaming society. Simply said: we are anti-fuckface, but big supporters on consensual face fuck!</p>
+      <span style="font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em">Boothbunny &amp; Kili, creators of PURPUR</span>
+    </div>
+  </section>
+
+  <section style="position: relative; overflow: hidden; padding: clamp(80px, 10vw, 140px) clamp(16px, 4vw, 48px); background: #0a0a0a; color: #f3ece4">
+    <video data-bg="1" src="/Media/Tape/loop-backs.mp4" autoplay muted loop playsinline preload="metadata" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.45; filter: blur(6px); transform: scale(1.08)"></video>
+    <div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(180deg, #0a0a0a 0%, rgba(10, 10, 10, 0.5) 25%, rgba(10, 10, 10, 0.5) 75%, #0a0a0a 100%)"></div>
+    <div style="position: relative">
+    <h2 style="margin: 0 0 56px; font-size: clamp(40px, 5.5vw, 84px); line-height: 1; text-transform: uppercase"><span style="font-weight: 100">we have</span> <span style="font-family: var(--font-titel); font-weight: 400; color: var(--hot)">your back.</span></h2>
+    <div style="display: flex; flex-direction: column; gap: 18px; align-items: flex-start">
+      <div style="background: #f3ece4; color: #0a0a0a; padding: 14px 24px; transform: rotate(-1deg); margin-left: 0; font-size: clamp(18px, 2.2vw, 30px); text-transform: uppercase; max-width: 100%; box-sizing: border-box"><span style="font-family: var(--font-titel)">01</span> <span style="font-weight: 300">come as you really are. THE PUREST VERSION OF YOURSELF.</span></div>
+      <div style="background: var(--ground); color: #ffffff; padding: 14px 24px; transform: rotate(1.2deg); margin-left: 6%; font-size: clamp(18px, 2.2vw, 30px); text-transform: uppercase; max-width: 100%; box-sizing: border-box"><span style="font-family: var(--font-titel)">02</span> <span style="font-weight: 300">curated local artists, live performance, QUEER ACTS</span></div>
+      <div style="background: #ff8ad8; color: #0a0a0a; padding: 14px 24px; transform: rotate(-0.6deg); margin-left: 2%; font-size: clamp(18px, 2.2vw, 30px); text-transform: uppercase; max-width: 100%; box-sizing: border-box"><span style="font-family: var(--font-titel)">03</span> <span style="font-weight: 300">hard sanctuary against nazis, racism, SHAMERS AND other fuckers</span></div>
+      <div style="background: #e2ff00; color: #0a0a0a; padding: 14px 24px; transform: rotate(1.5deg); margin-left: 10%; font-size: clamp(18px, 2.2vw, 30px); text-transform: uppercase; max-width: 100%; box-sizing: border-box"><span style="font-family: var(--font-titel)">04</span> <span style="font-weight: 300">every touch needs a clear, explicit yes</span></div>
+      <div style="background: #f3ece4; color: #0a0a0a; padding: 14px 24px; transform: rotate(-1.4deg); margin-left: 4%; font-size: clamp(18px, 2.2vw, 30px); text-transform: uppercase; max-width: 100%; box-sizing: border-box"><span style="font-family: var(--font-titel)">05</span> <span style="font-weight: 300">awareness for a real safe space, PLAY SAFE</span></div>
+      <div style="background: #00ff9d; color: #0a0a0a; padding: 14px 24px; transform: rotate(0.8deg); margin-left: 12%; font-size: clamp(18px, 2.2vw, 30px); text-transform: uppercase; max-width: 100%; box-sizing: border-box"><span style="font-family: var(--font-titel)">06</span> <span style="font-weight: 300">phones stay dark, what happens inside stays inside</span></div>
+      <div style="background: var(--ground); color: #ffffff; padding: 14px 24px; transform: rotate(-1deg); margin-left: 1%; font-size: clamp(18px, 2.2vw, 30px); text-transform: uppercase; max-width: 100%; box-sizing: border-box"><span style="font-family: var(--font-titel)">07</span> <span style="font-weight: 300">financial struggle should never block the dancefloor</span></div>
+    </div>
+  </div>
+  </section>
+
+  <section id="entry" style="padding: clamp(100px, 12vw, 170px) clamp(16px, 4vw, 48px); transform: rotate(-2deg); transform-origin: 50% 50%">
+    <h2 style="margin: 0 0 40px; font-size: clamp(48px, 7vw, 110px); line-height: 0.95; text-transform: uppercase"><span style="font-weight: 100">en</span><span style="font-weight: 900">try</span></h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px">
+      <a class="tk" href="https://ra.co/events/2568513" style="text-decoration: none; display: flex; flex-direction: column; gap: 16px; min-height: 320px; padding: 24px; background: #f3ece4; color: #0a0a0a; border-right: 3px dashed var(--ground); box-sizing: border-box">
+        <span style="font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: #0a0a0a">A / Regular</span>
+        <span style="font-family: var(--font-titel); font-size: 34px; line-height: 1">EARLY BIRD</span>
+        <span style="font-size: 15px; font-weight: 400; line-height: 1.5">Reduced entry for early lovers of PURPUR #2.</span>
+        <div style="margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px">
+          <span style="font-size: 20px; font-weight: 700">13,- €</span>
+          <span style="text-decoration: none; padding: 10px 16px; border-radius: 999px; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; background: #0a0a0a; color: #ffffff">RA ↗</span>
+        </div>
       </a>
+      <a class="tk" href="https://boothbunny.net/products/supporter-bundle" style="text-decoration: none; display: flex; flex-direction: column; gap: 16px; min-height: 320px; padding: 24px; background: #0a0a0a; color: #f3ece4; box-sizing: border-box">
+        <span style="font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: var(--hot)">B / Supporter</span>
+        <span style="font-family: var(--font-titel); font-size: 34px; line-height: 1">Supporter bundle</span>
+        <span style="font-size: 15px; font-weight: 400; line-height: 1.5">Ticket, limited physical items and a surprise from Boothbunny. Pick up at your next PURPUR. You keep us independent with your support.</span>
+        <div style="margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px">
+          <span style="font-size: 20px; font-weight: 700">50,- €</span>
+          <span style="text-decoration: none; padding: 10px 16px; border-radius: 999px; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; background: var(--hot); color: #0a0a0a">Shop ↗</span>
+        </div>
+      </a>
+      <a class="tk" href="https://t.me/purpurberlin" style="text-decoration: none; display: flex; flex-direction: column; gap: 16px; min-height: 320px; padding: 24px; background: #f3ece4; color: #0a0a0a; border-right: 3px dashed var(--ground); box-sizing: border-box">
+        <span style="font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: #0a0a0a">C / Community</span>
+        <span style="font-family: var(--font-titel); font-size: 34px; line-height: 1">Low income</span>
+        <span style="font-size: 15px; font-weight: 400; line-height: 1.5">Financial struggle should never block the dancefloor. Code via our Telegram, only if you need it.</span>
+        <div style="margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px">
+          <span style="font-size: 20px; font-weight: 700">8,- €</span>
+          <span style="text-decoration: none; padding: 10px 16px; border-radius: 999px; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; border: 2px solid #0a0a0a; color: #0a0a0a">Telegram ↗</span>
+        </div>
+      </a>
+      
     </div>
+  </section>
+
+  <section id="manifesto" style="position: relative; overflow: hidden; padding: clamp(80px, 10vw, 140px) clamp(16px, 4vw, 48px); background: var(--hot); color: #0a0a0a">
+    <img src="/Media/Tape/hands-cutout.webp" alt="" aria-hidden="true" style="position: absolute; right: clamp(0px, 21vw, 360px); top: -200px; height: calc(100% + 400px); width: auto; opacity: 0.95; transform: rotate(-32deg); transform-origin: 50% 50%">
+    <div aria-hidden="true" style="position: absolute; inset: 0; background: transparent"></div>
+    <div style="position: relative">
+    <p data-tilt="flag" style="margin: 0; font-size: clamp(32px, 4.4vw, 68px); line-height: 1.05; max-width: 1200px; text-transform: uppercase"><span class="tl" style="display: inline-block; transform: var(--t-flag-l0, translate(0)); font-weight: 100" data-decode="flag1">long before it was a flag,</span> <span class="tl" style="display: inline-block; transform: var(--t-flag-l1, translate(0)); font-family: var(--font-titel); text-transform: none" data-decode="flag2">it was a code.</span></p>
+    <p style="margin: 32px 0 0; max-width: 680px; font-size: 18px; line-height: 1.55; font-weight: 300">Now the capitalistic machine wants to sell our history back to us, safe and clean and digestible. Fuck that. PURPUR is the reclamation of the raw violet flame. Back to the underground, back to the sweat, back to the margins where it belongs.</p>
   </div>
-</header>
+  </section>
 
-<!-- Absperrband: schraeg ueber die Seite, laeuft von rechts nach links durch -->
-<section class="tape" id="details" aria-label="Event date and countdown">
-  <div class="tape__track" id="tapeTrack"></div>
-</section>
-
-<section class="about reveal" id="about">
-  <div class="wrap about__inner">
-    <p class="eyebrow decode">About</p>
-    <p class="about__lead">
-      <span class="decode fx-black">PURPUR is expression.</span>
-      <span class="decode fx-thin fx-italic">PURPUR is experience.</span>
-      <span class="decode fx-regular">PURPUR is subculture.</span>
-    </p>
-    <p class="about__body">The core is you, in the most pure form that exists. As a queer culture we unfold an immersive nightlife where music, expression, performance, and play converge. PURPUR exists to make the &lsquo;sub&rsquo; in &lsquo;culture&rsquo;. Make it creative, present local artists, and emerge spaces where pleasure, identity, and experimentation can thrive.</p>
-  </div>
-</section>
-
-<section class="visual reveal" id="visual">
-  <video class="visual__img" autoplay muted loop playsinline preload="metadata" poster="/Media/ColorPalette_Main.webp">
-    <source src="/Media/purpleWave1.mp4" type="video/mp4" />
-  </video>
-  <div class="visual__tear" aria-hidden="true"></div>
-  <div class="visual__word">
-    <span class="fx-line">
-      <span class="decode fx-extrabold">from fetish</span> <span class="decode mosher fx-acid">to fuckers.</span>
-    </span>
-    <span class="fx-line">
-      <span class="decode fx-thin fx-italic">from hounds</span> <span class="decode mosher fx-mint">to hoes.</span>
-    </span>
-    <span class="fx-line">
-      <span class="decode fx-thin">from purpur</span> <span class="decode mosher fx-purpur">to you.</span>
-    </span>
-  </div>
-</section>
-
-<!-- Bio / Vision: die Herkunft der Farbe, knapp gehalten. Ein Schlagsatz oben,
-     drei kurze Stationen, ein Schlusssatz. Bewusst kompakt, damit der Abschnitt
-     den Seitenfluss nicht anhaelt. -->
-<section class="origin reveal" id="origin">
-  <div class="wrap origin__inner">
-    <p class="origin__opener">
-      <span class="decode mosher">Long before it was a flag,</span>
-      <span class="decode mosher fx-acid">it was a code.</span>
-    </p>
-
-    <div class="origin__grid">
-      <div class="origin__step">
-        <p>Sappho weaving purple crowns in ancient Greece. Oscar Wilde pinning orchids to his lapel to spit in the face of Victorian morality. The color you wore when the world said you shouldn't exist, but you went out anyway.</p>
+  <section id="archive" style="padding: clamp(80px, 10vw, 140px) clamp(16px, 4vw, 48px)">
+    <h2 style="margin: 0 0 40px; font-size: clamp(48px, 7vw, 110px); line-height: 0.95; text-transform: uppercase"><span style="font-weight: 100">arch</span><span style="font-weight: 900">ive</span></h2>
+    <div style="overflow-x: auto">
+      <div style="min-width: 760px; display: grid; grid-template-columns: 100px 180px 200px minmax(0, 1fr) 120px; gap: 16px; padding: 0 0 8px; align-items: end">
+        <span></span><span></span><span style="font-size: 13px; font-weight: 200; letter-spacing: 0.14em; text-transform: uppercase; color: #e6dcff">Location</span><span style="font-size: 13px; font-weight: 200; letter-spacing: 0.14em; text-transform: uppercase; color: #e6dcff">Line-up</span><span></span>
       </div>
-      <div class="origin__step">
-        <p>In the 1950s the system tried to turn the color into a cage. They called it the Lavender Lads, and used the word to hunt us, fire us, and erase us from public life. We took their slur and turned it into armor.</p>
-      </div>
-      <div class="origin__step">
-        <p>In the first pride flag the purple stripe didn't represent peace, it represented the unhinged spirit of a community that refused to comply. Now the capitalistic machine wants to sell our history back to us, safe and clean and digestible.</p>
+      <div style="min-width: 760px; display: flex; flex-direction: column; border-top: 1px solid #ffffff">
+        <div style="display: grid; grid-template-columns: 100px 180px 200px minmax(0, 1fr) 120px; gap: 16px; padding: 20px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.3); align-items: baseline"><span style="font-family: var(--font-titel); font-size: 40px; color: rgb(255, 43, 214)">#2</span>
+          <span style="font-size: 16px; font-weight: 500">16.01.27</span>
+          <span style="font-size: 16px; font-weight: 500">Mikropol, Berlin</span>
+          <span style="font-size: 18px; font-weight: 700; text-transform: uppercase">coming soon...</span>
+          <a href="https://ra.co/events/2568513" style="font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em">Tickets ↗</a>
+        </div>
+        <div style="display: grid; grid-template-columns: 100px 180px 200px minmax(0, 1fr) 120px; gap: 16px; padding: 20px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.3); align-items: baseline; color: #e6dcff"><span style="font-family: var(--font-titel); font-size: 40px">#1</span>
+          <span style="font-size: 16px; font-weight: 500">03.10.26</span>
+          <span style="font-size: 16px; font-weight: 500">Mikropol, Berlin</span>
+          <span style="font-size: 18px; font-weight: 700; text-transform: uppercase; color: rgb(243, 236, 228)">Boothbunny / DJ Anmeldung / Floss / Falk / Novex / Rubberax</span>
+          <a href="https://ra.co/events/2518411" style="font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em">Recap ↗</a>
+        </div>
       </div>
     </div>
+  </section>
 
-    <p class="origin__close">
-      <span class="origin__no">Fuck that.</span> PURPUR is the reclamation of the
-      raw violet flame, back to the underground, back to the sweat, back to the
-      margins where it belongs.
-    </p>
-  </div>
-</section>
-
-<!-- Ticketabrisse im Stil von Ellies urspruenglichem Entwurf: lila Flaeche,
-     gestrichelte Kanten, kleines Label ueber grossem Wert. Die ganze Flaeche
-     ist ein Link.
-     Zwei Abrisse untereinander: oben die kommende Ausgabe in vollem Lila,
-     darunter die gelaufene, abgedunkelt und mit Stempel, damit auf den
-     ersten Blick klar ist, dass sie vorbei ist. Die laufende Ausgabe steht
-     immer oben. -->
-<section class="next" id="next" aria-label="Next edition">
-  <a class="next__link" href="https://ra.co/events/2568513" target="_blank" rel="noopener">
-    <div class="wrap next__inner">
-      <span class="next__no" aria-hidden="true">#2<span class="next__stempel">Next</span></span>
-      <div class="next__grid">
-        <div class="next__item">
-          <span class="next__label">Date</span>
-          <span class="next__value mosher next__value--gestapelt">16<span class="next__trenner">/</span><br />01<span class="next__trenner">/</span><br />27</span>
-        </div>
-        <div class="next__item next__item--wide">
-          <span class="next__label">Line-up</span>
-          <span class="next__value mosher">Coming soon&hellip;</span>
-        </div>
-        <div class="next__item">
-          <span class="next__label">Location</span>
-          <span class="next__value mosher">Mikropol<br />Berlin</span>
-          <span class="next__label next__label--zweit">Doors</span>
-          <span class="next__value mosher">22-06h</span>
-        </div>
-      </div>
-      <span class="next__arrow" aria-hidden="true">
-        <svg viewBox="0 0 48 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M2 12 H42 M32 3 L43 12 L32 21" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter"/>
-        </svg>
-      </span>
-      <span class="visually-hidden">Next edition — tickets on Resident Advisor</span>
+  <footer style="padding: 56px clamp(16px, 4vw, 48px) 32px; background: #0a0a0a; color: #f3ece4; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 32px">
+    <div style="display: flex; flex-direction: column; gap: 24px">
+      <img src="/Media/Logo_SVG/PURPUR-Logo-PurpleWhite.svg" alt="PURPUR" style="width: clamp(160px, 18vw, 260px); height: auto">
+      <span style="font-family: var(--font-titel); font-size: clamp(28px, 3vw, 44px); line-height: 1" data-decode="dom"><span style="font-family: var(--font-text); font-weight: 100"><span style="color: rgb(233, 227, 240); font-family: var(--font-text);Helvetica Neue&quot;, Arial, sans-serif; font-size: 37.44px; text-transform: uppercase">From subcultures to domcultures.</span></span></span>
     </div>
-  </a>
-</section>
-
-<section class="next next--past" id="past" aria-label="Past edition">
-  <a class="next__link" href="https://ra.co/events/2518411" target="_blank" rel="noopener">
-    <div class="wrap next__inner">
-      <span class="next__no" aria-hidden="true">#1<span class="next__stempel">Past</span></span>
-      <div class="next__grid">
-        <div class="next__item">
-          <span class="next__label">Date</span>
-          <span class="next__value mosher next__value--gestapelt">03<span class="next__trenner">/</span><br />10<span class="next__trenner">/</span><br />26</span>
-        </div>
-        <div class="next__item next__item--wide">
-          <span class="next__label">Line-up</span>
-          <span class="next__value mosher">Boothbunny · DJ Anmeldung · <br />Floss · Falk · Novex (DE) · <br />Rubberax</span>
-        </div>
-        <div class="next__item">
-          <span class="next__label">Location</span>
-          <span class="next__value mosher">Mikropol<br />Berlin</span>
-          <span class="next__label next__label--zweit">Doors</span>
-          <span class="next__value mosher">22-06h</span>
-      <span class="entwertet" aria-hidden="true">
-        <svg class="entwertet__kranz" viewBox="0 0 120 120" focusable="false">
-          <polygon points="60.00,4.00 67.04,15.55 77.30,6.74 80.43,19.90 92.92,14.70 91.82,28.18 105.30,27.08 100.10,39.57 113.26,42.70 104.45,52.96 116.00,60.00 104.45,67.04 113.26,77.30 100.10,80.43 105.30,92.92 91.82,91.82 92.92,105.30 80.43,100.10 77.30,113.26 67.04,104.45 60.00,116.00 52.96,104.45 42.70,113.26 39.57,100.10 27.08,105.30 28.18,91.82 14.70,92.92 19.90,80.43 6.74,77.30 15.55,67.04 4.00,60.00 15.55,52.96 6.74,42.70 19.90,39.57 14.70,27.08 28.18,28.18 27.08,14.70 39.57,19.90 42.70,6.74 52.96,15.55" />
-        </svg>
-        <span class="entwertet__wort">Slayed</span>
-      </span>
-        </div>
-      </div>
-      <span class="next__arrow" aria-hidden="true">
-        <svg viewBox="0 0 48 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M2 12 H42 M32 3 L43 12 L32 21" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter"/>
-        </svg>
-      </span>
-      <span class="visually-hidden">Past edition — line-up and recap on Resident Advisor</span>
+    <div style="display: flex; flex-direction: column; gap: 10px; font-size: 15px; font-weight: 500">
+      <a href="https://instagram.com/purpur.berlin" style="text-decoration: none; color: #f3ece4">Instagram ↗</a>
+      <a href="https://t.me/purpurberlin" style="text-decoration: none; color: #f3ece4">Telegram ↗</a>
+      <a href="mailto:info@purpur.berlin" style="text-decoration: none; color: #f3ece4">info@purpur.berlin</a>
+      <span style="margin-top: 12px; font-size: 13px">© 2026 PURPUR / <a href="https://purpur.berlin/imprint.html" style="color: #f3ece4">Imprint</a> / <a href="https://purpur.berlin/privacy.html" style="color: #f3ece4">Privacy</a></span>
     </div>
-  </a>
-</section>
-
-<section class="insight reveal" id="insight">
-  <div class="wrap">
-    <p class="eyebrow decode insight__eyebrow">Insight</p>
-    <div class="insight__inner">
-      <div class="insight__photo">
-        <img src="/Media/purpur-poster.webp" alt="PURPUR poster: 03-10-26, Berlin" width="1200" height="1697" loading="lazy" decoding="async" />
-      </div>
-      <div class="insight__copy">
-        <p class="insight__quote">
-          <span class="decode fx-black">&ldquo;PURPUR, the new experience born from diverse fetish communities of Berlin,</span><span class="insight__rest"> brings their signature queer, safe-space-first events to the scenes. A raw focus on unique analogue experiences, fetish and subculture expression creates a new space for everyone who wants to transform into the most unhinged version of themself.&rdquo;</span>
-        </p>
-        <p>PURPUR resembles not only a safe space for queer subcultures, but also a clear statement against the rising fascist, racist, misogynist &amp; kink-shaming society. Simply said: <span class="fx-purpur">we are anti-fuckface*</span>, but big supporters on consensual face fuck!</p>
-        <p class="insight__credit">Boothbunny &amp; Kili, creators of PURPUR</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="marquee" aria-hidden="true">
-  <div class="marquee__track">
-    <span class="marquee__group">
-      <span>Fetish</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Self-Made</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Gear</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Rubber</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Femboy</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Tomboy</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Drag</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Queens</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Cosplay</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Workwear</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Biker</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Furry</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Canine</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Hound</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Puppy</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Slutty</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Skin</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Colorful</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Dark</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Gearheads</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>FLINTA</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Furballs</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Mascgirls</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Inbetweens</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Outstanders</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Gimps</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Slutbuns</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Fags</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Cumdumps</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Fuckers</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-    </span>
-    <span class="marquee__group">
-      <span>Fetish</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Self-Made</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Gear</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Rubber</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Femboy</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Tomboy</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Drag</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Queens</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Cosplay</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Workwear</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Biker</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Furry</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Canine</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Hound</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Puppy</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Slutty</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Skin</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Colorful</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Dark</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Gearheads</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>FLINTA</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Furballs</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Mascgirls</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Inbetweens</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Outstanders</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Gimps</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Slutbuns</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Fags</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Cumdumps</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-      <span>Fuckers</span>
-      <img class="marquee__icon" src="/Media/Logo_SVG/PURPUR-Symbol-Purple.svg" alt="" />
-    </span>
-  </div>
+    <p style="flex-basis: 100%; margin: 8px 0 0; font-size: 12px; font-weight: 100; letter-spacing: 0.08em; line-height: 1.6; color: #f3ece4; text-align: start">Photos © Velo (<a href="https://instagram.com/velo_doggo" style="color: rgb(243, 236, 228)">@velo_doggo</a>) <br><span style="letter-spacing: 0.96px">© </span>Sharky (<a href="https://instagram.com/gear.sharky" style="color: rgb(243, 236, 228)">@gear.sharky</a>).<br></p>
+  </footer>
 </div>
-
-<footer class="site-footer" id="footer">
-  <div class="wrap">
-    <div class="footer__top">
-      <div class="footer__brand">
-        <img src="/Media/Logo_SVG/PURPUR-Logo-PurpleWhite.svg" alt="PURPUR" />
-      </div>
-      <div class="footer__cols">
-        <div class="footer__col">
-          <h4>Event</h4>
-          <ul>
-            <li><a href="https://ra.co/events/2568513" target="_blank" rel="noopener">Tickets / RA</a></li>
-            <li><a href="https://boothbunny.net/products/supporter-bundle" target="_blank" rel="noopener">Supporter Bundle / Boothbunny</a></li>
-          </ul>
-        </div>
-        <div class="footer__col">
-          <h4>Community</h4>
-          <ul>
-            <li><a href="https://instagram.com/purpur.berlin" target="_blank" rel="noopener">Instagram</a></li>
-            <li><a href="https://t.me/purpurberlin" target="_blank" rel="noopener">Telegram</a></li>
-          </ul>
-        </div>
-        <div class="footer__col">
-          <h4>Contact</h4>
-          <ul>
-            <li><a href="mailto:info@purpur.berlin">info@purpur.berlin</a></li>
-            <li><a href="mailto:booking@purpur.berlin">booking@purpur.berlin</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="footer__bottom">
-      <span>&copy; 2026 PURPUR.</span>
-      <span class="footer__legal"><a href="/imprint.html">Imprint</a> · <a href="/privacy.html">Privacy</a> · <a href="/community.html">Community</a></span>
-    </div>
-  </div>
-  <p class="footer__wordmark">
-    <span class="decode mosher">From subcultures</span><br>
-    <span class="decode mosher fx-mint">to domcultures.</span>
-  </p>
-</footer>
-
-<script src="/script.js?v=40"></script>
+<script src="/tape.js?v=1" defer></script>
 </body>
 </html>
