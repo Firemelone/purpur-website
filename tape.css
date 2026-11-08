@@ -111,9 +111,54 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
 .reveal:hover img, .reveal:focus-within img, .reveal.is-touched img { filter: grayscale(1) contrast(1.05) !important; }
 a:focus-visible { outline: 2px solid var(--acid); outline-offset: 3px; }
 
+/* ---------- Entry als schraege Bahn ---------- */
+/* Der Abschnitt ist per Inline-Style gedreht, hatte aber keinen eigenen
+   Hintergrund -- die Schraege war deshalb nicht zu sehen. Die Bahn liegt als
+   ::before hinter dem Inhalt, ragt seitlich heraus (sonst blitzen an den
+   gedrehten Ecken die Nachbarn durch) und laeuft oben und unten in sie hinein. */
+#entry { position: relative; z-index: 2; margin: -44px 0; }
+#entry::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: -8vw;
+  right: -8vw;
+  background: var(--ground);
+}
+
+/* ---------- Regel-Tapes: rollen beim Hereinscrollen von links auf ---------- */
+/* Die Klasse setzt erst tape.js, damit die Tapes ohne JS sichtbar bleiben.
+   Animiert werden clip-path und translate -- nicht transform, weil dort die
+   individuelle Neigung jeder Kachel inline steht. */
+.tape-roll {
+  /* Verdeckt wird per Maske, nicht per clip-path: einen clip-path rechnet der
+     IntersectionObserver mit ein, das Tape waere dann nie "sichtbar" und
+     loeste sich selbst nie aus. Eine Maske ist rein malerisch. */
+  -webkit-mask-image: linear-gradient(90deg, #000 0 50%, transparent 50% 100%);
+          mask-image: linear-gradient(90deg, #000 0 50%, transparent 50% 100%);
+  -webkit-mask-size: 200% 100%;
+          mask-size: 200% 100%;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: 100% 0;
+          mask-position: 100% 0;
+  translate: -14px 0;
+  transition: -webkit-mask-position .62s cubic-bezier(.22, .61, .36, 1),
+              mask-position .62s cubic-bezier(.22, .61, .36, 1),
+              translate .62s cubic-bezier(.22, .61, .36, 1);
+}
+.tape-roll.is-on {
+  -webkit-mask-position: 0 0;
+          mask-position: 0 0;
+  translate: 0 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .pp-grain, .cursor__sticker { animation: none; }
   .tl { transition: none; }
+  .tape-roll { -webkit-mask-image: none; mask-image: none; translate: 0 0; transition: none; }
 }
 
 /* =========================================================================
@@ -131,6 +176,8 @@ a:focus-visible { outline: 2px solid var(--acid); outline-offset: 3px; }
   [data-tilt="hero"] img[alt="PURPUR"] { width: 132px !important; }
   [data-tilt="hero"] p { font-size: 22px !important; flex-basis: 150px !important; }
   .pill { padding-left: 22px !important; padding-right: 22px !important; }
+  /* Supporter-Bundle: kurzer Text, damit Label und Wert in einer Zeile bleiben */
+  .nur-breit { display: none; }
   .pill span:first-child { font-size: 15px !important; }
   .pill:first-child span:first-child { font-size: 28px !important; }
   [data-tilt="photo"] { flex-basis: 100% !important; height: 470px !important; margin-right: 8px; }
@@ -153,26 +200,29 @@ a:focus-visible { outline: 2px solid var(--acid); outline-offset: 3px; }
   div[style*="height: 560px"] { height: 340px !important; }
   div[style*="height: 560px"] > div { font-size: 15px !important; }
 
-  /* Line-up: zwei Spalten, Boothbunny ueber die volle Breite */
+  /* Line-up: zwei Spalten, Boothbunny links wie eine normale Kachel */
   #lineup { padding: 72px 16px !important; }
   [data-tilt="lineup"] { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; }
   [data-tilt="lineup"] > * { height: 250px !important; }
   [data-tilt="lineup"] > *[style*="margin-top: 48px"] { margin-top: 28px !important; }
-  [data-tilt="lineup"] > a { grid-column: 1 / -1; height: 220px !important; margin-top: 0 !important; }
+  [data-tilt="lineup"] > a { grid-column: 1; height: 250px !important; margin-top: 0 !important; }
   [data-tilt="lineup"] div[style*="rotate("] { font-size: 15px !important; }
   [data-tilt="lineup"] span[style*="[ACT"], [data-tilt="lineup"] span[style*="bottom: 14px"] { font-size: 11px !important; }
 
   /* Insight */
   [data-tilt="insight"] { padding: 0 16px 72px !important; gap: 28px !important; }
-  [data-tilt="insight"] > img { height: 420px !important; max-width: 100% !important; flex-basis: 100% !important; }
+  /* Bildformat = Dateiformat (4:5), sonst wird ihr oben die Stirn abgeschnitten */
+  [data-tilt="insight"] > img { height: auto !important; aspect-ratio: 4 / 5; object-position: 50% 0 !important; max-width: 100% !important; flex-basis: 100% !important; }
   [data-tilt="insight"] p:first-of-type { font-size: 24px !important; }
 
   /* We have your back */
   section[style*="background: #0a0a0a"] { padding: 72px 16px !important; }
   section[style*="background: #0a0a0a"] div[style*="padding: 14px 24px"] { margin-left: 0 !important; padding: 12px 16px !important; font-size: 16px !important; }
 
-  /* Entry */
-  #entry { padding: 96px 16px !important; }
+  /* Entry: auf dem Handy bleibt der Inhalt gerade (die Drehung zog ihn an den
+     linken Rand) -- schraeg ist nur noch die Bahn dahinter */
+  #entry { padding: 104px 28px !important; transform: none !important; margin: -30px 0; }
+  #entry::before { top: -26px; bottom: -26px; left: -16vw; right: -16vw; transform: rotate(-3.4deg); }
   #entry .tk { min-height: 0 !important; }
 
   /* Manifest */
@@ -189,4 +239,9 @@ a:focus-visible { outline: 2px solid var(--acid); outline-offset: 3px; }
   /* Footer */
   footer { padding: 48px 16px 28px !important; }
   footer p[style*="flex-basis: 100%"] { text-align: left !important; }
+}
+
+/* Noch schmaler: auch das "get" faellt weg */
+@media (max-width: 420px) {
+  .nur-mittel { display: none; }
 }

@@ -117,10 +117,14 @@
     var el = document.querySelector('[data-tilt="' + k + '"]');
     if (el) groupEls[k] = el;
   });
+  // Empfindlichkeit der Neigung: Maus etwas kraeftiger als 1:1, Handy deutlich.
+  var MAUS_FAKTOR = 1.35;
+  var HANDY_FAKTOR = 2.2;
+  var HANDY_GRAD = 18;   // so viel Grad Neigung entsprechen dem Vollausschlag
   function apply(k, x, y, boost) {
     var g = GROUPS[k], el = groupEls[k];
     if (!el) return;
-    var m = g.max * (boost ? 1.5 * g.handy : 1);
+    var m = g.max * (boost ? HANDY_FAKTOR * g.handy : MAUS_FAKTOR);
     for (var i = 0; i < g.n; i++) {
       var a = Math.max(0.2, 1 - i * g.stufe);
       el.style.setProperty("--t-" + k + "-l" + i,
@@ -178,7 +182,7 @@
     window.addEventListener("deviceorientation", throttle(function (e) {
       if (e.gamma == null || e.beta == null) return;
       sensor = true;
-      all(clamp(e.gamma / 30), clamp((e.beta - 45) / 30));
+      all(clamp(e.gamma / HANDY_GRAD), clamp((e.beta - 45) / HANDY_GRAD));
     }));
     // iOS fragt den Lagesensor erst nach einer Beruehrung frei
     if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") {
@@ -206,13 +210,27 @@
     for (var i = n - 1; i > 0; i--) { var j = (Math.random() * (i + 1)) | 0; var t = order[i]; order[i] = order[j]; order[j] = t; }
     var S = 12, W = 10, revealAt = [];
     order.forEach(function (idx, pos) { revealAt[idx] = Math.floor((pos / n) * S); });
+    // Nur innerhalb eines Wortes nowrap: sonst stuende die ganze Zeile
+    // waehrend des Decodens in einer Zeile und ragte auf dem Handy raus.
     var wrap = document.createElement("span");
-    wrap.style.whiteSpace = "nowrap";
-    var spans = chars.map(function (ch) {
+    var spans = [];
+    var wort = null;
+    chars.forEach(function (ch) {
+      if (ch === " ") {
+        wrap.appendChild(document.createTextNode(" "));
+        wort = null;
+        spans.push(null);
+        return;
+      }
+      if (!wort) {
+        wort = document.createElement("span");
+        wort.style.whiteSpace = "nowrap";
+        wrap.appendChild(wort);
+      }
       var s = document.createElement("span");
       s.textContent = ch;
-      wrap.appendChild(s);
-      return s;
+      wort.appendChild(s);
+      spans.push(s);
     });
     el.textContent = "";
     el.appendChild(wrap);
@@ -233,6 +251,30 @@
       frame++;
     }, 45);
   }
+  // ---------------------------------------------------------------------------
+  // Regel-Tapes rollen nacheinander auf, sobald sie in den Blick kommen.
+  // ---------------------------------------------------------------------------
+  var tapes = document.querySelectorAll("[data-tape]");
+  if (tapes.length) {
+    if ("IntersectionObserver" in window) {
+      for (var ti = 0; ti < tapes.length; ti++) tapes[ti].className += " tape-roll";
+      var letzte = 0;
+      var tio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          var el = e.target;
+          tio.unobserve(el);
+          // Kommen mehrere gleichzeitig herein, laufen sie 110 ms versetzt an.
+          var jetzt = (window.performance ? performance.now() : Date.now());
+          var versatz = Math.max(0, letzte + 110 - jetzt);
+          letzte = jetzt + versatz;
+          setTimeout(function () { el.classList.add("is-on"); }, versatz);
+        });
+      }, { threshold: 0.2, rootMargin: "0px 0px -8% 0px" });
+      for (var tj = 0; tj < tapes.length; tj++) tio.observe(tapes[tj]);
+    }
+  }
+
   var targets = document.querySelectorAll("[data-decode]");
   if ("IntersectionObserver" in window && targets.length) {
     var io = new IntersectionObserver(function (entries) {
