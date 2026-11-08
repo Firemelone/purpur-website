@@ -100,7 +100,15 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
 }
 
 /* ---------- Boothbunny-Kachel ---------- */
-.bb-card { background: url("/Media/Tape/boothbunny.webp") center / cover no-repeat; }
+.bb-card {
+  background: url("/Media/Tape/boothbunny.webp") center / cover no-repeat;
+  container-type: inline-size;
+}
+/* "Boothbunny" ist in Mosher rund 5,95x so breit wie die Schriftgroesse und
+   stand damit in jeder Kachelbreite ueber. Die Groesse haengt deshalb an der
+   Kachel (cqw) und nicht am Fenster: die Spaltenbreite des Rasters folgt dem
+   Fenster nicht geradlinig -- bei 760 px ist die Kachel breiter als bei 1440. */
+.bb-card > span:nth-child(2) { font-size: min(40px, calc((100cqw - 4px) / 5.95)) !important; }
 
 /* ---------- Interaktion ---------- */
 .pill { transition: transform .15s ease; }
@@ -226,8 +234,16 @@ a:focus-visible { outline: 2px solid var(--acid); outline-offset: 3px; }
   #entry .tk { min-height: 0 !important; }
 
   /* Manifest */
-  #manifesto { padding: 72px 16px !important; }
-  #manifesto > img { right: -30% !important; opacity: .55 !important; }
+  #manifesto { padding: 86px 16px 72px !important; }
+  /* Haende nach unten rechts: oben schnitt die schraege Entry-Bahn mitten
+     durch die Finger. Unten ist unter dem Text ohnehin Platz. */
+  #manifesto > img {
+    top: auto !important;
+    bottom: -28px !important;
+    right: -10% !important;
+    height: 88% !important;
+    opacity: .5 !important;
+  }
 
   /* Archiv: als Liste statt Tabelle */
   #archive { padding: 72px 16px !important; }

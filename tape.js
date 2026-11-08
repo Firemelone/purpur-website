@@ -234,6 +234,16 @@
     });
     el.textContent = "";
     el.appendChild(wrap);
+    // Jedes Zeichen bekommt die Breite, die es am Ende hat. Sonst aendern die
+    // zufaelligen Glyphen die Zeilenlaenge und der Text springt waehrend des
+    // Decodens in eine andere Zeile.
+    var breiten = spans.map(function (s) { return s ? s.getBoundingClientRect().width : 0; });
+    for (var bi = 0; bi < spans.length; bi++) {
+      if (!spans[bi]) continue;
+      spans[bi].style.display = "inline-block";
+      spans[bi].style.width = breiten[bi].toFixed(3) + "px";
+      spans[bi].style.textAlign = "center";
+    }
     var frame = 0;
     var timer = setInterval(function () {
       if (frame > S + W) {
