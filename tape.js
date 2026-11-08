@@ -118,6 +118,123 @@
       "font-weight: 300; font-size: 28px; text-transform: uppercase; padding: 10px 22px; background: #f3ece4; color: #5b12ff; border-radius: 999px"
     ];
     var stilNr = 0;
+    // -------------------------------------------------------------------------
+    // Sperrliste. Haelt den Normalfall ab: jemand tippt etwas Menschenfeindliches
+    // und fotografiert die Seite. Wer die Entwicklerkonsole aufmacht, umgeht das
+    // in zehn Sekunden -- dagegen hilft nur, dass nichts gespeichert wird und
+    // die Eingabe beim Neuladen weg ist.
+    //
+    // Bewusst NICHT gesperrt: die zurueckeroberten Begriffe der Szene (fag,
+    // slut, whore, pup, pig, bitch, kink-Begriffe wie ageplay, cnc, ddlg).
+    // Die stehen zum Teil selbst als Kachel auf der Seite.
+    // -------------------------------------------------------------------------
+
+    // Nur als ganzes Wort bzw. ganze Eingabe -- zu kurz oder zu mehrdeutig
+    // fuer eine Teilstring-Suche.
+    var SPERRE_WORT = (
+      // Nationalsozialismus, Codes, Organisationen
+      "nazi nazis neonazi naziboy hitler adolfhitler adolf heil heilhitler siegheil sieghail " +
+      "hakenkreuz swastika drittesreich drittereich thirdreich reich nsdap ns ss gestapo " +
+      "wehrmacht waffenss fuhrer fuehrer endlosung endloesung finalsolution holohoax " +
+      "auschwitz gaskammer gaschamber zyklonb judenfrei judenrein arier aryan aryanpride " +
+      "whitepower whitepride whitelivesmatter wlm 88 1488 14words 1888 168 combat18 c18 " +
+      "blutundehre bloodandhonour blutundboden hammerskins wehrsportgruppe rahowa " +
+      "identitar identitare identitaer generationidentity defendeurope remigration " +
+      "umvolkung volkstod grossdeutschland grossedeutschland deutschlanddendeutschen " +
+      "auslanderraus auslaenderraus afd npd dieheimat dritterweg iiiprozent kkk kuklux " +
+      "kukluxklan faschist faschismus fascist fascism mussolini franco pinochet " +
+      "hitlerjugend reichsburger reichsbuerger " +
+      // Antisemitismus
+      "judensau judenschwein kike yid heeb shylock zog judenfrage jewishquestion " +
+      "greatreplacement grosseraustausch happymerchant khazar 6gorillion " +
+      // Rassismus
+      "nigger nigga negro neger coon jigaboo porchmonkey spearchucker darkie darky " +
+      "golliwog zigeuner gyppo chink ching gook slanteye zipperhead chinavirus kungflu " +
+      "jap towelhead raghead mudslime kanake kanacke kummelturke kuemmelturke " +
+      "spic wetback beaner redskin injun squaw polack wop dago " +
+      // Transfeindlichkeit
+      "tranny trannie shemale heshe ladyboy trap attackhelicopter troon troons " +
+      "biologicalmale realwomen adamandeve superstraight transtrender autogynephile " +
+      // Schwulen- und Lesbenfeindlichkeit (nicht die zurueckeroberten Begriffe)
+      "godhatesfags adamandsteve gaydisease aidsspreader conversiontherapy " +
+      // Behindertenfeindlichkeit
+      "retard retarded tard mongo mongoloid spast spasti spastic kruppel krueppel " +
+      "downie sped " +
+      // Sexualisierte Gewalt, Kinder, Tiere -- bei einer Fetischparty besonders heikel
+      "pedo pedophile paedo pado paedophile pedobear loli lolicon shota shotacon " +
+      "jailbait childporn kinderporno kinderporn nomap bestiality zoophile zoophilia " +
+      "rape rapist prorape " +
+      // Frauenfeindlichkeit, Incel
+      "incel roastie femoid foid mgtow hitthewall"
+    ).split(" ");
+
+    // Ueberall in der Eingabe -- nur eindeutige Wortstaemme, bei denen ein
+    // Fehlalarm praktisch ausgeschlossen ist.
+    var SPERRE_UEBERALL = (
+      "hitler hakenkreuz swastika siegheil sieghail heilhitler judensau judenschwein " +
+      "kike nigger nigga kanake kanacke chink gook towelhead raghead wetback beaner " +
+      "zigeuner tranny trannie shemale retard mongoloid spast kruppel krueppel " +
+      "pedophil paedophil pedobear lolicon shotacon jailbait childporn kinderporn " +
+      "zyklon gaskammer gaschamber holohoax whitepower whitepride kukluxklan 1488 " +
+      "combat18 blutundehre bloodandhonour judenfrei judenrein endlosung endloesung " +
+      "finalsolution greatreplacement grosseraustausch deathto gasthe killall hangthe"
+    ).split(" ");
+
+    // Drei Lesarten jeder Eingabe, damit "N1GG4", "n i g g e r" und "niiigger"
+    // nicht durchrutschen.
+    var LEET = { "0": "o", "1": "i", "3": "e", "4": "a", "5": "s", "7": "t",
+                 "8": "b", "@": "a", "$": "s", "!": "i", "|": "i", "+": "t" };
+    function kompakt(s) {
+      return String(s).toLowerCase().normalize("NFD")
+        .replace(/[̀-ͯ]/g, "")
+        .replace(/ß/g, "ss")
+        .replace(/[^a-z0-9]/g, "");
+    }
+    function leet(s) {
+      return kompakt(String(s).toLowerCase().replace(/[@$!|+]/g, function (c) { return LEET[c]; }))
+        .replace(/[013457]/g, function (c) { return LEET[c]; });
+    }
+    function gestaucht(s) { return s.replace(/(.)\1+/g, "$1"); }
+    // Die gestauchte Lesart faengt "niiiigger" ab, verkuerzt aber auch
+    // "coon" zu "con" und "ss" zu "s". Deshalb zaehlt sie erst ab fuenf
+    // Zeichen -- kurz genug, um harmlose Woerter nicht mitzunehmen.
+    function lesarten(s) {
+      var k = kompakt(s), l = leet(s), out = [k, l];
+      [gestaucht(k), gestaucht(l)].forEach(function (g) { if (g.length >= 5) out.push(g); });
+      return out;
+    }
+
+    // Woerter, die das Stauchen faelschlich treffen wuerde (nigger -> niger).
+    var ERLAUBT = {};
+    "niger nigeria nigerian nigerien".split(" ").forEach(function (w) { ERLAUBT[w] = 1; });
+
+    var WORT_SET = {};
+    SPERRE_WORT.forEach(function (w) {
+      if (!w) return;
+      lesarten(w).forEach(function (f) { if (f) WORT_SET[f] = 1; });
+    });
+    var UEBERALL = [];
+    SPERRE_UEBERALL.forEach(function (w) {
+      if (!w) return;
+      lesarten(w).forEach(function (f) { if (f && UEBERALL.indexOf(f) < 0) UEBERALL.push(f); });
+    });
+
+    function gesperrt(text) {
+      var teile = [text].concat(String(text).split(/[\s/,._+&-]+/));
+      for (var i = 0; i < teile.length; i++) {
+        if (ERLAUBT[kompakt(teile[i])]) continue;
+        var formen = lesarten(teile[i]);
+        for (var j = 0; j < formen.length; j++) {
+          var f = formen[j];
+          if (!f) continue;
+          if (WORT_SET[f]) return true;
+          for (var k = 0; k < UEBERALL.length; k++) {
+            if (UEBERALL[k].length >= 4 && f.indexOf(UEBERALL[k]) >= 0) return true;
+          }
+        }
+      }
+      return false;
+    }
 
     var eingabe = document.createElement("input");
     eingabe.type = "text";
@@ -155,9 +272,24 @@
       (mq.addEventListener ? mq.addEventListener.bind(mq, "change") : mq.addListener.bind(mq))(breiteAnpassen);
     }
 
+    var nopeTimer = null;
+    function abweisen() {
+      eingabe.value = "";
+      eingabe.classList.add("is-nope");
+      eingabe.placeholder = "not here.";
+      breiteAnpassen();
+      clearTimeout(nopeTimer);
+      nopeTimer = setTimeout(function () {
+        eingabe.classList.remove("is-nope");
+        eingabe.placeholder = "+ you";
+        breiteAnpassen();
+      }, 2200);
+    }
+
     function anlegen() {
       var wort = eingabe.value.replace(/\s+/g, " ").trim();
       if (!wort) return;
+      if (gesperrt(wort)) { abweisen(); return; }
       var tag = document.createElement("span");
       tag.className = "yourtag-neu";
       tag.style.cssText = STILE[stilNr % STILE.length];
