@@ -119,6 +119,29 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
 .reveal:hover img, .reveal:focus-within img, .reveal.is-touched img { filter: grayscale(1) contrast(1.05) !important; }
 a:focus-visible { outline: 2px solid var(--acid); outline-offset: 3px; }
 
+/* ---------- "+ you": eigenes Schlagwort eintippen ---------- */
+/* Das Feld uebernimmt die Inline-Optik der Kachel; hier steht nur, was ein
+   <input> sonst mitbringt. Eingetragene Woerter leben nur im Browser: nichts
+   wird gespeichert oder verschickt, ein Neuladen setzt die Liste zurueck. */
+.yourtag {
+  font-family: var(--font-text);
+  background: transparent;
+  outline: none;
+  caret-color: #e2ff00;
+  -webkit-appearance: none;
+  appearance: none;
+  min-width: 0;
+  max-width: 100%;
+}
+.yourtag::placeholder { color: #e2ff00; opacity: 1; }
+.yourtag:focus { border-style: solid; }
+.yourtag-neu { animation: tag-pop .26s cubic-bezier(.2, 1.4, .4, 1) both; }
+@keyframes tag-pop { from { scale: .7; opacity: 0; } }
+
+/* Mehr Luft ueber "long before it was a flag": die schraege Entry-Bahn
+   ragt oben in den Abschnitt hinein und fraes den Abstand sonst auf. */
+#manifesto { padding-top: clamp(150px, 15vw, 220px) !important; }
+
 /* ---------- Entry als schraege Bahn ---------- */
 /* Der Abschnitt ist per Inline-Style gedreht, hatte aber keinen eigenen
    Hintergrund -- die Schraege war deshalb nicht zu sehen. Die Bahn liegt als
@@ -167,6 +190,7 @@ a:focus-visible { outline: 2px solid var(--acid); outline-offset: 3px; }
   .pp-grain, .cursor__sticker { animation: none; }
   .tl { transition: none; }
   .tape-roll { -webkit-mask-image: none; mask-image: none; translate: 0 0; transition: none; }
+  .yourtag-neu { animation: none; }
 }
 
 /* =========================================================================
@@ -201,7 +225,7 @@ a:focus-visible { outline: 2px solid var(--acid); outline-offset: 3px; }
   #who { padding: 72px 16px !important; }
   #who h2 { font-size: clamp(44px, 13vw, 64px) !important; margin-bottom: 32px !important; }
   [data-decode="who2"] { font-size: clamp(48px, 15vw, 72px) !important; }
-  #who span[style*="border"], #who span[style*="background"] { font-size: 18px !important; padding: 7px 14px !important; }
+  #who span[style*="border"], #who span[style*="background"], #who .yourtag { font-size: 18px !important; padding: 7px 14px !important; }
   #who p { font-size: 17px !important; }
 
   /* Banner */
@@ -234,7 +258,7 @@ a:focus-visible { outline: 2px solid var(--acid); outline-offset: 3px; }
   #entry .tk { min-height: 0 !important; }
 
   /* Manifest */
-  #manifesto { padding: 86px 16px 72px !important; }
+  #manifesto { padding: 132px 16px 72px !important; }
   /* Haende: Groesse und Ueberstand nach oben/unten bleiben wie im Original
      (das Motiv ist an Aermel und Unterarm gerade abgeschnitten -- nur weil es
      weit ueber den Abschnitt hinausragt, liegen diese Kanten ausserhalb).

@@ -99,6 +99,84 @@
     }, 4200);
   }
 
+  // ---------------------------------------------------------------------------
+  // "+ you": eigenes Schlagwort eintippen, Enter legt es als Kachel an.
+  // Nichts wird gespeichert oder verschickt -- beim Neuladen ist alles weg.
+  // ---------------------------------------------------------------------------
+  var feld = document.querySelector("[data-yourtag]");
+  if (feld) {
+    var STILE = [
+      "font-family: var(--font-titel); font-size: 32px; padding: 10px 24px; background: #00ff9d; color: #0a0a0a; border-radius: 999px; transform: rotate(-2deg)",
+      "font-weight: 900; font-style: oblique 12deg; font-size: 28px; text-transform: uppercase; padding: 10px 22px; background: #e2ff00; color: #0a0a0a; border-radius: 999px; transform: rotate(2deg)",
+      "font-family: var(--font-titel); font-size: 32px; padding: 10px 24px; background: #0a0a0a; color: #ffffff; border-radius: 999px; transform: rotate(-3deg)",
+      "font-weight: 100; font-size: 28px; text-transform: uppercase; padding: 10px 22px; border: 2px solid #00ff9d; color: #00ff9d; border-radius: 999px",
+      "font-family: var(--font-titel); font-size: 32px; padding: 10px 24px; background: var(--hot); color: #0a0a0a; border-radius: 999px; transform: rotate(2deg)",
+      "font-weight: 600; font-size: 26px; letter-spacing: 0.08em; text-transform: uppercase; padding: 12px 22px; background: #f3ece4; color: #5b12ff; border-radius: 6px",
+      "font-weight: 100; font-style: oblique 12deg; font-size: 30px; text-transform: lowercase; padding: 10px 22px; border: 2px solid #ffffff; color: #ffffff; border-radius: 999px",
+      "font-family: var(--font-titel); font-size: 32px; padding: 10px 24px; background: #e2ff00; color: #0a0a0a; border-radius: 999px; transform: rotate(3deg)",
+      "font-weight: 900; font-size: 28px; text-transform: uppercase; padding: 10px 22px; background: #0a0a0a; color: #e2ff00; border-radius: 999px",
+      "font-weight: 300; font-size: 28px; text-transform: uppercase; padding: 10px 22px; background: #f3ece4; color: #5b12ff; border-radius: 999px"
+    ];
+    var stilNr = 0;
+
+    var eingabe = document.createElement("input");
+    eingabe.type = "text";
+    eingabe.className = "yourtag";
+    eingabe.maxLength = 22;
+    eingabe.placeholder = "+ you";
+    eingabe.setAttribute("aria-label", "Add yourself to the list");
+    eingabe.setAttribute("autocomplete", "off");
+    eingabe.setAttribute("autocapitalize", "off");
+    eingabe.setAttribute("spellcheck", "false");
+    eingabe.setAttribute("enterkeyhint", "done");
+    eingabe.style.cssText = feld.getAttribute("style");
+    feld.parentNode.replaceChild(eingabe, feld);
+
+    // Breite mitwachsen lassen: ein unsichtbarer Zwilling misst den Text.
+    // Er uebernimmt die *berechneten* Schriftwerte des Feldes, damit die
+    // Messung auch stimmt, wenn eine Medienabfrage die Schrift verkleinert.
+    var lineal = document.createElement("span");
+    lineal.setAttribute("aria-hidden", "true");
+    lineal.style.cssText = "position:absolute;left:-9999px;top:0;visibility:hidden;white-space:pre";
+    document.body.appendChild(lineal);
+    function breiteAnpassen() {
+      var cs = getComputedStyle(eingabe);
+      lineal.style.font = cs.font || (cs.fontStyle + " " + cs.fontWeight + " " + cs.fontSize + " " + cs.fontFamily);
+      lineal.style.fontStyle = cs.fontStyle;
+      lineal.style.letterSpacing = cs.letterSpacing;
+      lineal.style.textTransform = cs.textTransform;
+      lineal.textContent = eingabe.value || eingabe.placeholder;
+      var drumherum = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight) +
+                      parseFloat(cs.borderLeftWidth) + parseFloat(cs.borderRightWidth);
+      eingabe.style.width = Math.ceil(lineal.getBoundingClientRect().width + drumherum + 2) + "px";
+    }
+    if (window.matchMedia) {
+      var mq = window.matchMedia("(max-width: 760px)");
+      (mq.addEventListener ? mq.addEventListener.bind(mq, "change") : mq.addListener.bind(mq))(breiteAnpassen);
+    }
+
+    function anlegen() {
+      var wort = eingabe.value.replace(/\s+/g, " ").trim();
+      if (!wort) return;
+      var tag = document.createElement("span");
+      tag.className = "yourtag-neu";
+      tag.style.cssText = STILE[stilNr % STILE.length];
+      stilNr++;
+      tag.textContent = wort;               // textContent, nie innerHTML
+      eingabe.parentNode.insertBefore(tag, eingabe);
+      eingabe.value = "";
+      breiteAnpassen();
+    }
+
+    eingabe.addEventListener("input", breiteAnpassen);
+    eingabe.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); anlegen(); }
+    });
+    eingabe.addEventListener("blur", anlegen);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(breiteAnpassen);
+    breiteAnpassen();
+  }
+
   if (reduce) return;
 
   // ---------------------------------------------------------------------------
