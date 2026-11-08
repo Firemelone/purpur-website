@@ -235,15 +235,11 @@ a:focus-visible { outline: 2px solid var(--acid); outline-offset: 3px; }
 
   /* Manifest */
   #manifesto { padding: 86px 16px 72px !important; }
-  /* Haende nach unten rechts: oben schnitt die schraege Entry-Bahn mitten
-     durch die Finger. Unten ist unter dem Text ohnehin Platz. */
-  #manifesto > img {
-    top: auto !important;
-    bottom: -28px !important;
-    right: -10% !important;
-    height: 88% !important;
-    opacity: .5 !important;
-  }
+  /* Haende: Groesse und Ueberstand nach oben/unten bleiben wie im Original
+     (das Motiv ist an Aermel und Unterarm gerade abgeschnitten -- nur weil es
+     weit ueber den Abschnitt hinausragt, liegen diese Kanten ausserhalb).
+     Geaendert wird nur, wie weit es hereinragt. */
+  #manifesto > img { right: -6% !important; opacity: .5 !important; }
 
   /* Archiv: als Liste statt Tabelle */
   #archive { padding: 72px 16px !important; }
@@ -260,4 +256,10 @@ a:focus-visible { outline: 2px solid var(--acid); outline-offset: 3px; }
 /* Noch schmaler: auch das "get" faellt weg */
 @media (max-width: 420px) {
   .nur-mittel { display: none; }
+}
+
+/* Ganz schmal: die Haende weiter nach rechts, sonst liegen sie auf der
+   Ueberschrift. Groesse und Ueberstand bleiben unveraendert. */
+@media (max-width: 480px) {
+  #manifesto > img { right: -20% !important; }
 }
