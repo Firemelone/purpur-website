@@ -165,7 +165,42 @@
       "jailbait childporn kinderporno kinderporn nomap bestiality zoophile zoophilia " +
       "rape rapist prorape " +
       // Frauenfeindlichkeit, Incel
-      "incel roastie femoid foid mgtow hitthewall"
+      "incel roastie femoid foid mgtow hitthewall " +
+      // Menschenfeindlichkeit beim Namen genannt -- als Selbstbeschreibung
+      // auf dieser Seite immer feindlich gemeint
+      "racist racists racism rassist rassisten rassismus rassistisch " +
+      "sexist sexists sexism sexismus sexistisch " +
+      "homophob homophobe homophobic homophobia homophobie " +
+      "transphob transphobe transphobic transphobia transphobie " +
+      "biphob biphobe biphobia queerphob queerphobe queerphobia " +
+      "enbyphobe aphobe aphobia " +
+      "xenophob xenophobe xenophobia fremdenfeindlich " +
+      "islamophob islamophobe islamophobia " +
+      "antisemit antisemite antisemitic antisemitism antisemitismus " +
+      "misogyn misogynist misogyny misogynie frauenfeind frauenfeindlich " +
+      "ableist ableism behindertenfeindlich " +
+      "bigot bigots bigotry hatespeech hategroup " +
+      "terf terfs swerf gendercritical genderkritisch " +
+      "proudboys proudboy qanon querdenker reichsflagge lugenpresse luegenpresse " +
+      "volksverrater volksverraeter maga alllivesmatter bluelivesmatter " +
+      // Koepfe der AfD und der Neuen Rechten. Mehrdeutige Nachnamen (Baum,
+      // Storch, Spaniel, Gottschalk, Curio, Sichert, Holm) stehen nur als
+      // vollstaendiger Name drin, sonst wuerde die Liste harmlose Woerter
+      // treffen -- die zusammengezogene Schreibweise reicht, weil die ganze
+      // Eingabe ohnehin ohne Leerzeichen geprueft wird.
+      "weidel aliceweidel chrupalla tinochrupalla hocke hoecke bjornhocke bjoernhoecke " +
+      "gauland alexandergauland vonstorch beatrixvonstorch krah maximilliankrah " +
+      "maximilankrah maxkrah bystron petrbystron brandner stephanbrandner " +
+      "boehringer peterboehringer reneaust renaust gottfriedcurio christinabaum " +
+      "meuthen jorgmeuthen joergmeuthen fraukepetry petry kalbitz andreaskalbitz " +
+      "tillschneider munzenmaier muenzenmaier berndbaumann leiferikholm " +
+      "martinreichardt juergenpohl jurgenpohl helferich matthiashelferich " +
+      "halemba danielhalemba gnauck hannesgnauck beckamp rogerbeckamp " +
+      "frohnmaier markusfrohnmaier kotre kotrè steffenkotre kaygottschalk " +
+      "dirkspaniel kleinwachter kleinwaechter nicolehochst nicolehoechst " +
+      "janwenzelschmidt martinsichert ulrichsiegmund hanschristophberndt " +
+      "dennishohloch sellner martinsellner kubitschek gotzkubitschek goetzkubitschek " +
+      "juergenelsaesser jurgenelsasser erikahrens hohmann"
     ).split(" ");
 
     // Ueberall in der Eingabe -- nur eindeutige Wortstaemme, bei denen ein
@@ -219,8 +254,19 @@
       lesarten(w).forEach(function (f) { if (f && UEBERALL.indexOf(f) < 0) UEBERALL.push(f); });
     });
 
+    // Vorsilben, nach denen ein gesperrtes Wort das Gegenteil meint.
+    var NEGATION = { anti: 1, no: 1, non: 1, kein: 1, keine: 1, gegen: 1, against: 1,
+                     fuck: 1, smash: 1, stop: 1, ex: 1, against_: 1 };
+
     function gesperrt(text) {
-      var teile = [text].concat(String(text).split(/[\s/,._+&-]+/));
+      // Der Bindestrich trennt bewusst nicht: "anti-racist" bleibt ein Wort,
+      // und "n-i-g-g-e-r" wird ueber die kompakte Lesart trotzdem erwischt.
+      var woerter = String(text).split(/[\s/,._+&]+/);
+      var teile = [text];
+      for (var w = 0; w < woerter.length; w++) {
+        if (w > 0 && NEGATION[kompakt(woerter[w - 1])]) continue;
+        teile.push(woerter[w]);
+      }
       for (var i = 0; i < teile.length; i++) {
         if (ERLAUBT[kompakt(teile[i])]) continue;
         var formen = lesarten(teile[i]);
