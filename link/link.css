@@ -1,0 +1,146 @@
+/* PURPUR — Linkseite unter /link/
+   Eigenstaendig: eigene Schriftdeklarationen und Farben, damit die Seite nicht
+   an den Inline-Massen der Startseite haengt. Dieselben Dateien wie dort, also
+   aus dem Cache. */
+
+@font-face { font-family: "Mosher"; src: url("/assets/fonts/Mosher-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; size-adjust: 116%; }
+@font-face { font-family: "Furion"; src: url("/assets/fonts/GCFurion-Thin.woff2") format("woff2"); font-weight: 100; font-display: swap; }
+@font-face { font-family: "Furion"; src: url("/assets/fonts/GCFurion-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Furion"; src: url("/assets/fonts/GCFurion-Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Furion"; src: url("/assets/fonts/GCFurion-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Furion"; src: url("/assets/fonts/GCFurion-ExtraBold.woff2") format("woff2"); font-weight: 800; font-display: swap; }
+@font-face { font-family: "Furion"; src: url("/assets/fonts/GCFurion-Black.woff2") format("woff2"); font-weight: 900; font-display: swap; }
+
+:root {
+  --ground: #5b12ff;
+  --hot: #ff2bd6;
+  --black: #0a0a0a;
+  --bone: #f3ece4;
+  --acid: #e2ff00;
+  --font-titel: "Mosher", "Arial Black", sans-serif;
+  --font-text: "Furion", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; overflow-x: hidden; }
+body {
+  margin: 0;
+  min-height: 100svh;
+  /* Das Datumsband ragt bewusst seitlich heraus -- ohne das hier gaebe es
+     dadurch eine waagerechte Bildlaufleiste. */
+  overflow-x: hidden;
+  background: #1c1b1f radial-gradient(ellipse at 70% 20%, #2c2a30 0%, #141316 70%) no-repeat;
+  color: #fff;
+  font-family: var(--font-text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Platz unten fuer die Leiste des Browsers auf dem Handy */
+  padding: clamp(32px, 7vh, 72px) 16px calc(24px + env(safe-area-inset-bottom));
+}
+
+/* Koerniges Rauschen wie auf der Startseite */
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: url("/Media/Tape/noise.png") repeat;
+  background-size: 180px 180px;
+  opacity: .5;
+  mix-blend-mode: multiply;
+  filter: grayscale(1);
+}
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* ---------- Kopf ---------- */
+.kopf { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
+.kopf img { width: clamp(140px, 42vw, 190px); height: auto; }
+.claim {
+  margin: 0;
+  font-size: clamp(15px, 4.2vw, 18px);
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: #e9e3f0;
+}
+.claim b { font-weight: 900; }
+.claim .mosher { font-family: var(--font-titel); font-weight: 400; }
+
+/* Datumsband, leicht schraeg wie das Absperrband */
+.band {
+  align-self: stretch;
+  /* Genau die Seitenpolsterung des Bodys zurueck, damit das Band von Kante
+     zu Kante laeuft, ohne die Seite breiter zu machen. */
+  margin: 2px -16px 6px;
+  padding: 9px 0;
+  transform: rotate(-1.6deg);
+  background: var(--black);
+  color: var(--bone);
+  font-family: var(--font-titel);
+  font-size: clamp(15px, 4.4vw, 19px);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.band span { margin: 0 6px; }
+.band img { height: 1em; width: auto; vertical-align: -0.12em; }
+
+/* ---------- Knoepfe ---------- */
+.reihe { display: flex; flex-direction: column; gap: 10px; }
+.pill {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+  min-height: 58px;
+  padding: 10px 22px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: transform .15s ease;
+}
+.pill:hover, .pill:focus-visible { transform: scale(1.02); }
+.pill .was { font-size: clamp(15px, 4.3vw, 17px); font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+.pill .wo { font-size: 13px; font-weight: 400; }
+
+.pill--haupt { min-height: 76px; padding: 12px 24px; background: var(--black); color: #fff; }
+.pill--haupt .was { font-family: var(--font-titel); font-weight: 400; font-size: clamp(26px, 8vw, 32px); letter-spacing: 0; line-height: 1; }
+.pill--haupt .wo { font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--hot); }
+
+.pill--bone { background: var(--bone); color: var(--black); }
+.pill--hot { background: var(--hot); color: var(--black); }
+.pill--hot .wo { font-weight: 500; }
+.pill--linie { border: 2px solid #fff; color: #fff; }
+.pill--purpur { background: var(--ground); color: #fff; }
+
+a:focus-visible { outline: 2px solid var(--acid); outline-offset: 3px; }
+
+/* ---------- Fuss ---------- */
+.fuss {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 6px 16px;
+  font-size: 12px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #9a93a6;
+}
+.fuss a { color: #9a93a6; text-decoration: none; border-bottom: 1px solid #4a4452; padding-bottom: 1px; }
+.fuss a:hover, .fuss a:focus-visible { color: #fff; border-bottom-color: #fff; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pill { transition: none; }
+}
