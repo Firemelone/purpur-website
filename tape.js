@@ -541,6 +541,26 @@
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // Line-up: beim ersten Hinscrollen laeuft einmal eine Farbwelle durch die
+  // Act-Kacheln -- jede wird nacheinander kurz bunt und wieder schwarz-weiss.
+  // Die Verzoegerung steht pro Kachel in --welle-verzug; die Animation selbst
+  // liegt im CSS. Bei reduzierter Bewegung kommt der Code gar nicht hierher.
+  // ---------------------------------------------------------------------------
+  var actKacheln = document.querySelectorAll(".act");
+  var lineupRaster = document.querySelector('[data-tilt="lineup"]');
+  if (actKacheln.length && lineupRaster && "IntersectionObserver" in window) {
+    var welleIO = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) return;
+      welleIO.disconnect();
+      for (var wi = 0; wi < actKacheln.length; wi++) {
+        actKacheln[wi].style.setProperty("--welle-verzug", (wi * 280) + "ms");
+        actKacheln[wi].classList.add("is-welle");
+      }
+    }, { threshold: 0.3 });
+    welleIO.observe(lineupRaster);
+  }
+
   var targets = document.querySelectorAll("[data-decode]");
   if ("IntersectionObserver" in window && targets.length) {
     var io = new IntersectionObserver(function (entries) {

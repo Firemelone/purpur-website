@@ -22,6 +22,10 @@
   --acid: #e2ff00;
   --mint: #00ff9d;
   --magenta: #ff00e2;
+  /* Artist-Namen im Line-up, im Modus hard-light. Der Rotanteil muss ueber
+     50 % liegen, sonst kippt die Schrift auf schwarzem Foto in dunkles Blau:
+     #9d00ff ergaebe dort #3b00ff, #d900ff ergibt #b300ff. */
+  --artist: #d900ff;
   --font-titel: "Mosher", "Arial Black", sans-serif;
   --font-text: "Furion", "Helvetica Neue", Arial, sans-serif;
   color-scheme: dark;
@@ -99,7 +103,91 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
   100% { transform: none; filter: none; clip-path: none; }
 }
 
+/* ---------- Line-up: angekuendigte Acts ---------- */
+/* Gestaltet wie die Boothbunny-Kachel: Name und Handle unten links, im Differenz-
+   Blendmodus ueber dem Foto. Das Foto liegt als <img> ganz unten, damit
+   die Texte mit ihm verrechnet werden -- die Kachel ist durch ihr
+   transform ein eigener Stapelkontext, der Blendmodus reicht also genau
+   bis zum Foto und nicht bis zum Seitenhintergrund.
+   Namensgroesse wie bei Boothbunny an die Kachelbreite gekoppelt (cqw);
+   --em ist die Breite der laengsten Namenszeile in Mosher. */
+.act {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  border: 1px solid #9d00ff;
+}
+.act__bild {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  /* Schwarz-weiss, bunt erst beim Hovern. Auf dem Handy gibt es kein
+     Hover -- dort faerbt kurz das Antippen (:active). */
+  filter: grayscale(1) contrast(1.05);
+  transition: filter .6s ease;
+}
+.act:hover .act__bild,
+.act:focus-visible .act__bild,
+.act:active .act__bild { filter: none; }
+/* Farbwelle beim ersten Hinscrollen (Ausloeser in tape.js). Ohne
+   fill-mode: nach dem Durchlauf haelt die Animation nichts fest, sonst
+   wuerde ihr Endwert das Bunt-beim-Hovern dauerhaft ueberstimmen. Anfang
+   und Ende gleichen dem Grundzustand, deshalb springt nichts. */
+@keyframes act-welle {
+  0%, 100% { filter: grayscale(1) contrast(1.05); }
+  40%, 55% { filter: grayscale(0) contrast(1); }
+}
+.act.is-welle .act__bild {
+  animation: act-welle 1.6s ease-in-out var(--welle-verzug, 0ms);
+}
+.act__name {
+  position: relative;
+  z-index: 1;
+  /* hard-light statt difference: difference liess den Namen ueber
+     unruhigen Bildstellen zerfallen. Mit gesaettigtem Lila bleibt er auf
+     schwarzem, grauem und weissem Grund lesbar (lila bis magenta). */
+  mix-blend-mode: hard-light;
+  margin-top: 8px;
+  font-family: var(--font-titel);
+  line-height: 1;
+  color: var(--artist);
+  font-size: min(40px, calc((100cqw - 4px) / var(--em, 6)));
+}
+/* Genre unter dem Namen: Rolle und Optik wie die Unterzeile bei Boothbunny.
+   Der Instagram-Link liegt auf der ganzen Kachel, sichtbar steht er nicht. */
+.act__info {
+  position: relative;
+  z-index: 1;
+  mix-blend-mode: difference;
+  margin-top: 8px;
+  font-size: 14px;
+  color: rgb(230, 220, 255);
+}
+a.act { color: inherit; text-decoration: none; }
+
+/* Nummer oben links; im Differenzmodus kippt der helle Kasten auf hellem
+   Foto ins Dunkle und bleibt so auf jedem Hintergrund lesbar. */
+.act__nr {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  z-index: 1;
+  mix-blend-mode: difference;
+  padding: 4px 8px;
+  background: #f3ece4;
+  color: #0a0a0a;
+  font-weight: 800;
+  font-size: 14px;
+}
+
 /* ---------- Boothbunny-Kachel ---------- */
+.bb-card > span:nth-child(2) { color: var(--artist) !important; mix-blend-mode: hard-light !important; }
 .bb-card {
   background: url("/Media/Tape/boothbunny.webp") center / cover no-repeat;
   container-type: inline-size;
@@ -200,6 +288,7 @@ a:focus-visible { outline: 2px solid var(--acid); outline-offset: 3px; }
   .tl { transition: none; }
   .tape-roll { -webkit-mask-image: none; mask-image: none; translate: 0 0; transition: none; }
   .yourtag-neu, .yourtag.is-nope { animation: none; }
+  .act__bild { transition: none; animation: none !important; }
 }
 
 /* =========================================================================
@@ -246,8 +335,11 @@ a:focus-visible { outline: 2px solid var(--acid); outline-offset: 3px; }
   [data-tilt="lineup"] { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; }
   [data-tilt="lineup"] > * { height: 250px !important; }
   [data-tilt="lineup"] > *[style*="margin-top: 48px"] { margin-top: 28px !important; }
-  [data-tilt="lineup"] > a { grid-column: 1; height: 250px !important; margin-top: 0 !important; }
+  /* Nur die Boothbunny-Kachel -- frueher stand hier "> a", das traf aber
+     jede verlinkte Act-Kachel und zwang sie in die linke Spalte. */
+  [data-tilt="lineup"] > .bb-card { grid-column: 1; height: 250px !important; margin-top: 0 !important; }
   [data-tilt="lineup"] div[style*="rotate("] { font-size: 15px !important; }
+  .act__nr { font-size: 11px; }
   [data-tilt="lineup"] span[style*="[ACT"], [data-tilt="lineup"] span[style*="bottom: 14px"] { font-size: 11px !important; }
 
   /* Insight */
