@@ -99,6 +99,44 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
   100% { transform: none; filter: none; clip-path: none; }
 }
 
+/* ---------- Line-up: angekuendigte Acts ---------- */
+/* Der Name liegt auf dem Band, wo vorher "coming soon" stand. Groesse haengt
+   an der Kachelbreite (cqw), nicht am Fenster -- die Spalten des Rasters
+   folgen dem Fenster nicht geradlinig. --em ist die Breite der laengsten
+   Namenszeile in Mosher, gemessen im Browser.
+   Die Drehung steht in --dreh statt inline als rotate(): die mobile Regel
+   [data-tilt="lineup"] div[style*="rotate("] wuerde sonst die Schrift auf
+   15 px festnageln. */
+.act { container-type: inline-size; }
+.act__name {
+  position: absolute;
+  left: -20px;
+  right: -20px;
+  top: var(--hoehe, 72%);
+  transform: rotate(var(--dreh, -6deg));
+  padding: 9px 0 8px;
+  background: #9d00ff;
+  color: #ffffff;
+  text-align: center;
+  font-family: var(--font-titel);
+  line-height: 1;
+  font-size: min(28px, calc((100cqw - 24px) / var(--em, 6)));
+}
+
+/* Nummer oben links: unten lief sie mit dem Namensband zusammen, und weil
+   die Kacheln je nach Breite 250 oder 380 px hoch sind, hilft Verschieben
+   des Bandes nicht verlaesslich. */
+.act__nr {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  padding: 4px 8px;
+  background: #f3ece4;
+  color: #0a0a0a;
+  font-weight: 800;
+  font-size: 14px;
+}
+
 /* ---------- Boothbunny-Kachel ---------- */
 .bb-card {
   background: url("Media/Tape/boothbunny.webp") center / cover no-repeat;
@@ -248,6 +286,7 @@ a:focus-visible { outline: 2px solid var(--acid); outline-offset: 3px; }
   [data-tilt="lineup"] > *[style*="margin-top: 48px"] { margin-top: 28px !important; }
   [data-tilt="lineup"] > a { grid-column: 1; height: 250px !important; margin-top: 0 !important; }
   [data-tilt="lineup"] div[style*="rotate("] { font-size: 15px !important; }
+  .act__nr { font-size: 11px; }
   [data-tilt="lineup"] span[style*="[ACT"], [data-tilt="lineup"] span[style*="bottom: 14px"] { font-size: 11px !important; }
 
   /* Insight */
