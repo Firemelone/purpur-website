@@ -100,7 +100,7 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
 }
 
 /* ---------- Line-up: angekuendigte Acts ---------- */
-/* Gestaltet wie die Boothbunny-Kachel: Text unten links, im Differenz-
+/* Gestaltet wie die Boothbunny-Kachel: Name und Handle unten links, im Differenz-
    Blendmodus ueber dem Foto. Das Foto liegt als <img> ganz unten, damit
    die Texte mit ihm verrechnet werden -- die Kachel ist durch ihr
    transform ein eigener Stapelkontext, der Blendmodus reicht also genau
@@ -123,17 +123,14 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
   height: 100%;
   object-fit: cover;
   display: block;
+  /* Schwarz-weiss, bunt erst beim Hovern. Auf dem Handy gibt es kein
+     Hover -- dort faerbt kurz das Antippen (:active). */
+  filter: grayscale(1) contrast(1.05);
+  transition: filter .6s ease;
 }
-.act__zeit {
-  position: relative;
-  z-index: 1;
-  mix-blend-mode: difference;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgb(197, 139, 255);
-}
+.act:hover .act__bild,
+.act:focus-visible .act__bild,
+.act:active .act__bild { filter: none; }
 .act__name {
   position: relative;
   z-index: 1;
@@ -271,6 +268,7 @@ a:focus-visible { outline: 2px solid var(--acid); outline-offset: 3px; }
   .tl { transition: none; }
   .tape-roll { -webkit-mask-image: none; mask-image: none; translate: 0 0; transition: none; }
   .yourtag-neu, .yourtag.is-nope { animation: none; }
+  .act__bild { transition: none; }
 }
 
 /* =========================================================================
