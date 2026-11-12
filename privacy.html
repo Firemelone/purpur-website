@@ -24,7 +24,8 @@
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" />
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
 <link rel="preload" href="/assets/fonts/GCFurion-Regular.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="/styles.css?v=144" />
+<link rel="stylesheet" href="/styles.css?v=145" />
+<script src="/assets/stats.js" defer></script>
 </head>
 <body class="legal">
 <header class="legal__header">
@@ -34,8 +35,8 @@
   <div class="legal__inner">
     <h1>Privacy</h1>
     <p>
-    This site sets no cookies, loads nothing from third parties, and uses no
-    analytics or tracking.
+    This site sets no cookies. To see how many people visit and which pages
+    they read, we use a cookieless analytics tool, described below.
     </p>
     <p>
     <strong>Controller:</strong> Lukas Heinen, c/o IP-Management #11464,
@@ -50,6 +51,25 @@
     logs, and they are retained by GitHub only for as long as that purpose
     requires. Data may be transferred to the USA; GitHub is certified under
     the EU-US Data Privacy Framework.
+    </p>
+    <p>
+    <strong>Analytics.</strong> We measure visits with Umami, a self-hosted,
+    open-source analytics tool, running at anal.rys.network. When a page has
+    loaded, your browser sends Umami the page address, the referring page,
+    your browser, operating system, device type, screen size and language.
+    Your IP address is used only to derive your country and a pseudonymous
+    visit identifier; it is not stored. Umami sets no cookies and does not
+    follow you across other websites. We see only aggregate statistics, never
+    individual people. The analytics server is reached through Cloudflare,
+    Inc. (USA), which processes your IP address to deliver the request;
+    Cloudflare is certified under the EU-US Data Privacy Framework. The legal
+    basis is our legitimate interest in understanding the reach of our events
+    and this site, Art. 6(1)(f) GDPR. You may object at any time: use the
+    button below, and this browser will no longer be counted.
+    </p>
+    <p class="stats-optout">
+    <button type="button" id="stats-optout">Stop counting my visits</button>
+    <span id="stats-state" role="status"></span>
     </p>
     <p>
     <strong>Email.</strong> If you write to us, we use your message only to
@@ -76,5 +96,32 @@
     <a href="/privacy.html">Privacy</a>
   </nav>
 </footer>
+<script>
+// Opt-out fuer die Reichweitenmessung: Umami prueft das localStorage-Flag
+// "umami.disabled" selbst und sendet dann nichts mehr.
+(function () {
+  var knopf = document.getElementById("stats-optout");
+  var zustand = document.getElementById("stats-state");
+  if (!knopf) return;
+  function aus() {
+    try { return localStorage.getItem("umami.disabled") === "1"; } catch (e) { return false; }
+  }
+  function zeigen() {
+    knopf.textContent = aus() ? "Count my visits again" : "Stop counting my visits";
+    zustand.textContent = aus() ? "Your visits are not counted in this browser." : "";
+  }
+  knopf.addEventListener("click", function () {
+    try {
+      if (aus()) localStorage.removeItem("umami.disabled");
+      else localStorage.setItem("umami.disabled", "1");
+    } catch (e) {
+      zustand.textContent = "Your browser blocks local storage, so this setting cannot be saved.";
+      return;
+    }
+    zeigen();
+  });
+  zeigen();
+})();
+</script>
 </body>
 </html>

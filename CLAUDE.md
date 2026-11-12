@@ -61,9 +61,29 @@ das ist die Arbeitssprache, nicht die Sprache des Produkts.
   nicht die Datei direkt öffnen.
 - Schriften: Titel und Wortmarke in `var(--font-titel)` (Mosher), alles übrige
   in `var(--font-text)` (GC Furion). Nie direkt den Schriftnamen schreiben.
-- Keine externen CDN-Skripte, keine Tracker ohne Consent-Banner — die Seite
-  liefert aktuell keine personenbezogenen Daten an Dritte aus, und das soll so
-  bleiben, bis wir uns aktiv anders entscheiden.
+- Keine externen CDN-Skripte. Einzige Ausnahme ist die Reichweitenmessung,
+  siehe unten — weitere Tracker oder Drittdienste nur nach aktiver Entscheidung
+  und mit angepasster Datenschutzerklärung.
+
+## Reichweitenmessung (seit 12.11.2026)
+
+Bewusst entschieden: Jede Seite misst Besuche mit **Umami**, selbst gehostet
+von Lynx unter `anal.rys.network` (hinter Cloudflare), cookielos, ohne
+Speicherung von IP-Adressen.
+
+- Eingebunden über `/assets/stats.js` — Website-ID und Host stehen nur dort.
+  Jede neue Seite bekommt im `<head>`:
+  `<script src="/assets/stats.js" defer></script>`
+- Das Umami-Skript wird erst **nach `window.load`** nachgeladen. Grund: der
+  Ladevorhang der Startseite wartet auf `load`, und ein langsamer
+  Analyse-Server darf die Seite nie aufhalten. Nicht „vereinfachen" zu einem
+  direkten `<script src="https://anal.rys.network/...">`.
+- `data-domains="purpur.berlin"`: lokale Tests zählen nicht mit.
+- `/preview/` ist bewusst ohne Messung.
+- Opt-out: Knopf in `privacy.html`, setzt `localStorage["umami.disabled"]`.
+- Kein Consent-Banner nötig, solange Umami keine Cookies setzt und nichts im
+  Endgerät speichert (§ 25 TDDDG). Ändert sich das — Cookies, Event-Tracking
+  mit Personenbezug, ein anderes Tool —, muss neu bewertet werden.
 - Bilder als WebP/AVIF, mit `width`/`height` im Tag gegen Layout-Shift.
 
 ## Schriften
@@ -99,5 +119,6 @@ Links im Footer jeder Seite also nicht entfernen.
 
 Wenn sich am Aufbau der Seite etwas ändert, muss die Datenschutzerklärung
 mitgepflegt werden: Sobald Cookies, externe Schriften, Karten, eingebettete
-Videos, ein Kontaktformular oder Analyse-Werkzeuge dazukommen, stimmt der
-aktuelle Text nicht mehr. Er beschreibt ausdrücklich eine Seite ohne all das.
+Videos, ein Kontaktformular oder weitere Analyse-Werkzeuge dazukommen, stimmt
+der aktuelle Text nicht mehr. Er beschreibt eine Seite ohne Cookies, mit
+GitHub-Pages-Hosting, IONOS-Mail und der cookielosen Umami-Messung.

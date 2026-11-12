@@ -1302,6 +1302,15 @@ html.has-custom-cursor .cursor {
 .legal__inner p { margin-block: .9rem; line-height: 1.65; }
 .legal__inner a { color: var(--purpur); }
 .legal__inner a:hover { color: var(--mint); }
+/* Opt-out-Knopf der Reichweitenmessung in der Datenschutzerklaerung */
+.stats-optout { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; }
+.stats-optout button {
+  font: inherit; font-weight: 700; font-size: .85rem; letter-spacing: .06em; text-transform: uppercase;
+  padding: .6rem 1.1rem; border: 2px solid var(--purpur); border-radius: 999px;
+  background: transparent; color: var(--fg); cursor: pointer;
+}
+.stats-optout button:hover, .stats-optout button:focus-visible { background: var(--purpur); color: var(--fg); }
+.stats-optout span { font-size: .9rem; color: var(--mint); }
 .legal__inner strong { font-weight: 700; }
 
 .legal__note {
