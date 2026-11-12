@@ -57,22 +57,27 @@ body {
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 460px;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 28px;
 }
 
-/* ---------- Kopf ---------- */
-.kopf { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
-.kopf img { width: clamp(140px, 42vw, 190px); height: auto; }
+/* ---------- Kopf: Werte 1:1 wie der Hero der Startseite ----------
+   Logo und Claim nebeneinander, Claim duenn/fett gemischt. Aendert sich
+   der Hero dort, hier mitziehen. */
+.kopf { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; }
+.kopf a { line-height: 0; }
+.kopf img { width: clamp(160px, 16vw, 240px); height: auto; }
 .claim {
   margin: 0;
-  font-size: clamp(15px, 4.2vw, 18px);
-  line-height: 1.2;
+  flex: 1 1 220px;
+  font-size: clamp(22px, 2.2vw, 32px);
+  line-height: 1.12;
   text-transform: uppercase;
-  color: #e9e3f0;
+  color: #ffffff;
 }
+.claim .duenn { font-weight: 100; }
 .claim b { font-weight: 900; }
 .claim .mosher { font-family: var(--font-titel); font-weight: 400; }
 
@@ -81,7 +86,7 @@ body {
   align-self: stretch;
   /* Genau die Seitenpolsterung des Bodys zurueck, damit das Band von Kante
      zu Kante laeuft, ohne die Seite breiter zu machen. */
-  margin: 2px -16px 6px;
+  margin: -6px -16px -4px;
   padding: 9px 0;
   transform: rotate(-1.6deg);
   background: var(--black);
@@ -95,26 +100,26 @@ body {
 .band span { margin: 0 6px; }
 .band img { height: 1em; width: auto; vertical-align: -0.12em; }
 
-/* ---------- Knoepfe ---------- */
+/* ---------- Knoepfe: Werte 1:1 wie auf der Startseite ---------- */
 .reihe { display: flex; flex-direction: column; gap: 10px; }
 .pill {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   min-height: 58px;
-  padding: 10px 22px;
+  padding: 10px 28px;
   border-radius: 999px;
   text-decoration: none;
   transition: transform .15s ease;
 }
 .pill:hover, .pill:focus-visible { transform: scale(1.02); }
-.pill .was { font-size: clamp(15px, 4.3vw, 17px); font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+.pill .was { font-size: 17px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
 .pill .wo { font-size: 13px; font-weight: 400; }
 
-.pill--haupt { min-height: 76px; padding: 12px 24px; background: var(--black); color: #fff; }
-.pill--haupt .was { font-family: var(--font-titel); font-weight: 400; font-size: clamp(26px, 8vw, 32px); letter-spacing: 0; line-height: 1; }
+.pill--haupt { min-height: 76px; padding: 12px 28px; background: var(--black); color: #fff; }
+.pill--haupt .was { font-family: var(--font-titel); font-weight: 400; font-size: 32px; letter-spacing: 0; line-height: 1; }
 .pill--haupt .wo { font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--hot); }
 
 .pill--bone { background: var(--bone); color: var(--black); }
@@ -122,6 +127,21 @@ body {
 .pill--hot .wo { font-weight: 500; }
 .pill--linie { border: 2px solid #fff; color: #fff; }
 .pill--purpur { background: var(--ground); color: #fff; }
+
+/* Handy: wie die Startseite */
+@media (max-width: 760px) {
+  .wrap { gap: 22px; }
+  .kopf { gap: 16px; }
+  .kopf img { width: 132px; }
+  .claim { font-size: 22px; flex-basis: 150px; }
+  .pill { padding-left: 22px; padding-right: 22px; }
+  .pill .was { font-size: 15px; }
+  .pill--haupt .was { font-size: 28px; }
+  .nur-breit { display: none; }
+}
+@media (max-width: 420px) {
+  .nur-mittel { display: none; }
+}
 
 a:focus-visible { outline: 2px solid var(--acid); outline-offset: 3px; }
 
