@@ -100,36 +100,69 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
 }
 
 /* ---------- Line-up: angekuendigte Acts ---------- */
-/* Der Name liegt auf dem Band, wo vorher "coming soon" stand. Groesse haengt
-   an der Kachelbreite (cqw), nicht am Fenster -- die Spalten des Rasters
-   folgen dem Fenster nicht geradlinig. --em ist die Breite der laengsten
-   Namenszeile in Mosher, gemessen im Browser.
-   Die Drehung steht in --dreh statt inline als rotate(): die mobile Regel
-   [data-tilt="lineup"] div[style*="rotate("] wuerde sonst die Schrift auf
-   15 px festnageln. */
-.act { container-type: inline-size; }
-.act__name {
+/* Gestaltet wie die Boothbunny-Kachel: Text unten links, im Differenz-
+   Blendmodus ueber dem Foto. Das Foto liegt als <img> ganz unten, damit
+   die Texte mit ihm verrechnet werden -- die Kachel ist durch ihr
+   transform ein eigener Stapelkontext, der Blendmodus reicht also genau
+   bis zum Foto und nicht bis zum Seitenhintergrund.
+   Namensgroesse wie bei Boothbunny an die Kachelbreite gekoppelt (cqw);
+   --em ist die Breite der laengsten Namenszeile in Mosher. */
+.act {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  border: 1px solid #9d00ff;
+}
+.act__bild {
   position: absolute;
-  left: -20px;
-  right: -20px;
-  top: var(--hoehe, 72%);
-  transform: rotate(var(--dreh, -6deg));
-  padding: 9px 0 8px;
-  background: #9d00ff;
-  color: #ffffff;
-  text-align: center;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.act__zeit {
+  position: relative;
+  z-index: 1;
+  mix-blend-mode: difference;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgb(197, 139, 255);
+}
+.act__name {
+  position: relative;
+  z-index: 1;
+  mix-blend-mode: difference;
+  margin-top: 8px;
   font-family: var(--font-titel);
   line-height: 1;
-  font-size: min(28px, calc((100cqw - 24px) / var(--em, 6)));
+  color: #ffffff;
+  font-size: min(40px, calc((100cqw - 4px) / var(--em, 6)));
 }
+/* Instagram-Handle: Rolle und Optik wie "Creator of PURPUR" bei Boothbunny */
+.act__ig {
+  position: relative;
+  z-index: 1;
+  mix-blend-mode: difference;
+  margin-top: 8px;
+  font-size: 14px;
+  color: rgb(230, 220, 255);
+}
+a.act { color: inherit; text-decoration: none; }
 
-/* Nummer oben links: unten lief sie mit dem Namensband zusammen, und weil
-   die Kacheln je nach Breite 250 oder 380 px hoch sind, hilft Verschieben
-   des Bandes nicht verlaesslich. */
+/* Nummer oben links; im Differenzmodus kippt der helle Kasten auf hellem
+   Foto ins Dunkle und bleibt so auf jedem Hintergrund lesbar. */
 .act__nr {
   position: absolute;
   left: 14px;
   top: 14px;
+  z-index: 1;
+  mix-blend-mode: difference;
   padding: 4px 8px;
   background: #f3ece4;
   color: #0a0a0a;
